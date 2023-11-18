@@ -1,13 +1,15 @@
+
 import Image from 'next/image'
 import styles from './page.module.css'
 import { Flex } from '@chakra-ui/react'
-import { Navbar } from '@/component/Navbar'
-import { Button } from '@/component/Button'
+import { Navbar } from './components/Navbar'
+import { Button } from './components/Button'
 
 export default function Home() {
   return (
-    <Flex>
+    <Flex width={"100vw"} height={"150vh"} flexDir={'column'}>
       <Navbar/>
+      HEHEHE
     </Flex>
     // <main className={styles.main}>
     //   <div className={styles.description}>
