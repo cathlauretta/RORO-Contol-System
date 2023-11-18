@@ -2,8 +2,8 @@
 import Image from 'next/image'
 import styles from './page.module.css'
 import { Flex } from '@chakra-ui/react'
-import { Navbar } from './components/Navbar'
-import { Button } from './components/Button'
+import { Navbar } from '../components/Navbar'
+import { Button } from '../components/Button'
 
 export default function Home() {
   return (
