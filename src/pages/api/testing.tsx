@@ -1,5 +1,5 @@
 import { Flex, Box, Heading, VStack } from '@chakra-ui/react'
-import { EmployeeGET, EmployeePOST, EmployeePUT, EmployeeDELETE } from '../pages/api/database'
+import { EmployeeGET, EmployeePOST, EmployeePUT, EmployeeDELETE } from './employeeManager'
 import { objectEnumValues } from '@prisma/client/runtime/library'
 
 export default async function Home() {
