@@ -11,15 +11,19 @@ datasource db {
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Employee {
-  employee_id   String   @id @default("employee")
-  name          String
-  gender        String
-  date_of_birth DateTime @db.Date
-  address       String
-  role          String
-  username      String   @unique
-  password      String
-  Report        Report[]
+  employee_id    String   @id @default("employee")
+  name           String
+  gender         String
+  date_of_birth  DateTime @db.Date
+  address        String
+  role           String
+  username       String   @unique
+  password       String
+  hire_date      DateTime @default(dbgenerated("'2023-11-14'::date")) @db.Date
+  contact        String   @default("+62 812-3456-7890")
+  floor_assigned Int?
+  last_edit      DateTime @default(dbgenerated("'2023-11-19'::date")) @db.Date
+  Report         Report[]
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -30,8 +34,10 @@ model Report {
   room_repaired      String
   eic                String
   repair_description String
+  report_title       String   @default("")
+  status             String   @default("Needs Review")
   Employee           Employee @relation(fields: [eic], references: [employee_id], onDelete: Cascade)
-  Room               Room     @relation(fields: [room_repaired], references: [room_id], onDelete: Cascade)
+  Room               Room     @relation(fields: [room_repaired], references: [room_name], onDelete: Cascade)
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -47,5 +53,6 @@ model Room {
   flag            Boolean  @default(false)
   image           String?
   repair_notes    String?
+  room_name       String   @unique
   Report          Report[]
 }
