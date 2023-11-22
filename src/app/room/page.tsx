@@ -23,6 +23,7 @@ export default async function RoomPage() {
           <NavPage active='Rooms' isAdmin={true}/>
         </Flex>
 
+        {/* Bungkus Tabel */}
         <Flex
           paddingX={'40px'}
           width={'100%'}
@@ -40,7 +41,6 @@ export default async function RoomPage() {
             {/* Tabel Header */}
             <Flex
               width={'100%'}
-              // maxWidth={'1160px'}
               py={12}
               pl={48}
               pr={96}
@@ -76,7 +76,7 @@ export default async function RoomPage() {
               >
                 <Flex width='118px'>{room.room_id}</Flex>
                 <Flex width='228px'>{room.room_name}</Flex>
-                <Flex width='268px'>{room.tipe}</Flex>
+                <Flex width='268px'>{room.type}</Flex>
                 <Flex width='178px'>{room.floor}</Flex>
                 <Flex
                   width='224px'
