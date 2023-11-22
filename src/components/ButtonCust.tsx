@@ -3,25 +3,23 @@ import { Box, Flex } from '@chakra-ui/react';
 
 const ButtonRef = ({ currDir }: { currDir: string }) => {
     let desiredDirectory = "";
-    let textSize = "28px";
     let text = "Save";
 
     if (currDir === "Login") {
         desiredDirectory = "/room";
-        textSize = "16px"
         text = "Login";
     } else if (currDir === "Room") {
         // CHANGE IF NEW ROOM ALREADY IMPLEMENTED
         desiredDirectory = "/room";
-        text = "Add Room";
+        text = "+ Add Room";
     } else if (currDir === "Report") {
         // CHANGE IF NEW REPORT ALREADY IMPLEMENTED
         desiredDirectory = "/report";
-        text = "Add Report";
+        text = "+ Add Report";
     } else if (currDir === "Employee") {
         // CHANGE IF NEW EMPLOYEE ALREADY IMPLEMENTED
-        desiredDirectory = "/rmployee";
-        text = "Add Employee";
+        desiredDirectory = "/employee";
+        text = "+ Add Employee";
     } else if (currDir === "AddRoom") {
         // UPLOAD NEW PHOTO STILL GREYED OUT
         desiredDirectory = "/room";
@@ -37,7 +35,7 @@ const ButtonRef = ({ currDir }: { currDir: string }) => {
         <a href={desiredDirectory}>
         <Flex
             textColor={'#FFFFFF'}
-            fontSize={textSize}
+            fontSize={'16'}
             fontWeight={'600'}
             fontStyle={'normal'}
             cursor={'pointer'}
@@ -55,7 +53,7 @@ const ButtonRef = ({ currDir }: { currDir: string }) => {
 export const ButtonCust = ({ currDir }: { currDir: string }) => {
     let height = "44px";
     let width = "145px";
-    let gap = "12px";
+    let gap = "5px";
 
     if (currDir === "Login") {
         width = "300px";
@@ -68,8 +66,8 @@ export const ButtonCust = ({ currDir }: { currDir: string }) => {
         width={width}
         height={height}
         mt = {4}
-        paddingX="20px"
-        paddingY="12px"
+        paddingX="5px"
+        paddingY="5px"
         background="#39A7FF"
         borderRadius="6px"
         overflow="hidden"
