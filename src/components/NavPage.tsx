@@ -42,22 +42,29 @@ const HeadingProp = ({url, text, state} : {url: string, text: string, state: boo
 export const NavPage = ({active, isAdmin} : {active: string, isAdmin: boolean}) => {
     return (
         <Flex
-            maxWidth={'1160px'}
-            width='85vw'
-            justifyContent=''
+            paddingX={'40px'}
+            paddingBottom={'20px'}
+            width={'100%'}
+            justifyContent={'center'}
             alignItems={'center'}
-            bgColor={'white'}
-            px={32}
-            height={NAVBAR_HEIGHT}
-            gap={60}
-            borderBottom={'2px solid #E0F4FF'}
         >
-            <HeadingProp url='/room' text='Rooms' state={active=='Rooms'}/>
-            <HeadingProp url='/report' text='Reports' state={active=='Reports'}/>
-            {
-                isAdmin &&
-                <HeadingProp url='/employee' text='Employee' state={active=='Employee'}/>
-            }
+            <Flex
+                width='1304px'
+                justifyContent=''
+                alignItems={'center'}
+                bgColor={'white'}
+                paddingX={32}
+                height={NAVBAR_HEIGHT}
+                gap={60}
+                borderBottom={'2px solid #E0F4FF'}
+            >
+                <HeadingProp url='/room' text='Rooms' state={active=='Rooms'}/>
+                <HeadingProp url='/report' text='Reports' state={active=='Reports'}/>
+                {
+                    isAdmin &&
+                    <HeadingProp url='/employee' text='Employee' state={active=='Employee'}/>
+                }
+            </Flex>
         </Flex>
     )
 }
