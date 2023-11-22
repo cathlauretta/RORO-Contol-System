@@ -1,10 +1,11 @@
 import prisma from '../../../prisma/client';
 
-export async function RoomGET(room_id:string,tipe:string,floor:string,flag:string)
+export async function RoomGET(room_id?:string,room_name?:string,tipe?:string,floor?:string,flag?:string)
 {
     try {
         const filters = {};
         if (room_id)    {Object.assign(filters, {room_id: {equals: room_id}})}
+        if (room_name)  {Object.assign(filters, {room_name: {contains: room_name}})}
         if (tipe)       {Object.assign(filters, {tipe: {contains: tipe}})}
         if (floor)      {Object.assign(filters, {floor: {contains: floor}})}
         if (flag)       {Object.assign(filters, {flag: {contains: flag}})}

@@ -1,15 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react'
-import Image from 'next/image';
-import {
-    Flex,
-    Text,
-    Menu,
-    MenuButton,
-    MenuList,
-    MenuItem,
-} from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 
 const NAVBAR_HEIGHT = '50px';
 
@@ -50,6 +42,7 @@ const HeadingProp = ({url, text, state} : {url: string, text: string, state: boo
 export const NavPage = ({active, isAdmin} : {active: string, isAdmin: boolean}) => {
     return (
         <Flex
+            maxWidth={'1160px'}
             width='85vw'
             justifyContent=''
             alignItems={'center'}
