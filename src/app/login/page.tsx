@@ -10,7 +10,7 @@ const LoginPage: React.FC = () => {
 
 return (
     <ChakraProvider>
-        <Login onLogin={handleLogin} />
+        <Login/>
     </ChakraProvider>
 );
 };

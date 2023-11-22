@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { Box, InputGroup, InputRightElement, Heading, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { ButtonCust } from "../../components/ButtonCust";
 
-const Login = ({ onLogin }) => {
+const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
-    const handleLogin = () => {
-        // Perform login logic here
-        console.log("Email:", email);
-        console.log("Password:", password);
-    };
+    // const handleLogin = () => {
+    //     // Perform login logic here
+    //     console.log("Email:", email);
+    //     console.log("Password:", password);
+    // };
 
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
@@ -25,7 +26,7 @@ const Login = ({ onLogin }) => {
         >
             <Box maxW="md" mx="auto" p={4}>
                 <Box bg="#E0F4FF" p={4} borderRadius="md" boxShadow="md" textAlign="center">
-                    <Heading mb={4} textAlign="left" size="lg" width="300px">
+                    <Heading mb={4} textAlign="center" size="lg" width="300px">
                         Room Repair and Occupancy (RORO) Control System
                     </Heading>
                     <FormControl mt={5}>
@@ -63,11 +64,12 @@ const Login = ({ onLogin }) => {
                             </InputRightElement>
                         </InputGroup>
                     </FormControl>
-                <Box width="100%">
+                <ButtonCust currDir="Login"/>
+                {/* <Box width="100%">
                         <Button bg="#39A7FF" color="#FFFFFF" mt={4} onClick={handleLogin} width="100%">
                                 Login
                         </Button>
-                </Box>
+                </Box> */}
                 </Box>
             </Box>
         </Box>
