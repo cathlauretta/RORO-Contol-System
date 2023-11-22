@@ -1,5 +1,5 @@
 import { Flex, Box, Heading, VStack } from '@chakra-ui/react'
-import { EmployeeGET, EmployeePOST, EmployeePUT, EmployeeDELETE } from '../pages/api/database'
+// import { EmployeeGET, EmployeePOST, EmployeePUT, EmployeeDELETE } from '../pages/api/database'
 import { objectEnumValues } from '@prisma/client/runtime/library'
 
 export default async function Home() {
@@ -22,19 +22,19 @@ export default async function Home() {
   // await EmployeeDELETE(data.employee_id)
 
   // contoh GET dengan filter nama 'ivan'
-  const employeeData = await EmployeeGET(undefined, 'ivan')
-  console.log(employeeData)
-  return (
-    <Box p={4}>
-      <Heading mb={4}>List of Data</Heading>
-      <VStack spacing={4} align="stretch">
-        {employeeData.map((employee) => 
-        (
-          <Box key={employee.employee_id} borderWidth="1px" borderRadius="lg" p={4}>
-            <Heading size="md">{employee.employee_id} {employee.role} {employee.name}</Heading>
-          </Box>
-        ))}
-      </VStack>
-    </Box>
-  )
+  // const employeeData = await EmployeeGET(undefined, 'ivan')
+  // console.log(employeeData)
+  // return (
+  //   <Box p={4}>
+  //     <Heading mb={4}>List of Data</Heading>
+  //     <VStack spacing={4} align="stretch">
+  //       {employeeData.map((employee) => 
+  //       (
+  //         <Box key={employee.employee_id} borderWidth="1px" borderRadius="lg" p={4}>
+  //           <Heading size="md">{employee.employee_id} {employee.role} {employee.name}</Heading>
+  //         </Box>
+  //       ))}
+  //     </VStack>
+  //   </Box>
+  // )
 }
