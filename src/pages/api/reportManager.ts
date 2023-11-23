@@ -1,6 +1,6 @@
 import prisma from '../../../prisma/client';
 
-export async function ReportGET(report_id:string,report_title:string,room_repaired:string,date:string,status:string){
+export async function ReportGET(report_id?:string,report_title?:string,room_repaired?:string,date?:string,status?:string){
     try {
         const filters = {};
         if (report_id)          {Object.assign(filters, {report_id: {equals: report_id}})}

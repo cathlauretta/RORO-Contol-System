@@ -1,11 +1,12 @@
 import prisma from '../../../prisma/client';
 
-export async function RoomGET(room_id:string,tipe:string,floor:string,flag:string)
+export async function RoomGET(room_id?:string,room_name?:string,type?:string,floor?:string,flag?:string)
 {
     try {
         const filters = {};
         if (room_id)    {Object.assign(filters, {room_id: {equals: room_id}})}
-        if (tipe)       {Object.assign(filters, {tipe: {contains: tipe}})}
+        if (room_name)  {Object.assign(filters, {room_name: {contains: room_name}})}
+        if (type)       {Object.assign(filters, {type: {contains: type}})}
         if (floor)      {Object.assign(filters, {floor: {contains: floor}})}
         if (flag)       {Object.assign(filters, {flag: {contains: flag}})}
         
@@ -17,9 +18,9 @@ export async function RoomGET(room_id:string,tipe:string,floor:string,flag:strin
     }
 }
 
-export async function RoomPOST(room_id:string,tipe:string,floor:number,price:number,occupied_status:boolean,condition:string,flag:boolean,image:string,repair_notes:string,room_name:string){
+export async function RoomPOST(room_id:string,type:string,floor:number,price:number,occupied_status:boolean,condition:string,flag:boolean,image:string,repair_notes:string,room_name:string){
     const data = {room_id: room_id,
-        tipe: tipe,
+        type: type,
         floor: floor,
         price: price,
         occupied_status: occupied_status,
@@ -38,11 +39,11 @@ export async function RoomPOST(room_id:string,tipe:string,floor:number,price:num
     }
 }
 
-export async function RoomPUT(room_id:string,tipe:string,floor:number,price:number,occupied_status:boolean,condition:string,flag:boolean,image:string,repair_notes:string,room_name:string){
+export async function RoomPUT(room_id:string,type:string,floor:number,price:number,occupied_status:boolean,condition:string,flag:boolean,image:string,repair_notes:string,room_name:string){
     try {
         const data = {
             room_id: room_id,
-            tipe: tipe,
+            type: type,
             floor: floor,
             price: price,
             occupied_status: occupied_status,
