@@ -1,33 +1,30 @@
 import prisma from '../../../prisma/client';
+import { NextApiRequest, NextApiResponse } from 'next';
+
+
 
 export async function EmployeeGET(employee_id?:string,name?:string) {
     try {
         const filters = {};
-        if (employee_id)    {Object.assign(filters, {employee_id: {equals: employee_id}})}
-        if (name)           {Object.assign(filters, {name: {contains: name, mode: 'insensitive'}})}
-        const employees = await prisma.employee.findMany({where:filters});
-        return employees;
+        if (name) {Object.assign(filters, {name: {contains: name, mode: 'insensitive'}})}
+        
+        if (employee_id){
+            const employee = await prisma.employee.findFirst({where:{employee_id:employee_id}});
+            return employee;
+        } else {
+            const employees = await prisma.employee.findMany({where:filters});
+            return employees;
+        }
     }
     catch (error) {
         throw error;
     }
 }
 
-export async function EmployeePOST(employee_id:string,name:string,gender:string,date_of_birth:string,address:string,role:string,username:string,password:string,contact:string,floor_assigned?:number){
-    const data = {employee_id: employee_id,
-    name: name,
-    gender: gender,
-    date_of_birth: date_of_birth,
-    address: address,
-    role: role,
-    username: username,
-    password: password,
-    hire_date: Date.now(),
-    contact: contact,
-    floor_assigned: 0,
-    last_edit: Date.now()}
-
-    if(floor_assigned){data.floor_assigned=floor_assigned}
+export async function EmployeePOST(employee:Employee){
+    const data = employee
+    data.hire_date = new Date()
+    data.last_edit = new Date()
 
     try {
         const employee = await prisma.employee.create({data});
@@ -38,25 +35,27 @@ export async function EmployeePOST(employee_id:string,name:string,gender:string,
     }
 }
 
-export async function EmployeePUT(employee_id:string,name:string,gender:string,date_of_birth:string,address:string,role:string,username:string,password:string,hire_date:string,contact:string,floor_assigned:number){
+export async function EmployeePUT(employee:Employee){
     try {
-        const data = {
-            employee_id: employee_id,
-            name: name,
-            gender: gender,
-            date_of_birth: date_of_birth,
-            address: address,
-            role: role,
-            username: username,
-            password: password,
-            hire_date: hire_date,
-            contact: contact,
-            floor_assigned: floor_assigned,
-            last_edit: Date.now()
-        };
+        const data:Employee = employee
+        data.last_edit = new Date()
+        // const data = {
+        //     employee_id: employee.employee_id,
+        //     name: employee.name,
+        //     gender: employee.gender,
+        //     date_of_birth: employee.date_of_birth,
+        //     address: employee.address,
+        //     role: employee.role,
+        //     username: employee.username,
+        //     password: employee.password,
+        //     hire_date: employee.hire_date,
+        //     contact: employee.contact,
+        //     floor_assigned: employee.floor_assigned,
+        //     last_edit: new Date()
+        // };
 
         const updatedEmployee = await prisma.employee.update({
-            where: { employee_id: employee_id },
+            where: { employee_id: data.employee_id },
             data: data
         });
     } catch (error) {

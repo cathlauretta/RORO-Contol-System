@@ -31,14 +31,13 @@ model Employee {
 model Report {
   report_id          String    @id(map: "T_pkey")
   date               DateTime  @db.Date
-  room_repaired      String?
+  room_repaired      String
   eic                String?
   repair_description String
   report_title       String    @default("")
   type               String    @default("Inspect")
-  images             String?
   Employee           Employee? @relation(fields: [eic], references: [name])
-  Room               Room?     @relation(fields: [room_repaired], references: [room_name])
+  Room               Room      @relation(fields: [room_repaired], references: [room_name], onDelete: Cascade)
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
