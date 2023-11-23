@@ -12,7 +12,7 @@ datasource db {
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Employee {
   employee_id    String   @id @default("employee")
-  name           String
+  name           String   @unique
   gender         String
   date_of_birth  DateTime @db.Date
   address        String
@@ -21,23 +21,23 @@ model Employee {
   password       String
   hire_date      DateTime @default(dbgenerated("'2023-11-14'::date")) @db.Date
   contact        String   @default("+62 812-3456-7890")
-  floor_assigned Int?
   last_edit      DateTime @default(dbgenerated("'2023-11-19'::date")) @db.Date
+  floor_assigned Int      @default(0)
   Report         Report[]
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Report {
-  report_id          String   @id(map: "T_pkey")
-  date               DateTime @db.Date
+  report_id          String    @id(map: "T_pkey")
+  date               DateTime  @db.Date
   room_repaired      String
-  eic                String
+  eic                String?
   repair_description String
-  report_title       String   @default("")
-  status             String   @default("Needs Review")
-  Employee           Employee @relation(fields: [eic], references: [employee_id], onDelete: Cascade)
-  Room               Room     @relation(fields: [room_repaired], references: [room_name], onDelete: Cascade)
+  report_title       String    @default("")
+  type               String    @default("Inspect")
+  Employee           Employee? @relation(fields: [eic], references: [name])
+  Room               Room      @relation(fields: [room_repaired], references: [room_name], onDelete: Cascade)
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -45,7 +45,7 @@ model Report {
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Room {
   room_id         String   @id @default("room")
-  tipe            String
+  type            String
   floor           Int      @db.SmallInt
   price           Int
   occupied_status Boolean  @default(false)
