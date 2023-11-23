@@ -1,76 +1,89 @@
 import prisma from '../../../prisma/client';
+import type { Employee } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-
-
-export async function EmployeeGET(employee_id?:string,name?:string) {
-    try {
-        const filters = {};
-        if (name) {Object.assign(filters, {name: {contains: name, mode: 'insensitive'}})}
-        
-        if (employee_id){
-            const employee = await prisma.employee.findFirst({where:{employee_id:employee_id}});
-            return employee;
-        } else {
-            const employees = await prisma.employee.findMany({where:filters});
-            return employees;
+export default async function(
+    req: NextApiRequest,
+    res: NextApiResponse
+    ) {
+    if (req.method === 'GET'){
+        try{
+            const { employee_id, name } = req.query;
+            let queryOptions = {};
+            if (employee_id || name) {
+                queryOptions = {
+                    where : {
+                        AND : [
+                            {employee_id: {contains: employee_id}},
+                            {name:{contains: name, mode: 'insensitive'}}
+                        ]
+                    }
+                }
+            }
+            const employees = await prisma.employee.findMany(queryOptions);
+            res.status(200).json(employees);
+        } catch (error) {
+            res.status(500).json({ error: (error as Error).message });
         }
-    }
-    catch (error) {
-        throw error;
+    } else if (req.method === 'POST') {
+        try{
+            const { employee_id, name, gender, date_of_birth, address, role, username, password, contact, floor_assigned } : Employee = req.body
+            const data:Employee = {
+                employee_id: employee_id,
+                name: name,
+                gender: gender,
+                date_of_birth: date_of_birth,
+                address: address,
+                role: role,
+                username: username,
+                password: password,
+                contact: contact,
+                floor_assigned: floor_assigned,
+                hire_date: new Date(),
+                last_edit: new Date()
+            }
+            const employee = await prisma.employee.create({data:data});
+            res.status(201).json(employee);
+        } catch (error) {
+            res.status(500).json({ error: (error as Error).message });
+        }
+    } else if (req.method === 'PUT') {
+        try{
+            const { employee_id, name, gender, date_of_birth, address, role, username, password, hire_date, contact, floor_assigned } : Employee = req.body
+            const data:Employee = {
+                employee_id: employee_id,
+                name: name,
+                gender: gender,
+                date_of_birth: date_of_birth,
+                address: address,
+                role: role,
+                username: username,
+                password: password,
+                contact: contact,
+                floor_assigned: floor_assigned,
+                hire_date: hire_date,
+                last_edit: new Date()
+            }
+            const employee = await prisma.employee.update({
+                where: { employee_id: data.employee_id },
+                data: data
+            });
+            res.status(200).json(employee);
+        } catch (error) {
+            res.status(500).json({ error: (error as Error).message });
+        }
+    } else if (req.method === 'DELETE') {
+        try{
+            const { employee_id } = req.query;
+            const employee = await prisma.employee.delete({
+                where: { employee_id: employee_id as string },
+            });
+            res.status(204).end();
+        } catch (error) {
+            res.status(500).json({ error: (error as Error).message });
+        }
+    } else {
+        res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
+        res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
-
-export async function EmployeePOST(employee:Employee){
-    const data = employee
-    data.hire_date = new Date()
-    data.last_edit = new Date()
-
-    try {
-        const employee = await prisma.employee.create({data});
-        return employee;
-    }
-    catch (error) {
-        throw error;
-    }
-}
-
-export async function EmployeePUT(employee:Employee){
-    try {
-        const data:Employee = employee
-        data.last_edit = new Date()
-        // const data = {
-        //     employee_id: employee.employee_id,
-        //     name: employee.name,
-        //     gender: employee.gender,
-        //     date_of_birth: employee.date_of_birth,
-        //     address: employee.address,
-        //     role: employee.role,
-        //     username: employee.username,
-        //     password: employee.password,
-        //     hire_date: employee.hire_date,
-        //     contact: employee.contact,
-        //     floor_assigned: employee.floor_assigned,
-        //     last_edit: new Date()
-        // };
-
-        const updatedEmployee = await prisma.employee.update({
-            where: { employee_id: data.employee_id },
-            data: data
-        });
-    } catch (error) {
-        throw error;
-    }
-}
-
-export async function EmployeeDELETE(employee_id:string){
-    try {
-        const deletedEmployee = await prisma.employee.delete({
-            where: { employee_id: employee_id },
-        });
-    } catch (error) {
-        throw error;
-    }
-}
-
-//export async function EmployeeLogin(username:string,password:string){}
