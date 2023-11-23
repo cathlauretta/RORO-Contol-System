@@ -1,14 +1,46 @@
-import React from 'react'
+"use client"
+import React, {useState, useEffect} from 'react'
 import { Navbar } from '@/components/Navbar'
 import { NavPage } from '@/components/NavPage'
 import {
   Flex,
   Image,
+  Input
 } from '@chakra-ui/react'
-import { RoomGET } from '@/pages/api/roomManager'
+import type { Room } from '@prisma/client'
 
-export default async function RoomPage() {
-  const RoomData = await RoomGET()
+export default function RoomPage() {
+  const [roomData, setRoomData] = useState<Room[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const queryParams = new URLSearchParams({
+          name : searchQuery
+        }).toString();
+
+        const response = await fetch(`/api/roomManager?${queryParams}`);
+        if (!response.ok) {
+          throw new Error('Data fetching failed');
+        }
+        const rooms: Room[] = await response.json();
+        // console.log(rooms);
+        setRoomData(rooms);
+
+      } catch (error) {
+        alert ((error as Error).message);
+      }
+    };
+    fetchData();
+  },[searchQuery]);
+
+
+  const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    // console.log(searchQuery);
+
+  }
 
   return (
       // Flex satu screen
@@ -23,11 +55,17 @@ export default async function RoomPage() {
           <NavPage active='Rooms' isAdmin={true}/>
         </Flex>
 
+        {/* Bungkus Tabel */}
         <Flex
           paddingX={'40px'}
           width={'100%'}
           overflowX={'auto'}
+          flexDir={'column'	}
         >
+          <Flex mx={"auto"}>
+            <Input onChange={(e) => handleSearch(e)} />
+          </Flex>
+
           {/* Tabel */}
           <Flex
             width={'1160px'}
@@ -40,7 +78,6 @@ export default async function RoomPage() {
             {/* Tabel Header */}
             <Flex
               width={'100%'}
-              // maxWidth={'1160px'}
               py={12}
               pl={48}
               pr={96}
@@ -59,7 +96,7 @@ export default async function RoomPage() {
             </Flex>
 
             {/* Tabel Body */}
-            {RoomData.map((room) => 
+            {roomData.map((room) => 
             (
               <Flex
                 key={room.room_id}
@@ -76,7 +113,7 @@ export default async function RoomPage() {
               >
                 <Flex width='118px'>{room.room_id}</Flex>
                 <Flex width='228px'>{room.room_name}</Flex>
-                <Flex width='268px'>{room.tipe}</Flex>
+                <Flex width='268px'>{room.type}</Flex>
                 <Flex width='178px'>{room.floor}</Flex>
                 <Flex
                   width='224px'
