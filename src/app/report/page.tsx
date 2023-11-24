@@ -5,10 +5,10 @@ import {
   Flex,
   Image,
 } from '@chakra-ui/react'
-import { ReportGET } from '@/pages/api/reportManager'
+//import { ReportGET } from '@/app/api/reportManager'
 
 export default async function ReportPage() {
-  const ReportData = await ReportGET()
+  // const ReportData = await ReportGET()
 
   return (
       // Flex satu screen
@@ -61,7 +61,7 @@ export default async function ReportPage() {
             </Flex>
 
             {/* Tabel Body */}
-            {ReportData.map((report) => {
+            {/* {ReportData.map((report) => {
               const year = report.date.getFullYear();
               const month = report.date.getMonth();
               const day = report.date.getDate();
@@ -98,7 +98,7 @@ export default async function ReportPage() {
                   </a>
                 </Flex>
               )
-            })}
+            })} */}
           </Flex>
         </Flex>
       </Flex>

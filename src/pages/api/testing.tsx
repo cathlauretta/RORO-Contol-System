@@ -1,40 +1,73 @@
 import { Flex, Box, Heading, VStack } from '@chakra-ui/react'
-import { EmployeeGET, EmployeePOST, EmployeePUT, EmployeeDELETE } from './employeeManager'
 import { objectEnumValues } from '@prisma/client/runtime/library'
+import type { Room , Employee, Report } from '@prisma/client'
 
 export default async function Home() {
-  const data = {employee_id: 'employee7',
-  name: 'pt ivan aldy gans',
-  gender: 'P',
-  date_of_birth: '2023-11-14T00:00:00.000Z',
-  address: 'itb nangor',
-  role: 'staff',
-  username: 'ivanaldyganssekali',
-  password: 'mangeak'}
-  
+  const data2:Room = {
+    room_id: 'ROOM501',
+    room_name: '501',
+    type: 'Suite',
+    floor: 5,
+    flag: true,
+    price: 1000000,
+    occupied_status: false,
+    image: null,
+    condition: null,
+    repair_notes: null,
+  }
+
+  // contoh GET
+  // const queryParams = new URLSearchParams({
+  //   name : '407'
+  // }).toString();
+  // const response = await fetch(`http://localhost:3000/api/roomManager?${queryParams}`, {
+  //   method: 'GET',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   }
+  // })
+  // const aa:Room[] = await response.json()
+  // console.log(aa)
+
   // contoh POST
-  // await EmployeePOST(data.employee_id,data.name,data.gender,data.date_of_birth,data.address,data.role,data.username,data.password)
-  
-  // contoh PUT
-  // await EmployeePUT(data.employee_id,data.name,data.gender,data.date_of_birth,data.address,data.role,data.username,data.password)
+  // const res = await fetch(`http://localhost:3000/api/roomManager`, {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: JSON.stringify(data2)
+  // })
   
   // contoh DELETE
-  // await EmployeeDELETE(data.employee_id)
-
-  // contoh GET dengan filter nama 'ivan'
-  const employeeData = await EmployeeGET(undefined, 'ivan')
-  console.log(employeeData)
+  // const queryParams = new URLSearchParams({
+  //   room_id : 'ROOM501'
+  // }).toString();
+  // const response = await fetch(`http://localhost:3000/api/roomManager?${queryParams}`, {
+  //   method: 'DELETE',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   }
+  // })
+  
+  // contoh PUT
+  // const res = await fetch(`http://localhost:3000/api/roomManager`, {
+  //   method: 'PUT',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: JSON.stringify(data2)
+  // })
   return (
     <Box p={4}>
       <Heading mb={4}>List of Data</Heading>
-      <VStack spacing={4} align="stretch">
+      {/* <VStack spacing={4} align="stretch">
         {employeeData.map((employee) => 
         (
           <Box key={employee.employee_id} borderWidth="1px" borderRadius="lg" p={4}>
             <Heading size="md">{employee.employee_id} {employee.role} {employee.name}</Heading>
           </Box>
         ))}
-      </VStack>
+      </VStack> */}
     </Box>
   )
 }
