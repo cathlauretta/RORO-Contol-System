@@ -31,6 +31,8 @@ const HeadingProp = ({url, text, state} : {url: string, text: string, state: boo
                     fontStyle={'normal'}
                     cursor={'pointer'}
                     minH={"55px"}
+                    pl={12}
+                    pr={12}
                     >
                         {text}
                     </Flex>
@@ -53,7 +55,7 @@ export const NavPage = ({active, isAdmin} : {active: string, isAdmin: boolean}) 
                 justifyContent=''
                 alignItems={'center'}
                 bgColor={'white'}
-                paddingX={32}
+                paddingX={8}
                 height={NAVBAR_HEIGHT}
                 gap={60}
                 borderBottom={'2px solid #E0F4FF'}

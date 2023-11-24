@@ -8,21 +8,34 @@ export default async function(
     ) {
     if (req.method === 'GET') {
         try {
-        const { report_title , room_repaired, date, type } = req.query;
-        let queryOptions = {};
-        if (report_title || room_repaired || date || type) {
-            queryOptions = {
-                where : {
-                AND : [
-                    {report_title: {contains: report_title}, mode: 'insensitive'},
-                    {room_repaired:{contains: room_repaired}},
-                    {date:{equals: date}},
-                    {type:{equals: type}}
-                ]
-                }
-            }
+        const { report_title ,room_repaired, date, type } = req.query;
+        let queryOptions: Record<string,any> = {};
+        
+        if (report_title) {
+            queryOptions.report_title = {contains: report_title as string, mode: 'insensitive'};
         }
-        const reports = await prisma.report.findMany(queryOptions);
+        if (room_repaired) {
+            queryOptions.room_repaired = {contains: room_repaired as string};
+        }
+        if (date) {
+            queryOptions.date = new Date(date as string);
+        }
+        if (type) {
+            queryOptions.type = {contains: type as string}
+        }
+        // if (report_title || room_repaired || date || type) {
+        //     queryOptions = {
+        //         where : {
+        //         AND : [
+        //             {report_title: {contains: report_title}, mode: 'insensitive'},
+        //             {room_repaired:{contains: room_repaired}},
+        //             {date:{equals: date}},
+        //             {type:{equals: type}}
+        //         ]
+        //         }
+        //     }
+        // }
+        const reports = await prisma.report.findMany({where: queryOptions});
         res.status(200).json(reports);
         } catch (error) {
         res.status(500).json({ error: (error as Error).message });
