@@ -78,7 +78,7 @@ export default function RoomPage() {
 
   return (
       // Flex satu screen
-      <Flex width={"100vw"} flexDir={'column'}>
+      <Flex width={"100vw"} flexDir={'column'} bg = {"white"}>
         <Navbar/>
         <Flex
           pt = {40}
