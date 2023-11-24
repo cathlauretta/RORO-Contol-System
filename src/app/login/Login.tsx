@@ -1,21 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box, InputGroup, InputRightElement, Heading, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { ButtonCust } from "../../components/ButtonCust";
+import type { Employee } from '@prisma/client'
+
+async function handleLogin({ username, password } : { username: string, password: string }) {
+    const queryParams = new URLSearchParams({
+        username : username,
+        password : password
+    }).toString();
+
+    const response = await fetch(`http://localhost:3000/api/employeeManager?${queryParams}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const empl:Employee[] = await response.json();
+
+    if (empl.length > 0) {
+        return "Login";
+    } else {
+        return "Unauthorized";
+    }
+}
 
 const Login = () => {
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-
-    // const handleLogin = () => {
-    //     // Perform login logic here
-    //     console.log("Email:", email);
-    //     console.log("Password:", password);
-    // };
 
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
     };
+
+    const [currDir, setCurrDir] = useState("");
+    useEffect(() => {
+        const checkCurrDir = async () => {
+            const dir = await handleLogin({ username, password });
+            setCurrDir(dir);
+        }
+        checkCurrDir();
+    });
 
     return (
         <Box
@@ -33,8 +59,8 @@ const Login = () => {
                         <Input
                             type="text"
                             placeholder="Username"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             color="082E4C"
                             borderColor="#247EC5"
                             _placeholder={{
@@ -64,7 +90,7 @@ const Login = () => {
                             </InputRightElement>
                         </InputGroup>
                     </FormControl>
-                <ButtonCust currDir="Login"/>
+                <ButtonCust currDir={currDir}/>
                 {/* <Box width="100%">
                         <Button bg="#39A7FF" color="#FFFFFF" mt={4} onClick={handleLogin} width="100%">
                                 Login

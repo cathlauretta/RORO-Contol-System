@@ -8,7 +8,7 @@ export default async function(
     ) {
     if (req.method === 'GET'){
         try{
-            const { employee_id, name } = req.query;
+            const { employee_id, name, username, password } = req.query;
             let queryOptions = {};
             if (employee_id || name) {
                 queryOptions = {
@@ -16,6 +16,15 @@ export default async function(
                         AND : [
                             {employee_id: {contains: employee_id}},
                             {name:{contains: name, mode: 'insensitive'}}
+                        ]
+                    }
+                }
+            } else if (username && password) {
+                queryOptions = {
+                    where : {
+                        AND : [
+                            {username: {contains: username}},
+                            {password:{contains: password}}
                         ]
                     }
                 }
