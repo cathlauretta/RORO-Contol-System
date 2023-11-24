@@ -3,16 +3,15 @@ import React, { useState, useEffect } from "react";
 import {
   Flex,
   Text,
-  ChakraProvider,
-  extendTheme,
   Switch,
-  Divider,
+  Input,
+  Textarea,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
+import { InputField } from "@/components/InputField";
 
 export default function ReportAdd() {
-  const [title, setTitle] = useState<string>("Judul Laporan");
   const [reportVal, setValue] = useState<string>("Inspect");
   const handleChange = () => {
     if (reportVal == "Repair") {
@@ -46,9 +45,9 @@ export default function ReportAdd() {
       >
         {/* Row Title & Inspect */}
         <Flex
-          justifyContent={"center"}
-          align-items={"end"}
-          gap={"55.5vw"}
+          width={"85vw"}
+          justifyContent={"space-between"}
+          alignItems={"space-between"}
           borderBottom={"2px #87C4FF solid"}
           paddingBottom={"20px"}
         >
@@ -60,30 +59,26 @@ export default function ReportAdd() {
             height={"52px"}
             flexShrink={"0"}
           >
-            <Text
+            <Input
               fontSize={"36px"}
               fontStyle={"normal"}
               fontWeight={"700"}
               lineHeight={"normal"}
-            >
-              {title}
-            </Text>
-            <Image
-              src="/icons/Pen.svg"
-              width={36}
-              height={36}
-              alt="Edit Button"
+              placeholder={"Judul Laporan"}
+              variant={"unstyled"}
+              htmlSize={20}
+              width={"auto"}
             />
           </Flex>
 
-          {/* Inspect */}
+          {/* Inspect Repair Toggle */}
           <Flex
             display={"flex"}
             paddingTop={"32px"}
             width={"96px"}
             height={"24px"}
-            justifyContent={"flex-end"}
-            alignItems={"center"}
+            justifyContent={"end"}
+            alignItems={"start"}
             gap={"12px"}
             flexDir={"row"}
           >
@@ -164,30 +159,37 @@ export default function ReportAdd() {
                 gap={"8px"}
                 borderRadius={"8px"}
                 border={"1px solid var(--Light-Grey, #C8C8C8)"}
+                overflow={"auto"}
               >
                 <Image
                   src="/image2.svg"
-                  width={72}
-                  height={72}
+                  width={86}
+                  height={80}
                   alt="Room Image 1"
                 />
                 <Image
                   src="/image2.svg"
-                  width={72}
-                  height={72}
-                  alt="Room Image 2"
+                  width={86}
+                  height={80}
+                  alt="Room Image 1"
                 />
                 <Image
                   src="/image2.svg"
-                  width={72}
-                  height={72}
-                  alt="Room Image 3"
+                  width={86}
+                  height={80}
+                  alt="Room Image 1"
                 />
                 <Image
                   src="/image2.svg"
-                  width={72}
-                  height={72}
-                  alt="Room Image 4"
+                  width={86}
+                  height={80}
+                  alt="Room Image 1"
+                />
+                <Image
+                  src="/image2.svg"
+                  width={86}
+                  height={80}
+                  alt="Room Image 1"
                 />
               </Flex>
 
@@ -223,95 +225,53 @@ export default function ReportAdd() {
             width={"46.15vw"}
           >
             {/* Attributes */}
-            <Flex alignItems={"start"} gap={"48px"}>
-              <Flex flexDir={"column"} align-items={"start"} gap={"12px"}>
-                <Text> Report ID </Text>
-                <Flex
-                  width={"13vw"}
-                  flexDir={"column"}
-                  alignItems={"start"}
-                  borderRadius={"8px"}
-                  border={"1px solid #247EC5"}
-                >
-                  <Text
-                    fontSize={"14px"}
-                    fontStyle={"normal"}
-                    fontWeight={"400"}
-                    lineHeight={"normal"}
-                    padding={"12px"}
-                  >
-                    101
-                  </Text>
-                </Flex>
-              </Flex>
-              <Flex flexDir={"column"} align-items={"start"} gap={"12px"}>
-                <Text> Room Number </Text>
-                <Flex
-                  width={"13vw"}
-                  flexDir={"column"}
-                  alignItems={"start"}
-                  borderRadius={"8px"}
-                  border={"1px solid #247EC5"}
-                >
-                  <Text
-                    fontSize={"14px"}
-                    fontStyle={"normal"}
-                    fontWeight={"400"}
-                    lineHeight={"normal"}
-                    padding={"12px"}
-                  >
-                    101
-                  </Text>
-                </Flex>
-              </Flex>
-              <Flex flexDir={"column"} align-items={"start"} gap={"12px"}>
-                <Text> Employee </Text>
-                <Flex
-                  width={"13vw"}
-                  flexDir={"column"}
-                  alignItems={"start"}
-                  borderRadius={"8px"}
-                  border={"1px solid #247EC5"}
-                >
-                  <Text
-                    fontSize={"14px"}
-                    fontStyle={"normal"}
-                    fontWeight={"400"}
-                    lineHeight={"normal"}
-                    padding={"12px"}
-                  >
-                    101
-                  </Text>
-                </Flex>
-              </Flex>
+            <Flex
+              // background={"pink"}
+              width={"46.15vw"}
+              height={"73px"}
+              flexDir={"row"}
+              alignItems={"start"}
+              justifyContent={"space-between"}
+            >
+              <InputField 
+                label={"Report ID"}
+                disabled={true}
+                placeholder={"Auto Generate"}
+              />
+              <InputField 
+                label={"Room"}
+                disabled={false}
+                bgColor={"white"}
+                placeholder={"Insert Room"}
+              />
+              <InputField 
+                label={"Employee"}
+                disabled={true}
+                placeholder={"Employee Name"}
+              />
             </Flex>
 
             {/* Description */}
-            <Flex flexDir={"column"} align-items={"start"} gap={"12px"}>
-              <Text> {reportVal} Description </Text>
+            <Flex flexDir={"column"} alignItems={"start"} gap={"12px"}>
+              <Text> Report Description </Text>
               <Flex
                 width={"46.15vw"}
-                height={"360px"}
+                height={"375px"}
                 flexDir={"column"}
                 alignItems={"start"}
                 borderRadius={"8px"}
                 border={"1px solid #247EC5"}
               >
-                <Text
+                <Textarea
+                  height={"full"}
+                  resize={"none"}
                   fontSize={"14px"}
                   fontStyle={"normal"}
                   fontWeight={"400"}
                   lineHeight={"normal"}
                   padding={"12px"}
-                >
-                  Banyak alasan kutetap disni. Kamu tak pernah suka dengan orang
-                  di dalamnya, Tumuh berkembang, Terlahir disini, Kau banyak
-                  alasan. Semoga semuanya terraih, Semoga tak patah hati,
-                  Mungkin sudah yang terbaik, Muungkin karena kakak-adik,
-                  Mungkinkah terlalu nyaman, Mungkin takut perubahan. Jika suatu
-                  saat nanti, aku kan mati disini. Belantara kejam ini telah
-                  tuntas mencuri hatiku.
-                </Text>
+                  placeholder={"Describe the room condition"}
+                />
               </Flex>
             </Flex>
 

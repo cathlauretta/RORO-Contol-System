@@ -29,6 +29,8 @@ const ButtonRef = ({ currDir }: { currDir: string }) => {
     } else if (currDir === "AddEmployee") {
         // UPLOAD NEW PHOTO STILL GREYED OUT
         desiredDirectory = "/employee";
+    } else {
+        
     }
 
     return (
