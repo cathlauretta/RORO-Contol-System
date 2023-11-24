@@ -15,6 +15,7 @@ import { SearchIcon } from '@chakra-ui/icons'
 
 const TYPE_LIST = ['Single', 'Double', 'Luxury', 'Suite']
 const FLOOR_LIST = ['1', '2', '3', '4', '5']
+const DEFAULT_BORDER_RADIUS = '6px'
 
 export default function RoomPage() {
   const [roomData, setRoomData] = useState<Room[]>([]);
@@ -31,8 +32,9 @@ export default function RoomPage() {
           name : searchQuery,
           type : type,
           floor : floor,
-          flag : availability ? '1' : undercons ? '0' : '',
+          flag : undercons ? 'true' : availability? 'false' : '',
         }).toString();
+
 
         const response = await fetch(`/api/roomManager?${queryParams}`);
         if (!response.ok) {
@@ -52,7 +54,6 @@ export default function RoomPage() {
 
   const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
-    // console.log(searchQuery);
   }
 
   const handleType = (e : React.ChangeEvent<HTMLSelectElement>) => {
@@ -66,6 +67,7 @@ export default function RoomPage() {
   } 
 
   const handleAvailable = (set: string) => {
+    console.log(set)
     if (set == "Available") {
       setAvailability(!availability);
       setUndercons(false);
@@ -75,11 +77,11 @@ export default function RoomPage() {
     }
   }
 
-
   return (
       // Flex satu screen
       <Flex width={"100vw"} flexDir={'column'} bg = {"white"}>
         <Navbar/>
+
         <Flex
           pt = {40}
           alignItems={'center'}
@@ -88,96 +90,143 @@ export default function RoomPage() {
           <NavPage active='Rooms' isAdmin={true}/>
         </Flex>
 
-        <Flex
-          width={'1304px'}
-          py={30}
-          mx={"auto"}
-          overflowX={'auto'}
-          flexDir={'row'}
-          gap={30}
-          alignItems={'center'}
-          // justifyContent={'space-between'}
-        >
-          {/* Searchbar */}
-          <Input
-            onChange={(e) => handleSearch(e)}
-            placeholder={'Room Name'}
-            color={'#082E4C'}
-            bgColor={'white'}
-            padding={12}
-            borderRadius={'6px'}
-            border={'1px solid #247EC5'}
-            fontSize={'14px'}
-            fontWeight={'400'}
-          />
-
-          {/* Dropdown Type */}
-          {/* <Flex
-            textColor={'#082E4C'}
-            bgColor={'white'}
-            padding={12}
-            borderRadius={'6px'}
-            border={'1px solid #247EC5'}
-            fontSize={'14px'}
-            fontWeight={'400'}
-          > */}
-            <Select
-              placeholder='Room Type'
-              onChange={(e) => handleType(e)}
-              size={'lg'}
-              bg={'white'}
-              textColor={'#082E4C'}
-              // padding={12}
-            >
-              {TYPE_LIST.map((type) => (
-                <option value={type}>{type}</option>
-              ))}
-            </Select>
-          {/* </Flex> */}
-            
-          {/* Dropdown Floor */}
-          <Select
-            placeholder='Floor'
-            onChange={(e) => handleFloor(e)}
-            bg={'white'}
-            textColor={'#082E4C'}
-            padding={12}
-          >
-            {FLOOR_LIST.map((floor) => (
-              <option value={floor}>{floor}</option>
-            ))}
-          </Select>
-
-          {/* Availability Button */}
-          <Flex
-            flexDir={'row'}
-          >
-            {/* Availability */}
-            <Flex
-              onClick={() => handleAvailable("Available")}
-              px={"10px"}
-            >
-              Available
-            </Flex>
-            
-            {/* Under Cons */}
-            <Flex
-              onClick={() => handleAvailable("Under Construction")}
-              px={"10px"}
-            >
-              Under Construction
-            </Flex>
-          </Flex>
-        </Flex>
-
         {/* Bungkus Tabel */}
         <Flex
           paddingX={'40px'}
           paddingBottom={'40px'}
           width={'100%'}
           overflowX={'auto'}
-          flexDir={'column'	}
+          flexDir={'column'}
         >
+          {/* Search and Filtering */}
+          <Flex
+            py={30}
+            width={'1304px'}
+            mx={'auto'}
+            flexDir={'row'}
+            gap={30}
+          >
+            {/* Searchbar */}
+            <Input
+              onChange={(e) => handleSearch(e)}
+              placeholder={'Room Name'}
+              color={'#082E4C'}
+              bgColor={'white'}
+              padding={12}
+              borderRadius={'6px'}
+              border={'1px solid #247EC5'}
+              fontSize={'14px'}
+              fontWeight={'400'}
+              autoFocus={false}
+            />
+
+            {/* Dropdown Type */}
+            <Flex
+              textColor={'#082E4C'}
+              bgColor={'white'}
+              padding={10}
+              borderRadius={'6px'}
+              border={'1px solid #247EC5'}
+            >
+              <Select
+                placeholder='Room Type'
+                onChange={(e) => handleType(e)}
+                size={'lg'}
+                bg={'white'}
+                textColor={'#082E4C'}
+                fontSize={'14px'}
+                fontWeight={'400'}
+                // padding={12}
+                borderColor={'white'}
+              >
+                {TYPE_LIST.map((type) => (
+                  <option value={type}>{type}</option>
+                ))}
+              </Select>
+            </Flex>
+              
+            {/* Dropdown Floor */}
+            <Flex
+              textColor={'#082E4C'}
+              bgColor={'white'}
+              padding={10}
+              borderRadius={'6px'}
+              border={'1px solid #247EC5'}
+            >
+              <Select
+                placeholder='Floor'
+                onChange={(e) => handleFloor(e)}
+                bg={'white'}
+                textColor={'#082E4C'}
+                fontSize={'14px'}
+                fontWeight={'400'}
+                borderColor={'white'}
+              >
+                {FLOOR_LIST.map((floor) => (
+                  <option value={floor}>{floor}</option>
+                ))}
+              </Select>
+            </Flex>
+
+            {/* Availability Button */}
+            <Flex
+              flexDir={'row'}
+              border={'1px solid #247EC5'}
+              borderRadius={'6px'}
+              alignItems={'center'}
+            >
+              {/* Availability */}
+              <Flex
+                onClick={() => handleAvailable("Available")}
+                px={16}
+                py={12}
+                color={'#082E4C'}
+                fontSize={'14px'}
+                fontWeight={'400'}
+                cursor={'pointer'}
+                borderTopLeftRadius={'6px'}
+                borderBottomLeftRadius={'6px'}
+                bgColor={availability? '#E4FFF5' : 'transparent'	}
+                _hover={
+                  {
+                    bgColor:'#E4FFF5',
+                    transitionDuration: '0.2s',
+                    transitionTimingFunction: 'ease-in-out',
+                    borderTopLeftRadius: '6px',
+                    borderBottomLeftRadius: '6px',
+                  }
+                }
+              >
+                Available
+              </Flex>
+              
+              {/* Under Cons */}
+              <Flex
+                onClick={() => handleAvailable("Under Construction")}
+                px={16}
+                py={12}
+                color={'#082E4C'}
+                fontSize={'14px'}
+                fontWeight={'400'}
+                cursor={'pointer'}
+                borderLeft={'1px solid #247EC5'}
+                borderTopRightRadius={'6px'}
+                borderBottomRightRadius={'6px'}
+                bgColor={undercons? '#FFEBEB' : 'transparent'	}
+                _hover={
+                  {
+                    bgColor:'#FFEBEB',
+                    transitionDuration: '0.2s',
+                    transitionTimingFunction: 'ease-in-out',
+                    borderTopRightRadius: '6px',
+                    borderBottomRightRadius: '6px',
+                  }
+                }
+              >
+                Under Construction
+              </Flex>
+            </Flex>
+          </Flex>
 
           {/* Tabel */}
           <Flex
