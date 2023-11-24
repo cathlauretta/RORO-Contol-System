@@ -9,14 +9,23 @@ export default async function(
 ) {
   if (req.method === 'GET') {
     try {
-      const { name } = req.query;
+      const { name, type, floor, flag } = req.query;
       let queryOptions = {};
-      if (name) {
+      if (name || type) {
         queryOptions = {
             where : {
-                room_name: {
+              AND : [
+                {
+                  room_name: {
                     contains: name
+                  }
+                },
+                {
+                  type: {
+                    contains: type
+                  }
                 }
+              ]
             }
         }
       }
