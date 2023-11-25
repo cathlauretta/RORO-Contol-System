@@ -3,12 +3,11 @@ import { Box, Flex } from '@chakra-ui/react';
 
 const ButtonRef = ({ currDir }: { currDir: string }) => {
     let desiredDirectory = "";
-    let text = "Login";
+    let text = "Save";
 
     if (currDir === "Login") {
         desiredDirectory = "/room";
-    } else if (currDir === "Unauthorized") {
-        desiredDirectory = "/login";
+        text = "Login";
     } else if (currDir === "Room") {
         // CHANGE IF NEW ROOM ALREADY IMPLEMENTED
         desiredDirectory = "/room";
@@ -24,15 +23,14 @@ const ButtonRef = ({ currDir }: { currDir: string }) => {
     } else if (currDir === "AddRoom") {
         // UPLOAD NEW PHOTO STILL GREYED OUT
         desiredDirectory = "/room";
-        text = "Save";
     } else if (currDir === "AddReport") {
         // UPLOAD NEW PHOTO STILL GREYED OUT
         desiredDirectory = "/report";
-        text = "Save";
     } else if (currDir === "AddEmployee") {
         // UPLOAD NEW PHOTO STILL GREYED OUT
         desiredDirectory = "/employee";
-        text = "Save";
+    } else {
+        
     }
 
     return (
@@ -59,7 +57,7 @@ export const ButtonCust = ({ currDir }: { currDir: string }) => {
     let width = "145px";
     let gap = "5px";
 
-    if (currDir === "Login" || currDir === "Unauthorized") {
+    if (currDir === "Login") {
         width = "300px";
         height = "30px";
         gap = "4px";
