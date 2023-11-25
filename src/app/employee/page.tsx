@@ -1,57 +1,180 @@
-"use client";
-import React from 'react'
-import { Flex } from '@chakra-ui/react'
-import Employee from '@/app/employee/Employee'
+"use client"
+import React, {useState, useEffect} from 'react'
 import { Navbar } from '@/components/Navbar'
 import { NavPage } from '@/components/NavPage'
+import {
+  Flex,
+  Image,
+  Select,
+  Input,
+  InputGroup,
+  InputRightElement,
+} from '@chakra-ui/react'
+import type { Employee } from '@prisma/client'
+import { SearchIcon } from '@chakra-ui/icons'
+import { ButtonCust } from '@/components/ButtonCust';
+
+// const TYPE_LIST = ['Single', 'Double', 'Luxury', 'Suite']
+// const FLOOR_LIST = ['1', '2', '3', '4', '5']
 
 export default function EmployeePage() {
+  const [EmployeeData, setEmployeeData] = useState<Employee[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  // const [type, setType] = useState<string>('');
+  // const [floor, setFloor] = useState<string>('');
+  // const [availability, setAvailability] = useState<boolean>(false);
+  // const [undercons, setUndercons] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const queryParams = new URLSearchParams({
+          name : searchQuery,
+        }).toString();
+
+        const response = await fetch(`/api/employeeManager?${queryParams}`);
+        if (!response.ok) {
+          throw new Error('Data fetching failed');
+        }
+        const employee: Employee[] = await response.json();
+        // console.log(employee);
+        setEmployeeData(employee);
+
+      } catch (error) {
+        alert ((error as Error).message);
+      }
+    };
+    fetchData();
+  },[searchQuery]);
+
+
+  const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    // console.log(searchQuery);
+  }
+
   return (
-    <Flex width="100vw" flexDir={"column"} bg = "white">
+      // Flex satu screen
+      <Flex width={"100vw"} flexDir={'column'} bg = {"white"}>
         <Navbar/>
         <Flex
-            pt = {40}
-            pb = {40}
-            alignItems={'center'}
-            justify={'center'}
+          pt = {40}
+          alignItems={'center'}
+          justify={'center'}
         >
-            <NavPage active='Employee' isAdmin={true}/>
+          <NavPage active='Employee' isAdmin={true}/>
         </Flex>
-        <Employee/>
+
+        <Flex
+          width={'1200px'}
+          py={30}
+          // px={40}
+          mx={"auto"}
+          overflowX={'auto'}
+          flexDir={'column'}
+          gap={30}
+          alignItems={'center'}
+          // justifyContent={'center'}
+        >
+        {/* Searchbar */}
+        <Input
+          onChange={(e) => handleSearch(e)}
+          placeholder={'Employee Name'}
+          alignSelf={'flex-start'}
+          width={'190px'}
+          color={'#082E4C'}
+          bgColor={'white'}
+          padding={12}
+          borderRadius={'6px'}
+          border={'1px solid #247EC5'}
+          fontSize={'14px'}
+          fontWeight={'400'}
+        />
+
+        {/* Bungkus Tabel */}
+        <Flex
+          paddingX={'40px'}
+          paddingBottom={'40px'}
+          width={'100%'}
+          overflowX={'auto'}
+          flexDir={'column'}
+          alignItems={'flex-start'} // Updated: Align items to the left
+        >
+
+          {/* Tabel */}
+          <Flex
+            width={'1200px'}
+            flexDir={'column'}
+            alignItems={'left'}
+            justifyContent={'center'}
+            mx={'auto'}
+            border={'1px solid #247EC5;'}
+          >
+            {/* Tabel Header */}
+            <Flex
+              width={'100%'}
+              py={12}
+              pl={48}
+              pr={96}
+              gap={64}
+              bgColor={'#E0F4FF'}
+              fontSize={'14px'}
+              fontWeight={'500'}
+              color={'#082E4C'}
+              overflowX={'auto'}
+            >
+              <Flex width='105px'>Employee ID</Flex>
+              <Flex width='235px'>Employee Name</Flex>
+              <Flex width='160px'>Contact</Flex>
+              {/* <Flex width='100px'>Gender</Flex>
+              <Flex width='100px'>Date of Birth</Flex>
+              <Flex width='350px'>Address</Flex> */}
+              <Flex width='150px'>Hire Date</Flex>
+              <Flex width='150px'>Last Edit</Flex>
+            </Flex>
+
+            {/* Tabel Body */}
+            {EmployeeData && EmployeeData.map((Employee) => 
+            (
+              <Flex
+                key={Employee.employee_id}
+                width={'100%'}
+                alignItems={'center'}
+                py={12}
+                pl={48}
+                pr={36}
+                gap={36}
+                fontSize={'14px'}
+                fontWeight={'400'}
+                color={'#082E4C'}
+                bgColor={'white'}
+                borderTop={'1px solid #247EC5;'}
+              >
+                <Flex width='133px'>{Employee.employee_id}</Flex>
+                <Flex width='253px'>{Employee.name}</Flex>
+                <Flex width='188px'>{Employee.contact}</Flex>
+                {/* <Flex width='300px'>{Employee.gender}</Flex> */}
+                {/* <Flex width='300px'>{(Employee.date_of_birth).toDateString()}</Flex> */}
+                {/* <Flex width='350px'>{Employee.address}</Flex> */}
+                <Flex width='178px'>{((new Date (Employee.hire_date)).toISOString().substring(0, 10))}</Flex>
+                <Flex width='178px'>{((new Date (Employee.last_edit)).toISOString().substring(0, 10))}</Flex>
+                {/* <Flex width='225px'>{(new Date (Employee.hire_date)).toDateString()}</Flex>
+                <Flex width='225px'>{(new Date (Employee.last_edit)).toDateString()}</Flex> */}
+
+                <a href={`/Employee/edit/${Employee.employee_id.toLowerCase()}`}>
+                  <Image
+                    src='icons/edit.svg'
+                    alt='Edit'
+                    width={24}
+                    height={24}
+                    cursor='pointer'
+                  />
+                </a>
+              </Flex>
+            ))}
+          </Flex>
+        </Flex>
+      </Flex>
     </Flex>
-  );
+  )
 }
-
-      // {/* DELETE LATER */}
-      // {/* First Data */} + 45px
-      // <Flex left="100px" top="170px" position="absolute" border="1px #000000 solid" flexDirection="column" justifyContent="flex-start" alignItems="flex-start" display="inline-flex">
-      //   {/* Employee table header */}
-      //   <Flex width="85vw" paddingTop="12px" paddingBottom="12px" paddingLeft="24px" paddingRight="24px" background="#FFFFFF" border="1px" justifyContent="center" alignItems="center" gap="2vw" display="inline-flex">
-      //       <Text width="8vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">12</Text>
-      //       <Text width="20vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Martin Lonfat</Text>
-      //       <Text width="15vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">081244445555</Text>
-      //       <Text width="10vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">3</Text>
-      //       <Text width="17vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Dec 3, 2022</Text>
-      //       <Text width="18vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Dec 4, 2022</Text>
-      //   </Flex>
-      //   {/* Employee table divider */}
-      //   <Box width="85vw" height="0px" border="1px" />
-      // </Flex>
-
-      // {/* Second Data and so on */}
-      // {/* DELETE LATER */} / + 40 px
-      // <Flex left="100px" top="210px" position="absolute" border="1px #000000 solid" flexDirection="column" justifyContent="flex-start" alignItems="flex-start" display="inline-flex">
-      //   {/* Employee table header */}
-      //   <Flex width="85vw" paddingTop="12px" paddingBottom="12px" paddingLeft="24px" paddingRight="24px" background="#FFFFFF" border="1px" justifyContent="center" alignItems="center" gap="2vw" display="inline-flex">
-      //       <Text width="8vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">12</Text>
-      //       <Text width="20vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Martin Lonfat</Text>
-      //       <Text width="15vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">081244445555</Text>
-      //       <Text width="10vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">3</Text>
-      //       <Text width="17vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Dec 3, 2022</Text>
-      //       <Text width="18vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Dec 4, 2022</Text>
-      //   </Flex>
-
-      //   {/* Employee table divider */}
-      //   <Box width="85vw" height="0px" border="1px" />
-
-      // </Flex>
