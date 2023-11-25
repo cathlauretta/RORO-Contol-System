@@ -41,6 +41,7 @@ export default function RoomPage() {
           throw new Error('Data fetching failed');
         }
         const rooms: Room[] = await response.json();
+        rooms.sort((a, b) => a.room_id.localeCompare(b.room_id));
         // console.log(rooms);
         setRoomData(rooms);
 
