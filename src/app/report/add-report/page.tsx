@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import { Flex, Text, Switch, Input, Textarea, Button } from "@chakra-ui/react";
 import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
-import { Upload } from "@/components/Upload";
 import { InputField } from "@/components/InputField";
+import { CldUploadWidget, CldImage } from "next-cloudinary";
 
 export default function ReportAdd() {
   const [reportVal, setValue] = useState<string>("Inspect");
@@ -16,14 +16,14 @@ export default function ReportAdd() {
     }
   };
 
-  const [photos, setPhotos] = useState<typeof Image>();
-
-  const handleAddPhotos = () => {
+  const [photos, setPhotos] = useState<string>("btjmca6l0xceizaubtzo");
+  const handlePreview = () => {};
+  const handleSave = () => {
     // Add Logic
   };
 
-  const handleSave = () => {
-    // Add Logic
+  const uploadParams: Function = (overwrite: boolean) => {
+    overwrite = true;
   };
 
   return (
@@ -128,7 +128,7 @@ export default function ReportAdd() {
             gap={"12px"}
             flexShrink={"0"}
           >
-            <Text> Report Images </Text>
+            <Text> Report Image </Text>
             <Flex
               flexDir={"column"}
               justifyContent={"center"}
@@ -144,80 +144,54 @@ export default function ReportAdd() {
                 alignItems={"center"}
                 gap={"12px"}
                 borderRadius={"8px"}
-                border={"1px solid var(--Light-Grey, #C8C8C8)"}
+                border={"2px solid #39A7FF"}
               >
-                <Image
-                  src="/image.svg"
-                  width={464}
-                  height={100}
-                  alt="Room Image"
-                />
-              </Flex>
-
-              {/* Uploaded Image Box */}
-              <Flex
-                width={"36vw"}
-                padding={"8px"}
-                alignItems={"start"}
-                gap={"12px"}
-                borderRadius={"8px"}
-                border={"1px solid var(--Light-Grey, #C8C8C8)"}
-                overflow={"auto"}
-              >
-                {/* photos.map() */}
-                <Image
-                  src="/image2.svg"
-                  width={84}
-                  height={84}
-                  alt="Room Image 1"
-                />
-                <Image
-                  src="/image2.svg"
-                  width={84}
-                  height={84}
-                  alt="Room Image 2"
-                />
-                <Image
-                  src="/image2.svg"
-                  width={84}
-                  height={84}
-                  alt="Room Image 3"
-                />
-                <Image
-                  src="/image2.svg"
-                  width={84}
-                  height={84}
-                  alt="Room Image 4"
-                />
-                <Image
-                  src="/image2.svg"
-                  width={84}
-                  height={84}
-                  alt="Room Image 5"
+                <CldImage
+                  src={photos}
+                  width="464"
+                  height="84"
+                  alt="Report Image"
                 />
               </Flex>
 
               {/* Add Photos Button */}
-              <Button
-                width={"36vw"}
-                height={"45px"}
-                leftIcon={
-                  <Image
-                    src="/icons/Paperclip.svg"
-                    width={16}
-                    height={16}
-                    alt="Save"
-                  />
-                }
-                bg={"#39A7FF"}
-                color={"#FFFFFF"}
-                onClick={handleAddPhotos}
-                fontSize={"14px"}
+              <CldUploadWidget
+                uploadPreset="jmnde8pz"
+                options={{
+                  sources: ["local", "url", "unsplash"],
+                  multiple: false,
+                  maxFiles: 1,
+                  prepareUploadParams: uploadParams(true),
+                }}
+                onSuccess={(results) => {
+                  console.log(results.info);
+                  let obj = JSON.parse(JSON.stringify(results.info));
+                  setPhotos(obj.public_id);
+                }}
               >
-                Add Photos
-              </Button>
-
-              {/* <Upload /> This is a component but broken (just ignore)*/}
+                {({ open }) => {
+                  return (
+                    <Button
+                      width={"36vw"}
+                      height={"45px"}
+                      leftIcon={
+                        <Image
+                          src="/icons/Paperclip.svg"
+                          width={16}
+                          height={16}
+                          alt="Save"
+                        />
+                      }
+                      bg={"#39A7FF"}
+                      color={"#FFFFFF"}
+                      onClick={() => open()}
+                      fontSize={"14px"}
+                    >
+                      Add Photos
+                    </Button>
+                  );
+                }}
+              </CldUploadWidget>
             </Flex>
           </Flex>
 
