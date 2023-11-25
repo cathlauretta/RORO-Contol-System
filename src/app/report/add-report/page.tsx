@@ -1,10 +1,11 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, ChangeEvent } from "react";
 import { Flex, Text, Switch, Input, Textarea, Button } from "@chakra-ui/react";
 import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
 import { InputField } from "@/components/InputField";
 import { CldUploadWidget, CldImage } from "next-cloudinary";
+import { GetLastReportID, ReportPOST } from "@/pages/api/reportManager";
 
 export default function ReportAdd() {
   const [reportVal, setValue] = useState<string>("Inspect");
@@ -16,14 +17,24 @@ export default function ReportAdd() {
     }
   };
 
-  const [photos, setPhotos] = useState<string>("btjmca6l0xceizaubtzo");
-  const handlePreview = () => {};
-  const handleSave = () => {
-    // Add Logic
-  };
+  const [roomVal, setRoom] = useState<string>();
+  const handleRoom = (event: ChangeEvent<HTMLInputElement>) => setRoom(event.target.value)
 
-  const uploadParams: Function = (overwrite: boolean) => {
-    overwrite = true;
+  async function nextRepID() {
+    var lastRepID = await GetLastReportID();
+    var lastID = lastRepID?.report_id;
+    if (lastID != undefined) {
+      var nextID = parseInt(lastID.slice(6, 8)) + 1;
+      return "REPORT" + nextID.toString();
+    }
+    return;
+  }
+
+  const [photos, setPhotos] = useState<string>("btjmca6l0xceizaubtzo");
+
+  const handleSave = () => {
+    const date = new Date().toJSON().slice(0, 10).toString();
+    const repID = nextRepID();
   };
 
   return (
@@ -132,7 +143,7 @@ export default function ReportAdd() {
             <Flex
               flexDir={"column"}
               justifyContent={"center"}
-              alignItems={"flex-start"}
+              alignItems={"start"}
               gap={"12px"}
             >
               {/* Image Preview */}
@@ -161,7 +172,6 @@ export default function ReportAdd() {
                   sources: ["local", "url", "unsplash"],
                   multiple: false,
                   maxFiles: 1,
-                  prepareUploadParams: uploadParams(true),
                 }}
                 onSuccess={(results) => {
                   console.log(results.info);
@@ -211,23 +221,57 @@ export default function ReportAdd() {
               flexDir={"row"}
               alignItems={"start"}
               justifyContent={"space-between"}
-            >
-              <InputField
-                label={"Report ID"}
-                disabled={true}
-                placeholder={"Auto Generate"}
-              />
-              <InputField
-                label={"Room"}
-                disabled={false}
-                bgColor={"white"}
-                placeholder={"Insert Room"}
-              />
-              <InputField
-                label={"Employee"}
-                disabled={true}
-                placeholder={"Employee Name"}
-              />
+            > 
+              <Flex flexDir={"column"} align-items={"start"} gap={"12px"}>
+                <Text> Report ID </Text>
+                <Input
+                  width={"13vw"}
+                  fontSize={"14px"}
+                  fontStyle={"normal"}
+                  fontWeight={"400"}
+                  lineHeight={"normal"}
+                  padding={"12px"}
+                  disabled={true}
+                  placeholder={"Enter here.."}
+                  background={"#DFDFDF"}
+                  border={"2px solid #247EC5"}
+                  borderRadius={"8px"}
+                />
+              </Flex>
+              
+              <Flex flexDir={"column"} align-items={"start"} gap={"12px"}>
+                <Text> Room </Text>
+                <Input
+                  width={"13vw"}
+                  fontSize={"14px"}
+                  fontStyle={"normal"}
+                  fontWeight={"400"}
+                  lineHeight={"normal"}
+                  padding={"12px"}
+                  placeholder={"Enter here.."}
+                  border={"2px solid #247EC5"}
+                  borderRadius={"8px"}
+                  onChange={handleRoom}
+                  value={roomVal}
+                />
+              </Flex>
+
+              <Flex flexDir={"column"} align-items={"start"} gap={"12px"}>
+                <Text> Employee </Text>
+                <Input
+                  width={"13vw"}
+                  fontSize={"14px"}
+                  fontStyle={"normal"}
+                  fontWeight={"400"}
+                  lineHeight={"normal"}
+                  padding={"12px"}
+                  disabled={true}
+                  placeholder={"Enter here.."}
+                  background={"#DFDFDF"}
+                  border={"2px solid #247EC5"}
+                  borderRadius={"8px"}
+                />
+              </Flex>
             </Flex>
 
             {/* Description */}

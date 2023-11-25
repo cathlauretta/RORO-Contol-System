@@ -64,3 +64,15 @@ export async function ReportDELETE(report_id:string){
         throw error;
     }
 }
+
+export async function GetLastReportID(){
+    try {
+        const reportid = await prisma.report.findFirst({orderBy: {
+            report_id: "desc"
+        }});
+        return reportid;
+    }
+    catch (error) {
+        throw error;
+    }
+}
