@@ -9,6 +9,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Spacer,
 } from '@chakra-ui/react'
 import type { Room } from '@prisma/client'
 import { SearchIcon } from '@chakra-ui/icons'
@@ -226,6 +227,29 @@ export default function RoomPage() {
               >
                 Under Construction
               </Flex>
+            </Flex>
+            <Spacer/>
+            <Flex
+              flexDir={'row'}
+              onClick={() => window.location.href = '/room/add-room'}
+              px={36}
+              py={12}
+              textColor={'#FFFFFF'}
+              // border={'1px solid #247EC5'}
+              borderRadius={'6px'}
+              bgColor={'#39A7FF'}
+              fontSize={'14px'}
+              fontWeight={'400'}
+              cursor={'pointer'}
+              _hover={
+                {
+                  bgColor:'#2877b7',
+                  transitionDuration: '0.2s',
+                  transitionTimingFunction: 'ease-in-out',
+                }
+              }
+            >
+              Add Room
             </Flex>
           </Flex>
 

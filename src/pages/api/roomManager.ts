@@ -8,12 +8,18 @@ export default async function(
 ) {
     if (req.method === 'GET') {
         try {
-        const { id, name , type , floor, flag } = req.query;
+        const { id, name , type , floor, flag, other } = req.query;
         let queryOptions: Record<string,any> = {};
         if (id) {
             queryOptions.room_id = {equals: id as string, mode: 'insensitive'}
             const room = await prisma.room.findFirst({where: queryOptions});
             res.status(200).json(room);
+        } else if (other) {
+            if (other === 'newest in floor') {
+                queryOptions.floor = parseInt(floor as string);
+                const room = await prisma.room.findFirst({where: queryOptions, orderBy: {room_id: 'desc'}});
+                res.status(200).json(room);                
+            }
         } else {
             if (name) {
                 queryOptions.room_name = {contains: name as string, mode: 'insensitive'};
