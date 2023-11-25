@@ -1,21 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Flex, Text, Switch, Input, Textarea, Button, Select, Spacer } from "@chakra-ui/react";
-import Image from "next/image" ;
-//import { Image } from "@chakra-ui/image";
+import { Flex, Text, Switch, Input, Textarea, Button, Select, Spacer, ChakraProvider, Image, Icon } from "@chakra-ui/react";
+//import Image from "next/image" ;
 import { Navbar } from "@/components/Navbar";
-//import { Upload } from "@/components/Upload";
 import { InputField } from "@/components/InputField";
 import type { Room, Report } from "@prisma/client";
-import { SearchIcon } from '@chakra-ui/icons'
-import { redirect } from "next/dist/server/api-utils";
+import { AddIcon } from '@chakra-ui/icons'
+import { CldUploadWidget, CldImage } from "next-cloudinary";
 
 const TYPE_LIST = ['Single', 'Double', 'Luxury', 'Suite']
 export default function RoomEdit({params}: {params: {id: string}}) {
   const [isLoading, setLoading] = useState(true)
   const [roomData, setRoomData] = useState<Room>();
   const [reportsData, setReportsData] = useState<Report[]>([]);
-  
+  const [photos, setPhotos] = useState<string>();
   // Fetch Data from DB
   const fetchData = async () => {
     try {
@@ -40,6 +38,7 @@ export default function RoomEdit({params}: {params: {id: string}}) {
       }
       const reports: Report[] = await reportsResponse.json();
       setReportsData(reports);
+      setPhotos(room.image? room.image : "btjmca6l0xceizaubtzo");
       setLoading(false);
     } catch (error) {
       alert ((error as Error).message);
@@ -50,7 +49,6 @@ export default function RoomEdit({params}: {params: {id: string}}) {
       fetchData();
     }
   })
-  
   // Store current data
   const currRoomData:Room = {
     room_id: roomData?.room_id as string,
@@ -64,6 +62,7 @@ export default function RoomEdit({params}: {params: {id: string}}) {
     image: roomData?.image as string,
     repair_notes: roomData?.repair_notes as string,
   }
+  
   const handleFlag = () => {
     if(currRoomData.flag){
       currRoomData.flag = false;
@@ -75,9 +74,6 @@ export default function RoomEdit({params}: {params: {id: string}}) {
   const handleType = (e : React.ChangeEvent<HTMLSelectElement>) => {
     currRoomData.type = e.target.value;
   }
-  const handleFloor = (e : React.ChangeEvent<HTMLInputElement>) => {
-    currRoomData.floor = parseInt(e.target.value);
-  }
   const handleDescription = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
     currRoomData.condition = e.target.value;
   }
@@ -86,6 +82,7 @@ export default function RoomEdit({params}: {params: {id: string}}) {
     window.location.href = `/report/add-report/${roomData?.room_name.toLowerCase()}`
   }
   const handleSave = async () => {
+    currRoomData.image = photos as string;
     try{
       const response = await fetch(`/api/roomManager`, {
         method: 'PUT',
@@ -111,17 +108,15 @@ export default function RoomEdit({params}: {params: {id: string}}) {
     const yearStr = newdate.getFullYear();
     return `${dateStr}/${monthStr}/${yearStr}`
   }
-
-  // const [photos, setPhotos] = useState<typeof Image>();
-
-  // const handleAddPhotos = () => {
-  //   // Add Logic
-  // };
+  const uploadParams: Function = (overwrite: boolean) => {
+    overwrite = true;
+  };
 
   if (isLoading) {
     return (
+      <ChakraProvider>
       <Flex
-        height={"140vh"}
+        height={"14vh"}
         width={"100vw"}
         color={"#082E4C"}
         flexDir={"column"}
@@ -132,10 +127,12 @@ export default function RoomEdit({params}: {params: {id: string}}) {
         <Navbar />
         <Text>Loading Data...</Text>
       </Flex>
+      </ChakraProvider>
     )
   }
 
   return (
+    <ChakraProvider>
     <Flex
       width={"100vw"}
       height={"auto"}
@@ -253,35 +250,50 @@ export default function RoomEdit({params}: {params: {id: string}}) {
                 borderRadius={"8px"}
                 border={"1px solid var(--Light-Grey, #C8C8C8)"}
               >
-                <Image
-                  src="/image.svg"
-                  width={464}
-                  height={100}
-                  alt="Room Image"
+                <CldImage
+                  src={photos as string}
+                  width="464"
+                  height="84"
+                  alt="Report Image"
                 />
               </Flex>
 
               {/* Add Photos Button */}
-              <Button
-                width={"16vw"}
-                height={"45px"}
-                leftIcon={
-                  <Image
-                    src="/icons/Paperclip.svg"
-                    width={16}
-                    height={16}
-                    alt="Save"
-                  />
-                }
-                bg={"#39A7FF"}
-                color={"#FFFFFF"}
-                //onClick={handleAddPhotos}
-                fontSize={"14px"}
-              >
-                Upload New Photo
-              </Button>
-
-              {/* <Upload /> This is a component but broken (just ignore)*/}
+              <CldUploadWidget
+                uploadPreset="jmnde8pz"
+                options={{
+                  sources: ["local", "url", "unsplash"],
+                  multiple: false,
+                  maxFiles: 1,
+                  prepareUploadParams: uploadParams(true),
+                }}
+                onSuccess={(results) => {
+                  console.log(results.info);
+                  let obj = JSON.parse(JSON.stringify(results.info));
+                  setPhotos(obj.public_id);
+                }}
+              >{({ open }) => {
+                return (
+                  <Button
+                    width={"16vw"}
+                    height={"45px"}
+                    leftIcon={
+                      <Image
+                        src="/icons/Paperclip.svg"
+                        boxSize={"24px"}
+                        alt="Save"
+                      />
+                    }
+                    bg={"#39A7FF"}
+                    color={"#FFFFFF"}
+                    onClick={() => open()}
+                    fontSize={"14px"}
+                  >
+                    Upload New Photo
+                  </Button>
+                );
+              }}
+            </CldUploadWidget>
             </Flex>
           </Flex>
 
@@ -436,8 +448,8 @@ export default function RoomEdit({params}: {params: {id: string}}) {
                 {/* <Flex width='30vw'>{report.type}</Flex> */}
                 <Flex
                   width='30vw'
-                  bgColor={report.type === "Inspect"? '#FFEBEB' : '#E4FFF5'}
-                  border={report.type === "Inspect"? '2px solid #D53333' : '2px solid #38D79B'}
+                  bgColor={report.type === "Inspect"? '#FFF6E0' : '#DBECF5'}
+                  border={report.type === "Inspect"? '2px solid #fe9d2f' : '2px solid #38b9fe'}
                   borderRadius={'6px'}
                   justifyContent={'center'}
                   alignItems={'center'}
@@ -446,10 +458,9 @@ export default function RoomEdit({params}: {params: {id: string}}) {
                   {report.type}</Flex>
                 <a href={`/report/edit/${report.report_id.toLowerCase()}`}>
                   <Image
-                    src='icons/edit.svg'
+                    src='icons/Pen.svg'
                     alt='Edit'
-                    width={24}
-                    height={24}
+                    boxSize={"24px"}
                     // cursor='pointer'
                   />
                 </a>
@@ -467,11 +478,8 @@ export default function RoomEdit({params}: {params: {id: string}}) {
               height={"42px"}
               
               leftIcon={
-                <Image
-                  src="/icons/Save.svg"
-                  width={18}
-                  height={18}
-                  alt="Save"
+                <Icon as={AddIcon} 
+                boxSize={"14px"}
                 />
               }
               bg={"#39A7FF"}
@@ -501,8 +509,7 @@ export default function RoomEdit({params}: {params: {id: string}}) {
               leftIcon={
                 <Image
                   src="/icons/Save.svg"
-                  width={18}
-                  height={18}
+                  boxSize={"24px"}
                   alt="Save"
                 />
               }
@@ -515,8 +522,7 @@ export default function RoomEdit({params}: {params: {id: string}}) {
             </Button>
         </Flex>
       </Flex>
-
-      
     </Flex>
+    </ChakraProvider>
   );
 }
