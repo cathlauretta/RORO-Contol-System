@@ -1,47 +1,69 @@
 import prisma from '../../../prisma/client';
+import type { Room } from '@prisma/client';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-export async function RoomGET(room_id?:string,room_name?:string,type?:string,floor?:string,flag?:string)
-{
-    try {
-        const filters = {};
-        if (room_id)    {Object.assign(filters, {room_id: {equals: room_id}})}
-        if (room_name)  {Object.assign(filters, {room_name: {contains: room_name}})}
-        if (type)       {Object.assign(filters, {type: {contains: type}})}
-        if (floor)      {Object.assign(filters, {floor: {contains: floor}})}
-        if (flag)       {Object.assign(filters, {flag: {contains: flag}})}
-        
-        const rooms = await prisma.room.findMany({where:filters});
-        return rooms;
-    }
-    catch (error) {
-        throw error;
-    }
-}
+export default async function(
+    req: NextApiRequest,
+    res: NextApiResponse
+) {
+    if (req.method === 'GET') {
+        try {
+        const { name , type , floor, flag } = req.query;
+        let queryOptions: Record<string,any> = {};
+        if (name) {
+            queryOptions.room_name = {contains: name as string, mode: 'insensitive'};
+        }
+        if (type) {
+            queryOptions.type = {equals: type as string}
+        }
+        if (floor) {
+            queryOptions.floor = parseInt(floor as string)
+        }
+        if (flag){
+            queryOptions.flag = flag === 'true' ? true : false;
+        }
 
-export async function RoomPOST(room_id:string,type:string,floor:number,price:number,occupied_status:boolean,condition:string,flag:boolean,image:string,repair_notes:string,room_name:string){
-    const data = {room_id: room_id,
-        type: type,
-        floor: floor,
-        price: price,
-        occupied_status: occupied_status,
-        condition: condition,
-        flag: flag,
-        image: image,
-        repair_notes: repair_notes,
-        room_name: room_name}
-
-    try {
-        const room = await prisma.room.create({data});
-        return room;
-    }
-    catch (error) {
-        throw error;
-    }
-}
-
-export async function RoomPUT(room_id:string,type:string,floor:number,price:number,occupied_status:boolean,condition:string,flag:boolean,image:string,repair_notes:string,room_name:string){
-    try {
-        const data = {
+        // if (name || type || floor || flag) {
+        //   queryOptions = {
+        //       where : {
+        //         AND : [
+        //           {room_name: {contains: name}},
+        //           {type:{contains: type, mode: 'insensitive'}},
+        //           {floor:{equals: floor}},
+        //           {flag:{equals: flag}}
+        //         ]
+        //       }
+        //   }
+        // }
+        const rooms = await prisma.room.findMany({where: queryOptions});
+        res.status(200).json(rooms);
+        } catch (error) {
+        res.status(500).json({ error: (error as Error).message });
+        }
+    } else if (req.method === 'POST') {
+        try{
+        const { room_id, type, floor, price, occupied_status, condition, flag, image, repair_notes, room_name }:Room = req.body;
+        const data:Room = {
+            room_id: room_id,
+            type: type,
+            floor: floor,
+            price: price,
+            occupied_status: occupied_status,
+            condition: condition,
+            flag: flag,
+            image: image,
+            repair_notes: repair_notes,
+            room_name: room_name,
+        };
+        const room = await prisma.room.create({data:data});
+        res.status(201).json(room);
+        } catch (error) {
+        res.status(500).json({ error: (error as Error).message });
+        }
+    } else if (req.method === 'PUT') {
+        try{
+        const { room_id, type, floor, price, occupied_status, condition, flag, image, repair_notes, room_name } : Room= req.body;
+        const data:Room = {
             room_id: room_id,
             type: type,
             floor: floor,
@@ -53,22 +75,26 @@ export async function RoomPUT(room_id:string,type:string,floor:number,price:numb
             repair_notes: repair_notes,
             room_name: room_name
         };
-
-        const updatedRoom = await prisma.room.update({
-            where: { room_id: room_id },
+        const room = await prisma.room.update({
+            where: { room_id: data.room_id },
             data: data
         });
-    } catch (error) {
-        throw error;
-    }
-}
-
-export async function RoomDELETE(room_id:string){
-    try {
-        const deletedRoom = await prisma.room.delete({
-            where: { room_id: room_id },
+        res.status(200).json(room);
+        } catch (error) {
+        res.status(500).json({ error: (error as Error).message });
+        }
+    } else if (req.method === 'DELETE') {
+        try{
+        const { room_id } = req.query;
+        const room = await prisma.room.delete({
+            where: { room_id: room_id as string },
         });
-    } catch (error) {
-        throw error;
+        res.status(204).end();
+        } catch (error) {
+        res.status(500).json({ error: (error as Error).message });
+        }
+    } else {
+        res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
+        res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }

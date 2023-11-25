@@ -81,7 +81,7 @@ export const Navbar = () => {
               gap='4px'
               boxShadow={'dark-lg'}
             >
-              <NavbarMenuItem text='Profile' url='/profile' textColor='#082E4C'/>
+              <NavbarMenuItem text='Change Password' url='/profile' textColor='#082E4C'/>
               <NavbarMenuItem text='Logout' url='/login' textColor='#D53333'/>
             </Flex>
           </MenuList>

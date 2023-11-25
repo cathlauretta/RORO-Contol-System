@@ -1,5 +1,4 @@
 import { Flex, Box, Heading, VStack } from '@chakra-ui/react'
-import { EmployeeGET, EmployeePOST, EmployeePUT, EmployeeDELETE } from '../pages/api/employeeManager'
 import { objectEnumValues } from '@prisma/client/runtime/library'
 import RoomPage from './room/page'
 
@@ -23,7 +22,7 @@ export default async function Home() {
   // await EmployeeDELETE(data.employee_id)
 
   // contoh GET dengan filter nama 'ivan'
-  const employeeData = await EmployeeGET(undefined, 'ivan')
+  // const employeeData = await EmployeeGET(undefined, 'ivan')
   // console.log(employeeData)
   return (
     <RoomPage/>

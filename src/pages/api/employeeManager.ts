@@ -1,77 +1,98 @@
 import prisma from '../../../prisma/client';
+import type { Employee } from '@prisma/client';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export async function EmployeeGET(employee_id?:string,name?:string) {
-    try {
-        const filters = {};
-        if (employee_id)    {Object.assign(filters, {employee_id: {equals: employee_id}})}
-        if (name)           {Object.assign(filters, {name: {contains: name, mode: 'insensitive'}})}
-        const employees = await prisma.employee.findMany({where:filters});
-        return employees;
-    }
-    catch (error) {
-        throw error;
+export default async function(
+    req: NextApiRequest,
+    res: NextApiResponse
+    ) {
+    if (req.method === 'GET'){
+        try{
+            const { employee_id, name, username, password } = req.query;
+            let queryOptions = {};
+            if (employee_id || name) {
+                queryOptions = {
+                    where : {
+                        AND : [
+                            {employee_id: {contains: employee_id}},
+                            {name:{contains: name, mode: 'insensitive'}}
+                        ]
+                    }
+                }
+            } else if (username && password) {
+                queryOptions = {
+                    where : {
+                        AND : [
+                            {username: {contains: username}},
+                            {password:{contains: password}}
+                        ]
+                    }
+                }
+            }
+            const employees = await prisma.employee.findMany(queryOptions);
+            res.status(200).json(employees);
+        } catch (error) {
+            res.status(500).json({ error: (error as Error).message });
+        }
+    } else if (req.method === 'POST') {
+        try{
+            const { employee_id, name, gender, date_of_birth, address, role, username, password, contact, floor_assigned } : Employee = req.body
+            const data:Employee = {
+                employee_id: employee_id,
+                name: name,
+                gender: gender,
+                date_of_birth: date_of_birth,
+                address: address,
+                role: role,
+                username: username,
+                password: password,
+                contact: contact,
+                floor_assigned: floor_assigned,
+                hire_date: new Date(),
+                last_edit: new Date()
+            }
+            const employee = await prisma.employee.create({data:data});
+            res.status(201).json(employee);
+        } catch (error) {
+            res.status(500).json({ error: (error as Error).message });
+        }
+    } else if (req.method === 'PUT') {
+        try{
+            const { employee_id, name, gender, date_of_birth, address, role, username, password, hire_date, contact, floor_assigned } : Employee = req.body
+            const data:Employee = {
+                employee_id: employee_id,
+                name: name,
+                gender: gender,
+                date_of_birth: date_of_birth,
+                address: address,
+                role: role,
+                username: username,
+                password: password,
+                contact: contact,
+                floor_assigned: floor_assigned,
+                hire_date: hire_date,
+                last_edit: new Date()
+            }
+            const employee = await prisma.employee.update({
+                where: { employee_id: data.employee_id },
+                data: data
+            });
+            res.status(200).json(employee);
+        } catch (error) {
+            res.status(500).json({ error: (error as Error).message });
+        }
+    } else if (req.method === 'DELETE') {
+        try{
+            const { employee_id } = req.query;
+            const employee = await prisma.employee.delete({
+                where: { employee_id: employee_id as string },
+            });
+            res.status(204).end();
+        } catch (error) {
+            res.status(500).json({ error: (error as Error).message });
+        }
+    } else {
+        res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
+        res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
-
-export async function EmployeePOST(employee_id:string,name:string,gender:string,date_of_birth:string,address:string,role:string,username:string,password:string,contact:string,floor_assigned?:number){
-    const data = {employee_id: employee_id,
-    name: name,
-    gender: gender,
-    date_of_birth: date_of_birth,
-    address: address,
-    role: role,
-    username: username,
-    password: password,
-    hire_date: Date.now(),
-    contact: contact,
-    floor_assigned: 0,
-    last_edit: Date.now()}
-
-    if(floor_assigned){data.floor_assigned=floor_assigned}
-
-    try {
-        const employee = await prisma.employee.create({data});
-        return employee;
-    }
-    catch (error) {
-        throw error;
-    }
-}
-
-export async function EmployeePUT(employee_id:string,name:string,gender:string,date_of_birth:string,address:string,role:string,username:string,password:string,hire_date:string,contact:string,floor_assigned:number){
-    try {
-        const data = {
-            employee_id: employee_id,
-            name: name,
-            gender: gender,
-            date_of_birth: date_of_birth,
-            address: address,
-            role: role,
-            username: username,
-            password: password,
-            hire_date: hire_date,
-            contact: contact,
-            floor_assigned: floor_assigned,
-            last_edit: Date.now()
-        };
-
-        const updatedEmployee = await prisma.employee.update({
-            where: { employee_id: employee_id },
-            data: data
-        });
-    } catch (error) {
-        throw error;
-    }
-}
-
-export async function EmployeeDELETE(employee_id:string){
-    try {
-        const deletedEmployee = await prisma.employee.delete({
-            where: { employee_id: employee_id },
-        });
-    } catch (error) {
-        throw error;
-    }
-}
-
-//export async function EmployeeLogin(username:string,password:string){}
