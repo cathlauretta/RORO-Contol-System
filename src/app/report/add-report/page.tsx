@@ -1,26 +1,30 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import {
-  Flex,
-  Text,
-  Switch,
-  Input,
-  Textarea,
-} from "@chakra-ui/react";
+import { Flex, Text, Switch, Input, Textarea, Button } from "@chakra-ui/react";
 import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
+import { Upload } from "@/components/Upload";
 import { InputField } from "@/components/InputField";
 
 export default function ReportAdd() {
   const [reportVal, setValue] = useState<string>("Inspect");
-  const handleChange = () => {
+  const handleReportType = () => {
     if (reportVal == "Repair") {
       setValue("Inspect");
     } else {
       setValue("Repair");
     }
   };
-  // console.log(reportType)
+
+  const [photos, setPhotos] = useState<typeof Image>();
+
+  const handleAddPhotos = () => {
+    // Add Logic
+  };
+
+  const handleSave = () => {
+    // Add Logic
+  };
 
   return (
     <Flex
@@ -95,7 +99,7 @@ export default function ReportAdd() {
               id="report-type"
               size="md"
               // color="#87C4FF"
-              onChange={() => handleChange()}
+              onChange={() => handleReportType()}
             />
           </Flex>
         </Flex>
@@ -152,67 +156,68 @@ export default function ReportAdd() {
 
               {/* Uploaded Image Box */}
               <Flex
-                display={"flex"}
                 width={"36vw"}
                 padding={"8px"}
                 alignItems={"start"}
-                gap={"8px"}
+                gap={"12px"}
                 borderRadius={"8px"}
                 border={"1px solid var(--Light-Grey, #C8C8C8)"}
                 overflow={"auto"}
               >
+                {/* photos.map() */}
                 <Image
                   src="/image2.svg"
-                  width={86}
-                  height={80}
+                  width={84}
+                  height={84}
                   alt="Room Image 1"
                 />
                 <Image
                   src="/image2.svg"
-                  width={86}
-                  height={80}
-                  alt="Room Image 1"
+                  width={84}
+                  height={84}
+                  alt="Room Image 2"
                 />
                 <Image
                   src="/image2.svg"
-                  width={86}
-                  height={80}
-                  alt="Room Image 1"
+                  width={84}
+                  height={84}
+                  alt="Room Image 3"
                 />
                 <Image
                   src="/image2.svg"
-                  width={86}
-                  height={80}
-                  alt="Room Image 1"
+                  width={84}
+                  height={84}
+                  alt="Room Image 4"
                 />
                 <Image
                   src="/image2.svg"
-                  width={86}
-                  height={80}
-                  alt="Room Image 1"
+                  width={84}
+                  height={84}
+                  alt="Room Image 5"
                 />
               </Flex>
 
-              <Flex
+              {/* Add Photos Button */}
+              <Button
                 width={"36vw"}
-                height={"44px"}
-                padding={"12px 20px"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                gap={"12px"}
-                borderRadius={"6px"}
-                background={"var(--Picton-Blue, #39A7FF)"}
+                height={"45px"}
+                leftIcon={
+                  <Image
+                    src="/icons/Paperclip.svg"
+                    width={16}
+                    height={16}
+                    alt="Save"
+                  />
+                }
+                bg={"#39A7FF"}
+                color={"#FFFFFF"}
+                onClick={handleAddPhotos}
+                fontSize={"14px"}
               >
-                <Image
-                  src="/icons/Paperclip.svg"
-                  width={16}
-                  height={16}
-                  alt="Paperclip"
-                />
-                <Text color={"#FFFFFF"} fontSize={"14px"}>
-                  Add Photos
-                </Text>
-              </Flex>
+                Add Photos
+              </Button>
+
+              {/* <Upload /> This is a component but broken (just ignore)*/}
             </Flex>
           </Flex>
 
@@ -228,23 +233,23 @@ export default function ReportAdd() {
             <Flex
               // background={"pink"}
               width={"46.15vw"}
-              height={"73px"}
+              height={"74px"}
               flexDir={"row"}
               alignItems={"start"}
               justifyContent={"space-between"}
             >
-              <InputField 
+              <InputField
                 label={"Report ID"}
                 disabled={true}
                 placeholder={"Auto Generate"}
               />
-              <InputField 
+              <InputField
                 label={"Room"}
                 disabled={false}
                 bgColor={"white"}
                 placeholder={"Insert Room"}
               />
-              <InputField 
+              <InputField
                 label={"Employee"}
                 disabled={true}
                 placeholder={"Employee Name"}
@@ -254,43 +259,40 @@ export default function ReportAdd() {
             {/* Description */}
             <Flex flexDir={"column"} alignItems={"start"} gap={"12px"}>
               <Text> Report Description </Text>
-              <Flex
-                width={"46.15vw"}
+              <Textarea
+                w={"46.15vw"}
                 height={"375px"}
-                flexDir={"column"}
-                alignItems={"start"}
+                resize={"none"}
+                fontSize={"14px"}
+                fontStyle={"normal"}
+                fontWeight={"400"}
+                lineHeight={"normal"}
+                padding={"12px"}
                 borderRadius={"8px"}
-                border={"1px solid #247EC5"}
-              >
-                <Textarea
-                  height={"full"}
-                  resize={"none"}
-                  fontSize={"14px"}
-                  fontStyle={"normal"}
-                  fontWeight={"400"}
-                  lineHeight={"normal"}
-                  padding={"12px"}
-                  placeholder={"Describe the room condition"}
-                />
-              </Flex>
+                border={"2px solid #247EC5"}
+                placeholder={"Describe the room condition"}
+              />
             </Flex>
 
-            {/* Button */}
-            <Flex
+            {/* Save Button */}
+            <Button
               width={"10vw"}
               height={"42px"}
-              padding={"12px 20px"}
-              justifyContent={"center"}
-              alignItems={"center"}
-              gap={"12px"}
-              borderRadius={"6px"}
-              background={"var(--Picton-Blue, #39A7FF)"}
+              leftIcon={
+                <Image
+                  src="/icons/Save.svg"
+                  width={18}
+                  height={18}
+                  alt="Save"
+                />
+              }
+              bg={"#39A7FF"}
+              color={"#FFFFFF"}
+              onClick={handleSave}
+              fontSize={"16px"}
             >
-              <Image src="/icons/Save.svg" width={16} height={16} alt="Save" />
-              <Text color={"#FFFFFF"} fontSize={"14px"}>
-                Save
-              </Text>
-            </Flex>
+              Save
+            </Button>
           </Flex>
         </Flex>
       </Flex>
