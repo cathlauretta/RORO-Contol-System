@@ -8,6 +8,9 @@ const ButtonRef = ({ currDir }: { currDir: string }) => {
     if (currDir === "Login") {
         desiredDirectory = "/room";
         text = "Login";
+    } else if (currDir === "Unauthorized") {
+        desiredDirectory = "/login";
+        text = "Login";
     } else if (currDir === "Room") {
         // CHANGE IF NEW ROOM ALREADY IMPLEMENTED
         desiredDirectory = "/room";
@@ -57,7 +60,7 @@ export const ButtonCust = ({ currDir }: { currDir: string }) => {
     let width = "145px";
     let gap = "5px";
 
-    if (currDir === "Login") {
+    if (currDir === "Login" || currDir === "Unauthorized") {
         width = "300px";
         height = "30px";
         gap = "4px";
