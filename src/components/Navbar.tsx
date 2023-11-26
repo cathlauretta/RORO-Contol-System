@@ -73,7 +73,7 @@ export const Navbar = async () => {
             cursor={'pointer'}
           >
             <Image
-              src='icons/Profile.svg'
+              src='/icons/Profile.svg'
               alt='Profile Logo'
               width={36}
               height={36}

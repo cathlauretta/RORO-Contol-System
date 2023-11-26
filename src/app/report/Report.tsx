@@ -65,7 +65,7 @@ export default function ReportPageTemp() {
 
   return (
     <Flex
-      paddingX={'40px'}
+      //paddingX={'40px'}
       paddingBottom={'20px'}
       width={'100%'}
       overflowX={'auto'}

@@ -16,16 +16,16 @@ const EmployeePage = async() => {
   } else {
     return (
         // Flex satu screen
-        <Flex width={"100vw"} flexDir={'column'} bg = {"white"}>
-          <Navbar/>
-          <Flex
-            pt = {40}
-            alignItems={'center'}
-            justify={'center'}
-          >
-            <NavPage active='Employee' isAdmin={(session?.user.role === "admin")}/>
-          </Flex>
-          <EmployeeTemp/>
+      <Flex width={"100vw"} flexDir={'column'} bg = {"white"}>
+        <Navbar/>
+        <Flex
+          pt = {40}
+          alignItems={'center'}
+          justify={'center'}
+        >
+          <NavPage active='Employee' isAdmin={(session?.user.role === "admin")}/>
+        </Flex>
+        <EmployeeTemp/>
       </Flex>
     )
   }

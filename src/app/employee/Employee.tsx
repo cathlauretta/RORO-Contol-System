@@ -13,9 +13,6 @@ import type { Employee } from '@prisma/client'
 import { SearchIcon } from '@chakra-ui/icons'
 import { ButtonCust } from '@/components/ButtonCust';
 
-// const TYPE_LIST = ['Single', 'Double', 'Luxury', 'Suite']
-// const FLOOR_LIST = ['1', '2', '3', '4', '5']
-
 const EmployeeTemp = () => {
   const [EmployeeData, setEmployeeData] = useState<Employee[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -54,7 +51,7 @@ const EmployeeTemp = () => {
 
   return (
     <Flex
-        width={'1200px'}
+        width={'1304px'}
         py={30}
         // px={40}
         mx={"auto"}
@@ -80,18 +77,18 @@ const EmployeeTemp = () => {
     />
 
     {/* Bungkus Tabel */}
-    <Flex
+    {/* <Flex
         paddingX={'40px'}
         paddingBottom={'40px'}
         width={'100%'}
         overflowX={'auto'}
         flexDir={'column'}
         alignItems={'flex-start'} // Updated: Align items to the left
-    >
+    > */}
 
         {/* Tabel */}
         <Flex
-        width={'1200px'}
+        width={'1304px'}
         flexDir={'column'}
         alignItems={'left'}
         justifyContent={'center'}
@@ -112,7 +109,7 @@ const EmployeeTemp = () => {
             overflowX={'auto'}
         >
             <Flex width='105px'>Employee ID</Flex>
-            <Flex width='235px'>Employee Name</Flex>
+            <Flex width='225px'>Employee Name</Flex>
             <Flex width='160px'>Contact</Flex>
             {/* <Flex width='100px'>Gender</Flex>
             <Flex width='100px'>Date of Birth</Flex>
@@ -162,7 +159,7 @@ const EmployeeTemp = () => {
         ))}
         </Flex>
     </Flex>
-    </Flex>
+    //</Flex>
   )
 }
 
