@@ -1,13 +1,13 @@
 "use client";
 import { Providers } from "@/app/providers";
-import { Flex, Button } from "@chakra-ui/react";
+import { Text, Textarea, Flex, Button } from "@chakra-ui/react";
 import Title from "@/components/Title";
 import UploadImage from "@/components/UploadImage";
-import InputField from "@/components/InputField";
+import LabelInput from "@/components/LabelInput";
 import { Navbar } from "@/components/Navbar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-
+import type { Report } from "@prisma/client";
 
 const ReportAdd = () => {
   const [title, setTitle] = useState<string>("");
@@ -28,8 +28,89 @@ const ReportAdd = () => {
     console.log(item);
   };
 
-  const handleSave = () => {
-    console.log();
+  const [repID, setRepID] = useState<string>("");
+  const handleRepID = (item: string) => {
+    setRepID(item);
+  };
+
+  const [roomID, setRoomID] = useState<string>("");
+  const handleRoomID = (item: string) => {
+    setRoomID(item);
+  };
+
+  const [eic, setEIC] = useState<string>("");
+  const handleEIC = (item: string) => {
+    setEIC(item);
+  };
+
+  const [desc, setDesc] = useState<string>("Ivan Aldy");
+  const handleDesc = (item: string) => {
+    setEIC(item);
+  };
+
+  const [data, setData] = useState<Report>();
+  const handleData = (item: Report) => {
+    setData(item);
+  }
+
+  const fetchData = async () => {
+    try {
+      const queryParams = new URLSearchParams({
+        other: "latest id",
+      }).toString();
+      const getresponse = await fetch(`/api/reportManager?${queryParams}`);
+      if (!getresponse.ok) {
+        throw new Error("Data fetching failed");
+      }
+      const refReport: Report = await getresponse.json();
+
+      if (!refReport) {
+        setRepID("REPORT000");
+      } else {
+        setData(refReport);
+        setRepID("REPORT" + `${parseInt(refReport.report_id.slice(6, 8)) + 1}`);
+      }
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  };
+
+  useEffect(() => {
+    if (repID == "") {
+      fetchData();
+    }
+  }, [repID]);
+
+  const handleSave = async () => {
+    try {
+      if (parseInt(roomID) > 999) { throw new Error ("Invalid Input"); }
+      
+      const newReportData: Report = {
+        report_id: repID,
+        date: new Date(),
+        room_repaired: roomID,
+        eic: eic,
+        repair_description: desc,
+        report_title: title,
+        type: repType,
+        images: publicID
+      };
+
+      const response = await fetch(`/api/reportManager`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newReportData),
+      });
+      if (!response.ok) {
+        throw new Error("Data update failed");
+      }
+      alert("Data Saved");
+      window.location.href = `/report`;
+    } catch (error) {
+      alert((error as Error).message);
+    }
   };
 
   return (
@@ -46,7 +127,48 @@ const ReportAdd = () => {
             {/* I.1.2.1. Image */}
             <UploadImage label="Report Image" PID={handlePID} />
             {/* I.1.2.2. Text */}
-            <InputField />
+            <Flex w="full" flexDir="column" gap="28px">
+              {/* I.1.2.2.1. Attribute */}
+              <Flex w="full" justifyContent="space-between" gap="20px">
+                <LabelInput
+                  label="Report ID"
+                  disabled={true}
+                  bg="#DFDFDF"
+                  value={repID}
+                  checkValue={handleRepID}
+                />
+                <LabelInput
+                  label="Room"
+                  disabled={false}
+                  bg="#FFFFFF"
+                  value=""
+                  checkValue={handleRoomID}
+                />
+                <LabelInput
+                  label="Employee"
+                  disabled={true}
+                  bg="#DFDFDF"
+                  value={eic}
+                  checkValue={handleEIC}
+                />
+              </Flex>
+              {/* I.1.2.2.2. Textarea */}
+              <Flex flexDir="column" gap="12px">
+                <Text fontWeight="600"> Report Description </Text>
+                <Textarea
+                  w="full"
+                  h="56vh"
+                  resize="none"
+                  fontSize="14px"
+                  fontWeight="400"
+                  padding="12px"
+                  border="2px solid #247EC5"
+                  borderRadius="8px"
+                  placeholder="Describe the condition of the room"
+                  onChange={(event) => {handleDesc}}
+                />
+              </Flex>
+            </Flex>
           </Flex>
           {/* I.1.3. Save */}
           <Button
@@ -63,7 +185,7 @@ const ReportAdd = () => {
                 alt="Save Button"
               />
             }
-            // onClick={(event) => handleSave}
+            onClick={(event) => handleSave}
           >
             Save
           </Button>

@@ -8,9 +8,18 @@ export default async function(
     ) {
     if (req.method === 'GET') {
         try {
-        const { report_title ,room_repaired, date, type } = req.query;
+        const { report_id, report_title, room_repaired, date, type, other } = req.query;
         let queryOptions: Record<string,any> = {};
         
+        if (report_id) {
+            queryOptions.report_id = {equals: report_id as string, mode: 'insensitive'}
+            const report = await prisma.report.findFirst({where: queryOptions});
+            res.status(200).json(report);
+        } else if (other) {
+            if (other === 'latest id') {
+                const report = await prisma.report.findFirst({where: queryOptions, orderBy: {report_id: 'desc'}});
+                res.status(200).json(report);                
+            } } else {
         if (report_title) {
             queryOptions.report_title = {contains: report_title as string, mode: 'insensitive'};
         }
@@ -36,7 +45,7 @@ export default async function(
         //     }
         // }
         const reports = await prisma.report.findMany({where: queryOptions});
-        res.status(200).json(reports);
+        res.status(200).json(reports); }
         } catch (error) {
         res.status(500).json({ error: (error as Error).message });
         }

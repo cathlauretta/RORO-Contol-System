@@ -16,9 +16,11 @@ const UploadImage = ({ label, PID }: Props) => {
       <Text fontWeight="600"> {label} </Text>
       <Flex
         w="36vw"
+        h="50vh"
         padding="4px 4px 4px 4px"
         borderRadius="8px"
         border="2px solid #39A7FF"
+        justifyContent="center"
       >
         <CldImage src={valuePID} width="464" height="84" alt="Image Preview" />
       </Flex>
