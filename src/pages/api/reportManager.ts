@@ -94,15 +94,3 @@ export default async function(
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
-
-export async function GetLastReportID(){
-    try {
-        const reportid = await prisma.report.findFirst({orderBy: {
-            report_id: "desc"
-        }});
-        return reportid;
-    }
-    catch (error) {
-        throw error;
-    }
-}

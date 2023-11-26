@@ -1,40 +1,63 @@
-import React, { useState, ChangeEvent } from "react";
-import { Flex, Input, Text } from "@chakra-ui/react";
+import { Flex, Text, Textarea } from "@chakra-ui/react";
+import React, { useState } from "react";
+import LabelInput from "./LabelInput";
 
-interface IFProps {
-  label: string;
-  disabled: boolean;
-  placeholder?: string;
-  bgColor?: string;
-}
+const InputField = () => {
+  const [first, setFirst] = useState<string>("");
+  const [second, setSecond] = useState<string>("");
+  const [third, setThird] = useState<string>("");
 
-export const InputField = (props: IFProps) => {
-  const {
-    label,
-    disabled,
-    placeholder = "Enter here..",
-    bgColor = "#DFDFDF",
-  } = props;
-  const [value, setValue] = useState<string>();
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => setValue(event.target.value)
+  const handleFirst = (item: string) => {
+    setFirst(item);
+  };
+  const handleSecond = (item: string) => {
+    setSecond(item);
+  };
+  const handleThird = (item: string) => {
+    setThird(item);
+  };
 
   return (
-    <Flex flexDir={"column"} align-items={"start"} gap={"12px"}>
-      <Text> {label} </Text>
-      <Input
-        width={"13vw"}
-        fontSize={"14px"}
-        fontStyle={"normal"}
-        fontWeight={"400"}
-        lineHeight={"normal"} 
-        padding={"12px"}
-        disabled={disabled}
-        placeholder={placeholder}
-        background={bgColor}
-        border={"2px solid #247EC5"}
-        borderRadius={"8px"}
-        onChange={handleChange}
-      />
+    <Flex w="full" flexDir="column" gap="28px">
+      <Flex w="full" justifyContent="space-between" gap="20px">
+        <LabelInput
+          label="Report ID"
+          disabled={true}
+          bg="#DFDFDF"
+          value=""
+          checkValue={handleFirst}
+        />
+        <LabelInput
+          label="Room"
+          disabled={false}
+          bg="#FFFFFF"
+          value=""
+          checkValue={handleSecond}
+        />
+        <LabelInput
+          label="Employee"
+          disabled={true}
+          bg="#DFDFDF"
+          value=""
+          checkValue={handleThird}
+        />
+      </Flex>
+      <Flex flexDir="column" gap="12px">
+        <Text fontWeight="600"> Report Description </Text>
+        <Textarea
+          w="full"
+          h="60vh"
+          resize="none"
+          fontSize="14px"
+          fontWeight="400"
+          padding="12px"
+          border="2px solid #247EC5"
+          borderRadius="8px"
+          placeholder="Describe the condition of the room"
+        />
+      </Flex>
     </Flex>
   );
 };
+
+export default InputField;
