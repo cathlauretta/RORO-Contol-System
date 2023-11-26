@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image';
@@ -9,8 +9,12 @@ import {
   MenuList,
   MenuItem,
 } from '@chakra-ui/react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../app/auth';
+import { signOut } from "next-auth/react";
+import Logout from "./Logout"
 
-const NavbarMenuItem = ({url, text, textColor} : {url : string, text: string, textColor: string}) => {
+const NavbarMenuItem = ({url, text, textColor, onClick} : {url : string, text: string, textColor: string, onClick?: () => void}) => {
   return (
     <MenuItem
       border='none'
@@ -26,7 +30,7 @@ const NavbarMenuItem = ({url, text, textColor} : {url : string, text: string, te
         }
       }
     > 
-      <a href={url}>
+      <a href={url} onClick={onClick}>
         <Flex
           width={'144px'}
           padding={12}
@@ -41,7 +45,10 @@ const NavbarMenuItem = ({url, text, textColor} : {url : string, text: string, te
   )
 }
 
-export const Navbar = () => {  
+
+export const Navbar = async () => { 
+  const session = await getServerSession(authOptions);
+
   return (
     <Flex
       width='100vw'
@@ -82,7 +89,7 @@ export const Navbar = () => {
               boxShadow={'dark-lg'}
             >
               <NavbarMenuItem text='Change Password' url='/profile' textColor='#082E4C'/>
-              <NavbarMenuItem text='Logout' url='/login' textColor='#D53333'/>
+              <Logout/>
             </Flex>
           </MenuList>
         </Menu>
