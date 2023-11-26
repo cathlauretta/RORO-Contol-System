@@ -1,6 +1,7 @@
 import prisma from '../../../prisma/client';
 import type { Employee } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { hash } from 'bcrypt';
 
 export default async function(
     req: NextApiRequest,
@@ -37,6 +38,8 @@ export default async function(
     } else if (req.method === 'POST') {
         try{
             const { employee_id, name, gender, date_of_birth, address, role, username, password, contact, floor_assigned } : Employee = req.body
+
+            const hashPass = await hash(password, 10);
             const data:Employee = {
                 employee_id: employee_id,
                 name: name,
@@ -45,7 +48,7 @@ export default async function(
                 address: address,
                 role: role,
                 username: username,
-                password: password,
+                password: hashPass,
                 contact: contact,
                 floor_assigned: floor_assigned,
                 hire_date: new Date(),
