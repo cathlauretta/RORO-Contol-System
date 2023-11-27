@@ -43,21 +43,34 @@ Room Repair and Occupancy Control System (RORO Control System) is a web-based so
 <img src="doc/SchemaDatabase.png">
 
 ## Use Case Implementation
+| Use Case | Description |
+|---|---|
+| Use Case 1 | Log In |
+| Use Case 2 | View Room List |
+| Use Case 3 | Add New Room |
+| Use Case 4 | Change Room Data |
+| Use Case 5 | View Report List |
+| Use Case 6 | Add New Report |
+| Use Case 7 | Mark a Room for Repair |
+| Use Case 8 | Remove Repair Mark |
+| Use Case 9 | View Employee List |
+| Use Case 10 | Add New Employee |
+| Use Case 11 | Change Employee Data |
 
 | | 18221045 | 18221157 | 18221169 | 18221171 | Unit Testing |
 |---|---|---|---|---|---|
 || Ivan Aldy Ganesen | Cathleen Lauretta | Ferdinand Refrandt | Hans Stephano Edbert N |
-| Use Case 1 | &check; | | | |
-| Use Case 2 | &check; | &check; | | |
-| Use Case 3 | | | &check; | &check; |
-| Use Case 4 | | | &check; | |
-| Use Case 5 | &check; | &check; | | |
-| Use Case 6 | | | | &check; |
-| Use Case 7 | | | &check; | |
-| Use Case 8 | | | &check; | |
-| Use Case 9 | &check; | &check; | | |
-| Use Case 10 | | | | &check; |
-| Use Case 11 | | | &check;| |
+| UC 1 | &check; | | | |
+| UC 2 | &check; | &check; | | |
+| UC 3 | | | &check; | &check; |
+| UC 4 | | | &check; | |
+| UC 5 | &check; | &check; | | |
+| UC 6 | | | | &check; |
+| UC 7 | | | &check; | |
+| UC 8 | | | &check; | |
+| UC 9 | &check; | &check; | | |
+| UC 10 | | | | &check; |
+| UC 11 | | | &check;| |
 
 
 ## Project Structure
@@ -68,16 +81,16 @@ Room Repair and Occupancy Control System (RORO Control System) is a web-based so
         └─ icons
     └─ src                  # Contains source code of the application
         ├─ app              # Consist of the routing in the app and pages
+            ├─ api
             ├─ employee     
             ├─ login
             ├─ profile
             ├─ report
             └─ room
         ├─ components       # Consist of reusable components in the program
-        └─ pages            # Consist of API interface
+        ├─ pages            # Consist of API interface
             └─ api
-
-    
+        └─ types            # Consist of authentication library from Next JS
 
 ## Authors
 | Student ID | Name |
