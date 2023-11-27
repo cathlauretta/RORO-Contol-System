@@ -11,6 +11,7 @@ interface NewEmployeeProps {
   password: string;
   contact: string;
   floor_assigned: string;
+  image: string;
 }
 
 export async function fetchData(handleEmpID: (item: string) => void) {
@@ -55,6 +56,7 @@ export async function addEmployee({
   password,
   contact,
   floor_assigned,
+  image,
 }: NewEmployeeProps) {
   try {
     const floorList = [1, 2, 3, 4, 5];
@@ -75,7 +77,8 @@ export async function addEmployee({
       hire_date: new Date(),
       contact: contact,
       last_edit: new Date(),
-      floor_assigned: parseInt(floor_assigned)
+      floor_assigned: parseInt(floor_assigned),
+      image: image
     };
 
     const response = await fetch(`/api/employeeManager`, {
