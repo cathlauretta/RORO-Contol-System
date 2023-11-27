@@ -25,7 +25,7 @@ const RoomPage = async() => {
           >
             <NavPage active='Rooms' isAdmin={(session?.user.role === "admin")}/>
           </Flex>
-          <RoomPageTemp/>
+          <RoomPageTemp isAdmin={(session?.user.role === "admin")}/>
         </Flex>
     )
   }
