@@ -246,7 +246,7 @@ export default function ReportPageTemp() {
               <Flex width='140px'>{report.room_repaired}</Flex>
               <Flex width='140px'>{date}</Flex>
               <Flex width='150px'>{report.eic}</Flex>
-              <a href={`/report/edit/${report.report_id}`}>
+              {/* <a href={`/report/edit/${report.report_id}`}>
                 <Image
                   src='icons/edit.svg'
                   alt='Edit'
@@ -254,7 +254,7 @@ export default function ReportPageTemp() {
                   height={'24px'}
                   cursor='pointer'
                 />
-              </a>
+              </a> */}
             </Flex>
           )
         })}
