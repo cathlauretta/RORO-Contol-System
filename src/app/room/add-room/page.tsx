@@ -17,7 +17,7 @@ const RoomPage = async() => {
   } else {
     return (
         // Flex satu screen
-        <Flex width={"100vw"} flexDir={'column'} bg = {"white"}>
+        <Flex width={"100vw"} height={"180vh"} flexDir={'column'} bg = {"white"}>
           <Navbar/>
           <RoomAddTemp/>
         </Flex>

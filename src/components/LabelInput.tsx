@@ -8,9 +8,10 @@ interface Props {
   placeholder?: string;
   value?: string;
   checkValue: (item: string) => void;
+  defaultValue?: string
 }
 
-const LabelInput = ({ label, disabled = false, bg = "#FFFFFF", placeholder = "", value, checkValue }: Props) => {
+const LabelInput = ({ label, defaultValue = "", disabled = false, bg = "#FFFFFF", placeholder = "", value, checkValue }: Props) => {
   return (
     <Flex w="auto" flexDir="column" gap="12px">
       <Text fontWeight="600"> {label} </Text>
@@ -23,6 +24,7 @@ const LabelInput = ({ label, disabled = false, bg = "#FFFFFF", placeholder = "",
         border="2px solid #247EC5"
         borderRadius="8px"
         placeholder={placeholder}
+        defaultValue={defaultValue}
         value={value}
         onChange={(event) => {
           checkValue(event.target.value);
