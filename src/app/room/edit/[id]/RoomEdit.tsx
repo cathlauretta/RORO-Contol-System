@@ -123,6 +123,7 @@ const RoomEditTemp = ({params}: {params: {id: string}}) => {
       <Flex
         flexDir={"column"}
         width={"85vw"}
+        paddingTop={"40px"}
         height={"auto"}
         marginX={"auto"}
         marginY={"auto"}
