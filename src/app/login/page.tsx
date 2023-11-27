@@ -1,18 +1,17 @@
-"use client";
+// "use client";
 import { ChakraProvider } from '@chakra-ui/react';
 import Login from './Login';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth';
 
-const LoginPage: React.FC = () => {
-    const handleLogin = (username: string, password: string) => {
-    // Your login logic here
-    console.log('Logging in with:', { username, password });
-};
-
-return (
-    <ChakraProvider>
-        <Login/>
-    </ChakraProvider>
-);
+const LoginPage = async () => {
+    const session = await getServerSession(authOptions);
+    // console.log(session?.user);
+    return (
+        <ChakraProvider>
+            <Login/>
+        </ChakraProvider>
+    );
 };
 
 export default LoginPage;

@@ -1,93 +1,166 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { Box, Flex, Text, Input, Button } from '@chakra-ui/react';
+"use client"
+import React, {useState, useEffect} from 'react'
+
+import {
+  Flex,
+  Image,
+  Select,
+  Input,
+  InputGroup,
+  InputRightElement,
+} from '@chakra-ui/react'
+import type { Employee } from '@prisma/client'
+import { SearchIcon } from '@chakra-ui/icons'
 import { ButtonCust } from '@/components/ButtonCust';
 
-const Employee: React.FC = () => {
-  // const [value1, setValue1] = useState("");
-  // const [value2, setValue2] = useState("");
-  // const [resultComponent, setResultComponent] = useState<React.ReactNode | null>(null);
+const EmployeeTemp = () => {
+  const [EmployeeData, setEmployeeData] = useState<Employee[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  // const [type, setType] = useState<string>('');
+  // const [floor, setFloor] = useState<string>('');
+  // const [availability, setAvailability] = useState<boolean>(false);
+  // const [undercons, setUndercons] = useState<boolean>(false);
 
-  // const processInputs = (value1: string, value2: string) => {
-  //   console.log('Processed Inputs:', value1, value2);
-  //   if (value1 === "test") {
-  //     setResultComponent (
-  //         <Flex left="100px" top="170px" position="absolute" border="1px #000000 solid" flexDirection="column" justifyContent="flex-start" alignItems="flex-start" display="inline-flex">
-  //           {/* Employee table header */}
-  //           <Flex width="85vw" paddingTop="12px" paddingBottom="12px" paddingLeft="24px" paddingRight="24px" background="#FFFFFF" border="1px" justifyContent="center" alignItems="center" gap="2vw" display="inline-flex">
-  //             <Text width="8vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">12</Text>
-  //             <Text width="20vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Martin Lonfat</Text>
-  //             <Text width="15vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">081244445555</Text>
-  //             <Text width="10vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">3</Text>
-  //             <Text width="17vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Dec 3, 2022</Text>
-  //             <Text width="18vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Dec 4, 2022</Text>
-  //           </Flex>
-  //           {/* Employee table divider */}
-  //           <Box width="85vw" height="0px" border="1px" />
-  //         </Flex>
-  //     );
-  //   }
-  //   if (value2 === "test") {
-  //     setResultComponent (
-  //       <Flex left="100px" top="210px" position="absolute" border="1px #000000 solid" flexDirection="column" justifyContent="flex-start" alignItems="flex-start" display="inline-flex">
-  //         {/* Employee table header */}
-  //         <Flex width="85vw" paddingTop="12px" paddingBottom="12px" paddingLeft="24px" paddingRight="24px" background="#FFFFFF" border="1px" justifyContent="center" alignItems="center" gap="2vw" display="inline-flex">
-  //           <Text width="8vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">12</Text>
-  //           <Text width="20vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Martin Lonfat</Text>
-  //           <Text width="15vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">081244445555</Text>
-  //           <Text width="10vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">3</Text>
-  //           <Text width="17vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Dec 3, 2022</Text>
-  //           <Text width="18vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Dec 4, 2022</Text>
-  //         </Flex>
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const queryParams = new URLSearchParams({
+          name : searchQuery,
+        }).toString();
 
-  //         {/* Employee table divider */}
-  //         <Box width="85vw" height="0px" border="1px" />
+        const response = await fetch(`/api/employeeManager?${queryParams}`);
+        if (!response.ok) {
+          throw new Error('Data fetching failed');
+        }
+        const employee: Employee[] = await response.json();
+        // console.log(employee);
+        setEmployeeData(employee);
 
-  //       </Flex>
-  //     );
-  //   }
-  // };
+      } catch (error) {
+        alert ((error as Error).message);
+      }
+    };
+    fetchData();
+  },[searchQuery]);
 
-  // const handleInputChange1 = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setValue1(event.target.value);
-  // };
 
-  // const handleInputChange2 = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setValue2(event.target.value);
-  // };
+  const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    // console.log(searchQuery);
+  }
 
   return (
-    <Box width="85vw" height="100vw" position="relative" background="white">
+    <Flex
+        width={'1304px'}
+        py={30}
+        // px={40}
+        mx={"auto"}
+        overflowX={'auto'}
+        flexDir={'column'}
+        gap={30}
+        alignItems={'center'}
+        // justifyContent={'center'}
+    >
+    {/* Searchbar */}
+    <Input
+        onChange={(e) => handleSearch(e)}
+        placeholder={'Employee Name'}
+        alignSelf={'flex-start'}
+        width={'190px'}
+        color={'#082E4C'}
+        bgColor={'white'}
+        padding={12}
+        borderRadius={'6px'}
+        border={'1px solid #247EC5'}
+        fontSize={'14px'}
+        fontWeight={'400'}
+    />
 
-      <Flex left="100px" top="125px" position="absolute" border="1px #247EC5 solid" flexDirection="column" justifyContent="flex-start" alignItems="flex-start" display="inline-flex">
-        {/* Employee table header */}
-        <Flex width="85vw" paddingTop="12px" paddingBottom="12px" paddingLeft="24px" paddingRight="24px" background="#E0F4FF" border="1px solid" justifyContent="center" alignItems="center" gap="2vw" display="inline-flex">
-          <Text width="8vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">ID</Text>
-          <Text width="20vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Employee Name</Text>
-          <Text width="15vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Contact</Text>
-          <Text width="10vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Floor Assigned</Text>
-          <Text width="17vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Hire Date</Text>
-          <Text width="18vw" color="#082E4C" fontSize="14px" fontFamily="Inter" fontWeight="400" textAlign="center">Last Edit</Text>
+    {/* Bungkus Tabel */}
+    {/* <Flex
+        paddingX={'40px'}
+        paddingBottom={'40px'}
+        width={'100%'}
+        overflowX={'auto'}
+        flexDir={'column'}
+        alignItems={'flex-start'} // Updated: Align items to the left
+    > */}
+
+        {/* Tabel */}
+        <Flex
+        width={'1304px'}
+        flexDir={'column'}
+        alignItems={'left'}
+        justifyContent={'center'}
+        mx={'auto'}
+        border={'1px solid #247EC5;'}
+        >
+        {/* Tabel Header */}
+        <Flex
+            width={'100%'}
+            py={12}
+            pl={48}
+            pr={96}
+            gap={64}
+            bgColor={'#E0F4FF'}
+            fontSize={'14px'}
+            fontWeight={'500'}
+            color={'#082E4C'}
+            overflowX={'auto'}
+        >
+            <Flex width='105px'>Employee ID</Flex>
+            <Flex width='225px'>Employee Name</Flex>
+            <Flex width='160px'>Contact</Flex>
+            {/* <Flex width='100px'>Gender</Flex>
+            <Flex width='100px'>Date of Birth</Flex>
+            <Flex width='350px'>Address</Flex> */}
+            <Flex width='150px'>Hire Date</Flex>
+            <Flex width='150px'>Last Edit</Flex>
         </Flex>
 
-        {/* Employee table divider */}
-        <Box width="85vw" height="0px" border="1px #247EC5 solid" />
+        {/* Tabel Body */}
+        {EmployeeData && EmployeeData.map((Employee) => 
+        (
+            <Flex
+            key={Employee.employee_id}
+            width={'100%'}
+            alignItems={'center'}
+            py={12}
+            pl={48}
+            pr={36}
+            gap={36}
+            fontSize={'14px'}
+            fontWeight={'400'}
+            color={'#082E4C'}
+            bgColor={'white'}
+            borderTop={'1px solid #247EC5;'}
+            >
+            <Flex width='133px'>{Employee.employee_id}</Flex>
+            <Flex width='253px'>{Employee.name}</Flex>
+            <Flex width='188px'>{Employee.contact}</Flex>
+            {/* <Flex width='300px'>{Employee.gender}</Flex> */}
+            {/* <Flex width='300px'>{(Employee.date_of_birth).toDateString()}</Flex> */}
+            {/* <Flex width='350px'>{Employee.address}</Flex> */}
+            <Flex width='178px'>{((new Date (Employee.hire_date)).toISOString().substring(0, 10))}</Flex>
+            <Flex width='178px'>{((new Date (Employee.last_edit)).toISOString().substring(0, 10))}</Flex>
+            {/* <Flex width='225px'>{(new Date (Employee.hire_date)).toDateString()}</Flex>
+            <Flex width='225px'>{(new Date (Employee.last_edit)).toDateString()}</Flex> */}
 
-      </Flex>
+            <a href={`/Employee/edit/${Employee.employee_id.toLowerCase()}`}>
+                <Image
+                src='icons/edit.svg'
+                alt='Edit'
+                width={24}
+                height={24}
+                cursor='pointer'
+                />
+            </a>
+            </Flex>
+        ))}
+        </Flex>
+    </Flex>
+    //</Flex>
+  )
+}
 
-      {/* Add Employee button */}
-      <Flex height="44px" paddingLeft="15px" paddingRight="15px" paddingTop="10px" paddingBottom="10px" left="79.5vw" top="50px" position="absolute" background="#39A7FF" borderRadius="6px" overflow="hidden" justifyContent="flex-start" alignItems="center" gap="12px" display="inline-flex">
-        <ButtonCust currDir="Employee" />
-      </Flex>
-
-      {/* <Flex flexDirection="column" alignItems="center" marginTop="20px">
-        <Input value={value1} onChange={handleInputChange1} placeholder="Input 1" />
-        <Input value={value2} onChange={handleInputChange2} placeholder="Input 2" />
-        <Button onClick={() => processInputs(value1, value2)}>Submit</Button>
-      </Flex>
-
-      {resultComponent} */}
-    </Box>
-  );
-};
-
-export default Employee;
+export default EmployeeTemp;

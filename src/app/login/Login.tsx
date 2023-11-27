@@ -1,28 +1,48 @@
+"use client";
 import { useState, useEffect } from "react";
 import { Box, InputGroup, InputRightElement, Heading, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { ButtonCust } from "../../components/ButtonCust";
-import type { Employee } from '@prisma/client'
+// import type { Employee } from '@prisma/client'
+import { signIn } from "next-auth/react"
 
-async function handleLogin({ username, password } : { username: string, password: string }) {
-    const queryParams = new URLSearchParams({
-        username : username,
-        password : password
-    }).toString();
-
-    const response = await fetch(`http://localhost:3000/api/employeeManager?${queryParams}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
+const handleLogin = async ({ username, password } : { username: string, password: string }) => {
+    try {
+        const signInData = await signIn("credentials", {
+            username: username,
+            password: password,
+            redirect: false
+        });
+        // console.log(username);
+        // console.log(password);
+        // console.log(signInData);
+        if (signInData?.status === 200) {
+            return "Login"
+        } else {
+            return "Unauthorized"
         }
-    });
-
-    const empl:Employee[] = await response.json();
-
-    if (empl.length > 0) {
-        return "Login";
-    } else {
-        return "Unauthorized";
+    } catch (error) {
+        return "Unauthorized"
     }
+    
+    // const queryParams = new URLSearchParams({
+    //     username : username,
+    //     password : password
+    // }).toString();
+
+    // const response = await fetch(`http://localhost:3000/api/employeeManager?${queryParams}`, {
+    //     method: 'GET',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     }
+    // });
+
+    // const empl:Employee[] = await response.json();
+
+    // if (empl.length > 0) {
+    //     return "Login";
+    // } else {
+    //     return "Unauthorized";
+    // }
 }
 
 const Login = () => {
@@ -42,6 +62,7 @@ const Login = () => {
         }
         checkCurrDir();
     });
+    console.log(currDir);
 
     return (
         <Box

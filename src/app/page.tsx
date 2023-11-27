@@ -1,6 +1,9 @@
 import { Flex, Box, Heading, VStack } from '@chakra-ui/react'
 import { objectEnumValues } from '@prisma/client/runtime/library'
+import LoginPage from './login/page'
 import RoomPage from './room/page'
+import { getServerSession } from 'next-auth';
+import { authOptions } from './auth';
 
 export default async function Home() {
   const data = {employee_id: 'employee7',
@@ -12,6 +15,17 @@ export default async function Home() {
   username: 'ivanaldyganssekali',
   password: 'mangeak'}
   
+  const session = await getServerSession(authOptions);
+  console.log(session?.user);
+  if (session?.user) {
+    return (
+      <RoomPage/>
+    )
+  } else {
+    return (
+      <LoginPage/>
+    )
+  }
   // contoh POST
   // await EmployeePOST(data.employee_id,data.name,data.gender,data.date_of_birth,data.address,data.role,data.username,data.password)
   
@@ -24,8 +38,6 @@ export default async function Home() {
   // contoh GET dengan filter nama 'ivan'
   // const employeeData = await EmployeeGET(undefined, 'ivan')
   // console.log(employeeData)
-  return (
-    <RoomPage/>
     // <Box p={4}>
     //   <Heading mb={4}>List of Data</Heading>
     //   <VStack spacing={4} align="stretch">
@@ -37,5 +49,4 @@ export default async function Home() {
     //     ))}
     //   </VStack>
     // </Box>
-  )
 }
