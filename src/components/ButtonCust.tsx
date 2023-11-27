@@ -3,37 +3,12 @@ import { Box, Flex } from '@chakra-ui/react';
 
 const ButtonRef = ({ currDir }: { currDir: string }) => {
     let desiredDirectory = "";
-    let text = "Save";
+    let text = "Login";
 
     if (currDir === "Login") {
         desiredDirectory = "/room";
-        text = "Login";
     } else if (currDir === "Unauthorized") {
         desiredDirectory = "/login";
-        text = "Login";
-    } else if (currDir === "Room") {
-        // CHANGE IF NEW ROOM ALREADY IMPLEMENTED
-        desiredDirectory = "/room";
-        text = "+ Add Room";
-    } else if (currDir === "Report") {
-        // CHANGE IF NEW REPORT ALREADY IMPLEMENTED
-        desiredDirectory = "/report";
-        text = "+ Add Report";
-    } else if (currDir === "Employee") {
-        // CHANGE IF NEW EMPLOYEE ALREADY IMPLEMENTED
-        desiredDirectory = "/employee";
-        text = "+ Add Employee";
-    } else if (currDir === "AddRoom") {
-        // UPLOAD NEW PHOTO STILL GREYED OUT
-        desiredDirectory = "/room";
-    } else if (currDir === "AddReport") {
-        // UPLOAD NEW PHOTO STILL GREYED OUT
-        desiredDirectory = "/report";
-    } else if (currDir === "AddEmployee") {
-        // UPLOAD NEW PHOTO STILL GREYED OUT
-        desiredDirectory = "/employee";
-    } else {
-        
     }
 
     return (
@@ -57,15 +32,9 @@ const ButtonRef = ({ currDir }: { currDir: string }) => {
 };
 
 export const ButtonCust = ({ currDir }: { currDir: string }) => {
-    let height = "44px";
-    let width = "145px";
-    let gap = "5px";
-
-    if (currDir === "Login" || currDir === "Unauthorized") {
-        width = "300px";
-        height = "30px";
-        gap = "4px";
-    }
+    let height = "30px";
+    let width = "300px";
+    let gap = "4px";
 
     return (
         <Box

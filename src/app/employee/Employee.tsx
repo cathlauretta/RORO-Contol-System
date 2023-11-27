@@ -13,8 +13,6 @@ import {
 } from '@chakra-ui/react'
 import { AddButton } from '@/components/AddButton'
 import type { Employee } from '@prisma/client'
-import { SearchIcon } from '@chakra-ui/icons'
-import { ButtonCust } from '@/components/ButtonCust';
 
 const FLOOR_LIST = ['1', '2', '3', '4', '5']
 const DEFAULT_BORDER_RADIUS = '6px'
