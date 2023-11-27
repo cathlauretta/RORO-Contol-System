@@ -44,7 +44,7 @@ export default async function(
         }
     } else if (req.method === 'POST') {
         try{
-            const { employee_id, name, gender, date_of_birth, address, role, username, password, contact, floor_assigned } : Employee = req.body
+            const { employee_id, name, gender, date_of_birth, address, role, username, password, contact, floor_assigned, image } : Employee = req.body
 
             const hashPass = await hash(password, 10);
             const data:Employee = {
@@ -59,7 +59,8 @@ export default async function(
                 contact: contact,
                 floor_assigned: floor_assigned,
                 hire_date: new Date(),
-                last_edit: new Date()
+                last_edit: new Date(),
+                image: image
             }
             const employee = await prisma.employee.create({data:data});
             res.status(201).json(employee);
@@ -68,7 +69,7 @@ export default async function(
         }
     } else if (req.method === 'PUT') {
         try{
-            const { employee_id, name, gender, date_of_birth, address, role, username, password, hire_date, contact, floor_assigned } : Employee = req.body
+            const { employee_id, name, gender, date_of_birth, address, role, username, password, hire_date, contact, floor_assigned, image } : Employee = req.body
             const data:Employee = {
                 employee_id: employee_id,
                 name: name,
@@ -81,7 +82,8 @@ export default async function(
                 contact: contact,
                 floor_assigned: floor_assigned,
                 hire_date: hire_date,
-                last_edit: new Date()
+                last_edit: new Date(),
+                image: image
             }
             const employee = await prisma.employee.update({
                 where: { employee_id: data.employee_id },
