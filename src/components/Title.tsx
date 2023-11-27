@@ -3,15 +3,15 @@ import { Flex, Input, Switch, Text } from "@chakra-ui/react";
 import { Providers } from "@/app/providers";
 
 interface Props {
-  titleItem: (item: string) => void;
+  titleItem?: (item: string) => void;
   repTypeItem: (item: string) => void;
-  placeholder?: string;
+  defaultValue?: string;
   disabled?: boolean;
   defTogVal?: string;
   altTogVal?: string;
 }
 
-const Title = ({ titleItem, repTypeItem, placeholder = "Judul Laporan", disabled = false, defTogVal = "Inspect", altTogVal="Repair" }: Props) => {
+const Title = ({ titleItem, repTypeItem, defaultValue = "Judul Laporan", disabled = false, defTogVal = "Inspect", altTogVal="Repair" }: Props) => {
   const [repTypeValue, setType] = useState<string>(defTogVal);
 
   return (
@@ -25,12 +25,18 @@ const Title = ({ titleItem, repTypeItem, placeholder = "Judul Laporan", disabled
     >
       <Input
         fontSize="36px"
-        placeholder={placeholder}
+        defaultValue={defaultValue}
+        placeholder="Insert Title"
         fontWeight="700"
         variant="unstyled"
         disabled={disabled}
+        _disabled={
+          {color:"black.1000"}
+        }
         onChange={(event) => {
-          titleItem(event.target.value);
+          if (titleItem) {
+            titleItem(event.target.value);
+          }
         }}
       />
       <Flex w="96px" justifyContent="end" gap="12px" paddingBottom="1.5">

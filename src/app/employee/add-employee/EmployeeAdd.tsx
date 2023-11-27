@@ -5,7 +5,8 @@ import Title from "@/components/Title";
 import UploadImage from "@/components/UploadImage";
 import { Flex, Button } from "@chakra-ui/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { addEmployee, fetchData } from "./empFun";
 
 const EmployeeAdd = () => {
   const [title, setTitle] = useState<string>("New Employee");
@@ -14,19 +15,19 @@ const EmployeeAdd = () => {
     // console.log(item);
   };
 
-  const [type, setType] = useState<string>("Staff");
+  const [role, setRole] = useState<string>("Staff");
   const handleType = (item: string) => {
-    item == "Staff" ? setType("Admin") : setType(item);
+    item == "Staff" ? setRole("Admin") : setRole(item);
     // console.log(item);
   };
 
-  const [publicID, setPublicID] = useState<string>("");
+  const [image, setPublicID] = useState<string>("");
   const handlePID = (item: string) => {
     setPublicID(item);
     // console.log(item);
   };
 
-  const [empID, setEmpID] = useState<string>("");
+  const [empID, setEmpID] = useState<string>("Failed to Fetch Data");
   const handleEmpID = (item: string) => {
     setEmpID(item);
   };
@@ -41,7 +42,7 @@ const EmployeeAdd = () => {
     setName(item);
   };
 
-  const [dob, setDoB] = useState<string>("");
+  const [date_of_birth, setDoB] = useState<string>("");
   const handleDoB = (item: string) => {
     setDoB(item);
   };
@@ -61,15 +62,21 @@ const EmployeeAdd = () => {
     setPass(item);
   };
 
-  const [phone, setPhone] = useState<string>("");
+  const [contact, setPhone] = useState<string>("");
   const handlePhone = (item: string) => {
     setPhone(item);
   };
 
-  const [floor, setFloor] = useState<string>("");
+  const [floor_assigned, setFloor] = useState<string>("");
   const handleFloor = (item: string) => {
     setFloor(item);
   };
+
+  useEffect(() => {
+    if (empID == "Failed to Fetch Data") {
+      fetchData(handleEmpID);
+    }
+  }, [empID]);
 
   return (
     /* I. Whole Page */
@@ -81,13 +88,11 @@ const EmployeeAdd = () => {
         h="140vh"
         mt="40px"
         mx="auto"
-        alignItems="end"
-        >
+        alignItems="end">
         {/* I.1.1. Title & Inspect */}
         <Title
-          titleItem={handleTitle}
           repTypeItem={handleType}
-          placeholder="New Employee"
+          defaultValue="New Employee"
           defTogVal="Staff"
           altTogVal="Admin"
           disabled={true}
@@ -121,7 +126,7 @@ const EmployeeAdd = () => {
               />
               <LabelInput
                 label="Birthdate"
-                value={dob}
+                value={date_of_birth}
                 placeholder="Contoh: 2023-12-01"
                 checkValue={handleDoB}
               />
@@ -142,13 +147,13 @@ const EmployeeAdd = () => {
               />
               <LabelInput
                 label="Phone Number"
-                value={phone}
+                value={contact}
                 placeholder={"Contoh: 0812345678"}
                 checkValue={handlePhone}
               />
               <LabelInput
                 label="Assign Floor"
-                value={floor}
+                value={floor_assigned}
                 placeholder={"Range: 1-5"}
                 checkValue={handleFloor}
               />
@@ -156,13 +161,18 @@ const EmployeeAdd = () => {
           </Flex>
         </Flex>
         {/* I.1.3. Save */}
-        <Flex paddingTop="32px" flexDir="row-reverse">
+        <Flex paddingTop="32px" flexDir="row-reverse" gap="12px">
           <Button
             w="10vw"
             h="40px"
             bg="#39A7FF"
             fontSize="16px"
             color="#FFFFFF"
+            _hover={{
+              bgColor: "#2877b7",
+              transitionDuration: "0.2s",
+              transitionTimingFunction: "ease-in-out",
+            }}
             leftIcon={
               <Image
                 src="/icons/Save.svg"
@@ -171,20 +181,22 @@ const EmployeeAdd = () => {
                 alt="Save Button"
               />
             }
-            // onClick={(event) => {
-            //   // handleSave();
-            //   addReport({
-            //     repID,
-            //     roomID,
-            //     eic,
-            //     desc,
-            //     title,
-            //     repType,
-            //     publicID,
-            //   });
-            //   console.log("Passed Save");
-            // }}
-          >
+            onClick={() => {
+              addEmployee({
+                empID,
+                name,
+                gender,
+                date_of_birth,
+                address,
+                role,
+                username,
+                password,
+                contact,
+                floor_assigned,
+                image,
+              });
+              console.log("Passed Save");
+            }}>
             Save
           </Button>
           <Button
@@ -194,6 +206,11 @@ const EmployeeAdd = () => {
             fontSize="16px"
             variant="unstyled"
             color="#39A7FF"
+            _hover={{
+              bgColor: "#F0F0F0",
+              transitionDuration: "0.2s",
+              transitionTimingFunction: "ease-in-out",
+            }}
             onClick={(event) => (window.location.href = `/report`)}>
             Cancel
           </Button>
