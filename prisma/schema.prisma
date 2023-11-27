@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Employee {
+  employee_id    String   @id @default("employee")
+  name           String   @unique
+  gender         String
+  date_of_birth  DateTime @db.Date
+  address        String
+  role           String
+  username       String   @unique
+  password       String
+  hire_date      DateTime @default(dbgenerated("'2023-11-14'::date")) @db.Date
+  contact        String   @default("+62 812-3456-7890")
+  last_edit      DateTime @default(dbgenerated("'2023-11-19'::date")) @db.Date
+  floor_assigned Int      @default(0)
+  image          String?
+  Report         Report[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Report {
+  report_id          String    @id(map: "T_pkey")
+  date               DateTime  @db.Date
+  room_repaired      String?
+  eic                String?
+  repair_description String
+  report_title       String    @default("")
+  type               String    @default("Inspect")
+  images             String?
+  Employee           Employee? @relation(fields: [eic], references: [name])
+  Room               Room?     @relation(fields: [room_repaired], references: [room_name])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Room {
+  room_id         String   @id @default("room")
+  type            String
+  floor           Int      @db.SmallInt
+  price           Int
+  occupied_status Boolean  @default(false)
+  condition       String?
+  flag            Boolean  @default(false)
+  image           String?
+  repair_notes    String?
+  room_name       String   @unique
+  Report          Report[]
+}

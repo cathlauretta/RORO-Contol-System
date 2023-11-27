@@ -1,103 +1,52 @@
+import { Flex, Box, Heading, VStack } from '@chakra-ui/react'
+import { objectEnumValues } from '@prisma/client/runtime/library'
+import LoginPage from './login/page'
+import RoomPage from './room/page'
+import { getServerSession } from 'next-auth';
+import { authOptions } from './auth';
 
-import Image from 'next/image'
-import styles from './page.module.css'
-import { Flex } from '@chakra-ui/react'
-import { Navbar } from './components/Navbar'
-import { Button } from './components/Button'
+export default async function Home() {
+  const data = {employee_id: 'employee7',
+  name: 'pt ivan aldy gans',
+  gender: 'P',
+  date_of_birth: '2023-11-14T00:00:00.000Z',
+  address: 'itb nangor',
+  role: 'staff',
+  username: 'ivanaldyganssekali',
+  password: 'mangeak'}
+  
+  const session = await getServerSession(authOptions);
+  console.log(session?.user);
+  if (session?.user) {
+    return (
+      <RoomPage/>
+    )
+  } else {
+    return (
+      <LoginPage/>
+    )
+  }
+  // contoh POST
+  // await EmployeePOST(data.employee_id,data.name,data.gender,data.date_of_birth,data.address,data.role,data.username,data.password)
+  
+  // contoh PUT
+  // await EmployeePUT(data.employee_id,data.name,data.gender,data.date_of_birth,data.address,data.role,data.username,data.password)
+  
+  // contoh DELETE
+  // await EmployeeDELETE(data.employee_id)
 
-export default function Home() {
-  return (
-    <Flex width={"100vw"} height={"150vh"} flexDir={'column'}>
-      <Navbar/>
-      HEHEHE
-    </Flex>
-    // <main className={styles.main}>
-    //   <div className={styles.description}>
-    //     <p>
-    //       Get started by editing&nbsp;
-    //       <code className={styles.code}>src/app/page.tsx</code>
-    //     </p>
-    //     <div>
-    //       <a
-    //         href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-    //         target="_blank"
-    //         rel="noopener noreferrer"
-    //       >
-    //         By{' '}
-    //         <Image
-    //           src="/vercel.svg"
-    //           alt="Vercel Logo"
-    //           className={styles.vercelLogo}
-    //           width={100}
-    //           height={24}
-    //           priority
-    //         />
-    //       </a>
-    //     </div>
-    //   </div>
-
-    //   <div className={styles.center}>
-    //     <Image
-    //       className={styles.logo}
-    //       src="/next.svg"
-    //       alt="Next.js Logo"
-    //       width={180}
-    //       height={37}
-    //       priority
-    //     />
-    //   </div>
-
-    //   <div className={styles.grid}>
-    //     <a
-    //       href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-    //       className={styles.card}
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       <h2>
-    //         Docs <span>-&gt;</span>
-    //       </h2>
-    //       <p>Find in-depth information about Next.js features and API.</p>
-    //     </a>
-
-    //     <a
-    //       href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-    //       className={styles.card}
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       <h2>
-    //         Learn <span>-&gt;</span>
-    //       </h2>
-    //       <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-    //     </a>
-
-    //     <a
-    //       href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-    //       className={styles.card}
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       <h2>
-    //         Templates <span>-&gt;</span>
-    //       </h2>
-    //       <p>Explore the Next.js 13 playground.</p>
-    //     </a>
-
-    //     <a
-    //       href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-    //       className={styles.card}
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       <h2>
-    //         Deploy <span>-&gt;</span>
-    //       </h2>
-    //       <p>
-    //         Instantly deploy your Next.js site to a shareable URL with Vercel.
-    //       </p>
-    //     </a>
-    //   </div>
-    // </main>
-  )
+  // contoh GET dengan filter nama 'ivan'
+  // const employeeData = await EmployeeGET(undefined, 'ivan')
+  // console.log(employeeData)
+    // <Box p={4}>
+    //   <Heading mb={4}>List of Data</Heading>
+    //   <VStack spacing={4} align="stretch">
+    //     {employeeData.map((employee) => 
+    //     (
+    //       <Box key={employee.employee_id} borderWidth="1px" borderRadius="lg" p={4}>
+    //         <Heading size="md">{employee.employee_id} {employee.role} {employee.name}</Heading>
+    //       </Box>
+    //     ))}
+    //   </VStack>
+    // </Box>
 }
