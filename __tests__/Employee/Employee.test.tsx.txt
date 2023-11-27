@@ -1,0 +1,20 @@
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+const { setupServer } = require('msw/node');
+import EmployeeTempMod from './EmployeeMod';
+
+const server = setupServer(); // Add this line to fix the 'Cannot find name 'server'' error
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
+describe('EmployeeTempMod component', () => {
+    test('Displays the correct placeholder text for the Employee Name input', () => {
+        render(<EmployeeTempMod />);
+
+        const employeeNameInput = screen.getByPlaceholderText('Employee Name');
+
+        expect(employeeNameInput).toBeInTheDocument();
+    });
+});

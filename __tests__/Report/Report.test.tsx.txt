@@ -1,0 +1,20 @@
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+const { setupServer } = require('msw/node');
+import ReportPageTempMod from './ReportMod';
+
+const server = setupServer(); // Add this line to fix the 'Cannot find name 'server'' error
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
+describe('ReportPageTempMod component', () => {
+    test('Displays the correct placeholder text for the Report Title input', () => {
+        render(<ReportPageTempMod />);
+
+        const reportTitleInput = screen.getByPlaceholderText('Report Title');
+
+        expect(reportTitleInput).toBeInTheDocument();
+    });
+});
