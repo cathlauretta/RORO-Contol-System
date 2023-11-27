@@ -21,15 +21,15 @@ const NavbarMenuItem2 = ({text, textColor, onClick} : {text: string, textColor: 
       }
       onClick={onClick}
     > 
-    <Flex
+      <Flex
         width={'144px'}
-        padding={12}
         textColor={textColor}
-            justifyContent={'left'}
-            cursor='pointer'
-    >
+        justifyContent={'left'}
+        cursor='pointer'
+        fontSize={'14px'}
+      >
         {text}
-    </Flex>
+      </Flex>
     </MenuItem>
   )
 }
