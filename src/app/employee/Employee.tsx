@@ -2,30 +2,35 @@
 import React, {useState, useEffect} from 'react'
 
 import {
+  ChakraProvider,
   Flex,
-  Image,
   Select,
+  Image,
   Input,
   InputGroup,
   InputRightElement,
+  Spacer,
 } from '@chakra-ui/react'
+import { AddButton } from '@/components/AddButton'
 import type { Employee } from '@prisma/client'
 import { SearchIcon } from '@chakra-ui/icons'
 import { ButtonCust } from '@/components/ButtonCust';
 
+const FLOOR_LIST = ['1', '2', '3', '4', '5']
+const DEFAULT_BORDER_RADIUS = '6px'
+const DEFAULT_TEXT_COLOR = '#082E4C'
+
 const EmployeeTemp = () => {
   const [EmployeeData, setEmployeeData] = useState<Employee[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  // const [type, setType] = useState<string>('');
-  // const [floor, setFloor] = useState<string>('');
-  // const [availability, setAvailability] = useState<boolean>(false);
-  // const [undercons, setUndercons] = useState<boolean>(false);
+  const [floor, setFloor] = useState<string>('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const queryParams = new URLSearchParams({
           name : searchQuery,
+          floor_assigned : floor,
         }).toString();
 
         const response = await fetch(`/api/employeeManager?${queryParams}`);
@@ -33,7 +38,6 @@ const EmployeeTemp = () => {
           throw new Error('Data fetching failed');
         }
         const employee: Employee[] = await response.json();
-        // console.log(employee);
         setEmployeeData(employee);
 
       } catch (error) {
@@ -46,76 +50,94 @@ const EmployeeTemp = () => {
 
   const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
-    // console.log(searchQuery);
+  }
+
+  const handleFloor = (e : React.ChangeEvent<HTMLSelectElement>) => {
+    setFloor(e.target.value);
   }
 
   return (
+    <ChakraProvider>
     <Flex
-        width={'1304px'}
-        py={30}
-        // px={40}
-        mx={"auto"}
-        overflowX={'auto'}
-        flexDir={'column'}
-        gap={30}
-        alignItems={'center'}
-        // justifyContent={'center'}
+      padding={'40px'}
+      width={'100%'}
+      overflowX={'auto'}
+      flexDir={'column'}
+      gap={'40px'}
     >
-    {/* Searchbar */}
-    <Input
-        onChange={(e) => handleSearch(e)}
-        placeholder={'Employee Name'}
-        alignSelf={'flex-start'}
-        width={'190px'}
-        color={'#082E4C'}
-        bgColor={'white'}
-        padding={12}
-        borderRadius={'6px'}
-        border={'1px solid #247EC5'}
-        fontSize={'14px'}
-        fontWeight={'400'}
-    />
+      <Flex
+        width={'1304px'}
+        mx={'auto'}
+        flexDir={'row'}
+        gap={'30px'}
+        alignItems={'center'}
+      >
+        {/* Searchbar */}
+        <Input
+          onChange={(e) => handleSearch(e)}
+          placeholder={'Employee Name'}
+          color={DEFAULT_TEXT_COLOR}
+          bgColor={'white'}
+          borderRadius={DEFAULT_BORDER_RADIUS}
+          border={'1px solid #247EC5'}
+          width={'190px'}
+          fontSize={'14px'}
+          fontWeight={'400'}
+        />
 
-    {/* Bungkus Tabel */}
-    {/* <Flex
-        paddingX={'40px'}
-        paddingBottom={'40px'}
-        width={'100%'}
-        overflowX={'auto'}
-        flexDir={'column'}
-        alignItems={'flex-start'} // Updated: Align items to the left
-    > */}
+        {/* Dropdown Floor Assigned */}
+        <Select
+          placeholder='Floor'
+          onChange={(e) => handleFloor(e)}
+          bg={'white'}
+          width={'100px'}
+          textColor={DEFAULT_TEXT_COLOR}
+          fontSize={'14px'}
+          fontWeight={'400'}
+          borderColor={'white'}
+          borderRadius={DEFAULT_BORDER_RADIUS}
+          border={'1px solid #247EC5'}
+        >
+          {FLOOR_LIST.map((floor) => (
+              <option value={floor}>{floor}</option>
+          ))}
+        </Select>
+        
+        <Spacer/>
 
-        {/* Tabel */}
-        <Flex
+        <AddButton url={'/employee/add-employee'} text={'Add New Employee'}/>
+      </Flex>
+
+      {/* Tabel */}
+      <Flex
         width={'1304px'}
         flexDir={'column'}
         alignItems={'left'}
         justifyContent={'center'}
         mx={'auto'}
-        border={'1px solid #247EC5;'}
-        >
+        border={'1px solid #247EC5'}
+      >
         {/* Tabel Header */}
         <Flex
-            width={'100%'}
-            py={12}
-            pl={48}
-            pr={96}
-            gap={64}
-            bgColor={'#E0F4FF'}
-            fontSize={'14px'}
-            fontWeight={'500'}
-            color={'#082E4C'}
-            overflowX={'auto'}
+          width={'100%'}
+          py={'12px'}
+          pl={'48px'}
+          pr={'96px'}
+          gap={'64px'}
+          bgColor={'#E0F4FF'}
+          fontSize={'14px'}
+          fontWeight={'500'}
+          color={DEFAULT_TEXT_COLOR}
         >
-            <Flex width='105px'>Employee ID</Flex>
-            <Flex width='225px'>Employee Name</Flex>
-            <Flex width='160px'>Contact</Flex>
+            <Flex width='120px'>Employee ID</Flex>
+            <Flex width='200px'>Employee Name</Flex>
+            <Flex width='150px'>Contact</Flex>
             {/* <Flex width='100px'>Gender</Flex>
             <Flex width='100px'>Date of Birth</Flex>
             <Flex width='350px'>Address</Flex> */}
-            <Flex width='150px'>Hire Date</Flex>
-            <Flex width='150px'>Last Edit</Flex>
+            <Flex width='100px'>Floor Assigned</Flex>
+            <Flex width='121px'>Hire Date</Flex>
+            <Flex width='138px'>Last Edit</Flex>
         </Flex>
 
         {/* Tabel Body */}
@@ -125,24 +147,25 @@ const EmployeeTemp = () => {
             key={Employee.employee_id}
             width={'100%'}
             alignItems={'center'}
-            py={12}
-            pl={48}
-            pr={36}
-            gap={36}
+            py={'12px'}
+            pl={'48px'}
+            pr={'36px'}
+            gap={'36px'}
             fontSize={'14px'}
             fontWeight={'400'}
-            color={'#082E4C'}
+            color={DEFAULT_TEXT_COLOR}
             bgColor={'white'}
-            borderTop={'1px solid #247EC5;'}
+            borderTop={'1px solid #247EC5'}
             >
-            <Flex width='133px'>{Employee.employee_id}</Flex>
-            <Flex width='253px'>{Employee.name}</Flex>
-            <Flex width='188px'>{Employee.contact}</Flex>
+            <Flex width='148px'>{Employee.employee_id}</Flex>
+            <Flex width='228px'>{Employee.name}</Flex>
+            <Flex width='178px'>{Employee.contact}</Flex>
             {/* <Flex width='300px'>{Employee.gender}</Flex> */}
             {/* <Flex width='300px'>{(Employee.date_of_birth).toDateString()}</Flex> */}
             {/* <Flex width='350px'>{Employee.address}</Flex> */}
-            <Flex width='178px'>{((new Date (Employee.hire_date)).toISOString().substring(0, 10))}</Flex>
-            <Flex width='178px'>{((new Date (Employee.last_edit)).toISOString().substring(0, 10))}</Flex>
+            <Flex width='128px'>{Employee.floor_assigned}</Flex>
+            <Flex width='150px'>{((new Date (Employee.hire_date)).toISOString().substring(0, 10))}</Flex>
+            <Flex width='147px'>{((new Date (Employee.last_edit)).toISOString().substring(0, 10))}</Flex>
             {/* <Flex width='225px'>{(new Date (Employee.hire_date)).toDateString()}</Flex>
             <Flex width='225px'>{(new Date (Employee.last_edit)).toDateString()}</Flex> */}
 
@@ -150,8 +173,8 @@ const EmployeeTemp = () => {
                 <Image
                 src='icons/edit.svg'
                 alt='Edit'
-                width={24}
-                height={24}
+                width={'24px'}
+                height={'24px'}
                 cursor='pointer'
                 />
             </a>
@@ -159,6 +182,7 @@ const EmployeeTemp = () => {
         ))}
         </Flex>
     </Flex>
+    </ChakraProvider>
     //</Flex>
   )
 }
