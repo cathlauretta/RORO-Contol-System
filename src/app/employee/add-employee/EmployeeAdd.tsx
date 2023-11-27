@@ -92,7 +92,7 @@ const EmployeeAdd = () => {
         {/* I.1.1. Title & Inspect */}
         <Title
           repTypeItem={handleType}
-          placeholder="New Employee"
+          defaultValue="New Employee"
           defTogVal="Staff"
           altTogVal="Admin"
           disabled={true}
@@ -161,13 +161,18 @@ const EmployeeAdd = () => {
           </Flex>
         </Flex>
         {/* I.1.3. Save */}
-        <Flex paddingTop="32px" flexDir="row-reverse">
+        <Flex paddingTop="32px" flexDir="row-reverse" gap="12px">
           <Button
             w="10vw"
             h="40px"
             bg="#39A7FF"
             fontSize="16px"
             color="#FFFFFF"
+            _hover={{
+              bgColor: "#2877b7",
+              transitionDuration: "0.2s",
+              transitionTimingFunction: "ease-in-out",
+            }}
             leftIcon={
               <Image
                 src="/icons/Save.svg"
@@ -191,8 +196,7 @@ const EmployeeAdd = () => {
                 image,
               });
               console.log("Passed Save");
-            }}
-          >
+            }}>
             Save
           </Button>
           <Button
@@ -202,6 +206,11 @@ const EmployeeAdd = () => {
             fontSize="16px"
             variant="unstyled"
             color="#39A7FF"
+            _hover={{
+              bgColor: "#F0F0F0",
+              transitionDuration: "0.2s",
+              transitionTimingFunction: "ease-in-out",
+            }}
             onClick={(event) => (window.location.href = `/report`)}>
             Cancel
           </Button>
