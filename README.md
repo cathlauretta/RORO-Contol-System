@@ -7,7 +7,9 @@
 - [How to Run the Program](#how-to-run-the-program)
 - [Database Schema](#database-schema)
 - [Use Case Implementation](#use-case-implementation)
+- [Captured Screens](#captured-screens)
 - [Project Structure](#project-structure)
+- [Testing Results](#testing-results)
 - [Authors](#authors)
 
 ## Program Description
@@ -79,26 +81,52 @@
 | UC 10 | | | | &check; |
 | UC 11 | | | &check;| |
 
+## Captured Screens
+Below are the interface of RORO Control System
+1. <b>Login Page</b>
+<img src="doc/screenshots/Login.png">
+
+2. <b>Admin - Room List</b> : There are "Add Room" button if the user is admin
+<img src="doc/screenshots/Admin-RoomList.png">
+
+3. <b>Admin - Report List</b>
+<img src="doc/screenshots/Admin-ReportList.png">
+
+4. <b>Admin - Employee List</b> : Employee List can only be accessed by Admin
+<img src="doc/screenshots/Admin-EmployeeList.png">
+
+5. <b>Admin - Add Room</b> : Only Admin can add new room to the database
+<img src="doc/screenshots/Admin-AddRoom.png">
+
+6. <b>Admin - Add Employee</b> : Only Admin can add new employee to the database
+<img src="doc/screenshots/Admin-AddEmployee.png">
+
+7. <b>Admin - Edit Room</b> : Only Admin can edit existed room
+<img src="doc/screenshots/Admin-EditRoom.png">
+
+8. <b>Add Report</b> : Report cannot be edit by employee or admin
+<img src="doc/screenshots/Admin-AddReport.png">
 
 ## Project Structure
     .
-    ├─ __test__                   # Contains unit and/or component testing(s)
-    ├─ doc                          # Contains database schema and screenshots of application
-    ├─ prisma                    # Contains prisma library to CRUD database
-    ├─ public                      # Contains icon used in the application
+    ├─ __test__                     # Contains unit and/or component testing(s)
+    ├─ doc                          # Contains database schema, testing results, and screenshots of application
+        └─ screenshots
+    ├─ prisma                       # Contains prisma library to CRUD database
+    ├─ public                       # Contains icon used in the application
         └─ icons
     └─ src                          # Contains source code of the application
-        ├─ app                     # Consists of the routings used in the app and pages
+        ├─ app                      # Consists of the routings used in the app and pages
             ├─ api
             ├─ employee     
             ├─ login
             ├─ profile
             ├─ report
             └─ room
-        ├─ components      # Consists of reusable components in the program
-        ├─ pages                # Consists of API interface(s)
+        ├─ components               # Consists of reusable components in the program
+        ├─ pages                    # Consists of API interface(s)
             └─ api
-        └─ types                 # Consists of interfaces needed to fulfill one aspect of the authentication provided by Next.js
+        └─ types                    # Consists of interfaces needed to fulfill one aspect of the authentication provided by Next.js
 
 ## Testing Results
 <img src="doc/TestingResult.png">
