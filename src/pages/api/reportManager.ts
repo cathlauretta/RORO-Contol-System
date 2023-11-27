@@ -30,7 +30,7 @@ export default async function(
                 if (type) {
                     queryOptions.type = {contains: type as string}
                 }
-                const reports = await prisma.report.findMany({where: queryOptions});
+                const reports = await prisma.report.findMany({where: queryOptions, orderBy: {report_id: 'asc'}});
                 res.status(200).json(reports);
         }} catch (error) {
             res.status(500).json({ error: (error as Error).message });
