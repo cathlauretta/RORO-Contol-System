@@ -10,7 +10,6 @@ interface Props {
 }
 
 const LabelInput = ({ label, disabled, bg, value, checkValue }: Props) => {
-    const [inputValue, setValue] = useState<string>("")
   
     return (
     <Flex w="auto" flexDir="column" gap="12px">
@@ -25,7 +24,6 @@ const LabelInput = ({ label, disabled, bg, value, checkValue }: Props) => {
         borderRadius="8px"
         value={value}
         onChange={(event) => {
-            setValue(event.target.value);
             checkValue(event.target.value);
           }}
       />

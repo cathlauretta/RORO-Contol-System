@@ -8,7 +8,6 @@ interface Props {
 }
 
 const Title = ({ titleItem, repTypeItem }: Props) => {
-  const [inputValue, setValue] = useState<string>("");
   const [repTypeValue, setType] = useState<string>("Inspect");
 
   return (
@@ -26,7 +25,6 @@ const Title = ({ titleItem, repTypeItem }: Props) => {
         fontWeight="700"
         variant="unstyled"
         onChange={(event) => {
-          setValue(event.target.value);
           titleItem(event.target.value);
         }}
       />
