@@ -5,10 +5,14 @@ import { Providers } from "@/app/providers";
 interface Props {
   titleItem: (item: string) => void;
   repTypeItem: (item: string) => void;
+  placeholder?: string;
+  disabled?: boolean;
+  defTogVal?: string;
+  altTogVal?: string;
 }
 
-const Title = ({ titleItem, repTypeItem }: Props) => {
-  const [repTypeValue, setType] = useState<string>("Inspect");
+const Title = ({ titleItem, repTypeItem, placeholder = "Judul Laporan", disabled = false, defTogVal = "Inspect", altTogVal="Repair" }: Props) => {
+  const [repTypeValue, setType] = useState<string>(defTogVal);
 
   return (
     <Flex
@@ -21,9 +25,10 @@ const Title = ({ titleItem, repTypeItem }: Props) => {
     >
       <Input
         fontSize="36px"
-        placeholder="Judul Laporan"
+        placeholder={placeholder}
         fontWeight="700"
         variant="unstyled"
+        disabled={disabled}
         onChange={(event) => {
           titleItem(event.target.value);
         }}
@@ -35,9 +40,9 @@ const Title = ({ titleItem, repTypeItem }: Props) => {
         <Providers>
           <Switch
             onChange={() => {
-              repTypeValue == "Inspect"
-                ? setType("Repair")
-                : setType("Inspect");
+              repTypeValue == defTogVal
+                ? setType(altTogVal)
+                : setType(defTogVal);
               repTypeItem(repTypeValue);
             }}
           />

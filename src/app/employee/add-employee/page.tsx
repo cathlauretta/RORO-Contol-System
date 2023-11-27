@@ -1,26 +1,25 @@
-import React from "react";
 import { Navbar } from "@/components/Navbar";
 import { Flex } from "@chakra-ui/react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth";
 import { redirect } from "next/navigation";
-import ReportAddTemp from "./ReportAdd";
+import EmployeeAdd from "./EmployeeAdd";
 
-const ReportAdd = async () => {
+const page = async () => {
   const session = await getServerSession(authOptions);
 
   if (session == null) {
     return redirect("/login");
+  } else if (session?.user.role !== "admin") {
+    return redirect("/room")
   } else {
-    const userName = session.user.name;
     return (
-      // Flex satu screen
-      <Flex width={"100vw"} flexDir={"column"} bg={"white"}>
+      <Flex w="100vw" h="180vh" flexDir="column" bg="white">
         <Navbar />
-        <ReportAddTemp params={{ id: userName }} />
+        <EmployeeAdd />
       </Flex>
     );
   }
 };
 
-export default ReportAdd;
+export default page;

@@ -1,5 +1,5 @@
-import React from 'react'
-import Image from 'next/image';
+import React from "react";
+import Image from "next/image";
 import {
   Flex,
   Menu,
@@ -7,13 +7,13 @@ import {
   MenuList,
   MenuItem,
   ChakraProvider,
-} from '@chakra-ui/react';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../app/auth';
+} from "@chakra-ui/react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../app/auth";
 import { signOut } from "next-auth/react";
 import Logout from "./Logout"
 
-export const Navbar = async () => { 
+export const Navbar = async () => {
   const session = await getServerSession(authOptions);
 
   return (
@@ -53,5 +53,5 @@ export const Navbar = async () => {
       </Flex>
     </Flex>
     </ChakraProvider>
-  )
-}
+  );
+};

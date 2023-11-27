@@ -7,8 +7,9 @@ import LabelInput from "@/components/LabelInput";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { fetchData, addReport } from "./aFun";
+import { redirect } from "next/navigation";
 
-const ReportAddTemp = ({params}: {params: {id: string}}) => {
+const ReportAddTemp = ({ params }: { params: { id: string } }) => {
   const [title, setTitle] = useState<string>("");
   const handleTitle = (item: string) => {
     setTitle(item);
@@ -116,30 +117,50 @@ const ReportAddTemp = ({params}: {params: {id: string}}) => {
             </Flex>
           </Flex>
           {/* I.1.3. Save */}
-          <Button
-            w="10vw"
-            h="40px"
-            bg="#39A7FF"
-            fontSize="16px"
-            color="#FFFFFF"
-            leftIcon={
-              <Image
-                src="/icons/Save.svg"
-                width={18}
-                height={20}
-                alt="Save Button"
-              />
-            }
-            onClick={(event) => {
-              // handleSave();
-              addReport({ repID, roomID, eic, desc, title, repType, publicID });
-              console.log("Passed Save");
-            }}
-          >
-            Save
-          </Button>
+          <Flex w="85vw" flexDir="row-reverse">
+            <Button
+              w="10vw"
+              h="40px"
+              bg="#39A7FF"
+              fontSize="16px"
+              color="#FFFFFF"
+              leftIcon={
+                <Image
+                  src="/icons/Save.svg"
+                  width={18}
+                  height={20}
+                  alt="Save Button"
+                />
+              }
+              onClick={(event) => {
+                // handleSave();
+                addReport({
+                  repID,
+                  roomID,
+                  eic,
+                  desc,
+                  title,
+                  repType,
+                  publicID,
+                });
+                console.log("Passed Save");
+              }}>
+              Save
+            </Button>
+            <Button
+              w="10vw"
+              h="40px"
+              borderColor="#39A7FF"
+              fontSize="16px"
+              variant="unstyled"
+              color="#39A7FF"
+              onClick={(event) => window.location.href = `/report`}
+            >
+              Cancel
+            </Button>
+          </Flex>
         </Flex>
-      </Providers>
+      </Providers>  
     </Flex>
   );
 };
