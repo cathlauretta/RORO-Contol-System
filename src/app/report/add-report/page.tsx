@@ -7,8 +7,7 @@ import LabelInput from "@/components/LabelInput";
 import { Navbar } from "@/components/Navbar";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import type { Report } from "@prisma/client";
-import { fetchData, addReport } from "./AddReport";
+import { fetchData, addReport, detectUser } from "./AddReport";
 
 const ReportAdd = () => {
   const [title, setTitle] = useState<string>("");
@@ -23,7 +22,7 @@ const ReportAdd = () => {
     // console.log("Changed: " + repType);
   };
 
-  const [publicID, setPublicID] = useState<string>("btjmca610xceizaubtzo");
+  const [publicID, setPublicID] = useState<string>("");
   const handlePID = (item: string) => {
     setPublicID(item);
     // console.log(item);
@@ -39,7 +38,7 @@ const ReportAdd = () => {
     setRoomID(item);
   };
 
-  const [eic, setEIC] = useState<string>("Ivan Aldy");
+  const [eic, setEIC] = useState<string>("Failed to Fetch");
   const handleEIC = (item: string) => {
     setEIC(item);
   };
@@ -49,16 +48,14 @@ const ReportAdd = () => {
     setDesc(item);
   };
 
-  const [data, setData] = useState<Report>();
-  const handleData = (item: Report) => {
-    setData(item);
-  };
-
   useEffect(() => {
     if (repID == "") {
-      fetchData({ handleData, handleRepID });
+      fetchData(handleRepID);
     }
-  }, [repID]);
+    if (eic == "Failed to Fetch"){
+      // detectUser(handleEIC);
+    }
+  }, [repID, eic]);
 
   return (
     /* I. Whole Page */

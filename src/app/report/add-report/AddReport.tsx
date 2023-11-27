@@ -1,4 +1,7 @@
-import { Report } from "@prisma/client";
+import { Report, Room } from "@prisma/client";
+import { getServerSession } from 'next-auth';
+// import { authOptions } from '@/app/auth';
+import { redirect } from 'next/navigation';
 
 interface NewReportProps {
   repID: string;
@@ -10,12 +13,7 @@ interface NewReportProps {
   publicID: string;
 }
 
-interface FetchProps {
-  handleData: (item: Report) => void;
-  handleRepID: (item: string) => void;
-}
-
-export async function fetchData({ handleData, handleRepID }: FetchProps) {
+export async function fetchData(handleRepID: ((item: string) => void)) {
   try {
     const queryParams = new URLSearchParams({
       other: "latest id",
@@ -29,9 +27,8 @@ export async function fetchData({ handleData, handleRepID }: FetchProps) {
     if (!refReport) {
       handleRepID("REPORT000");
     } else {
-      handleData(refReport);
       const id = parseInt(refReport.report_id.slice(8)) + 1;
-      console.log(id)
+      console.log(id);
 
       var zero = "00";
       if (id > 9 && id < 100) {
@@ -56,8 +53,10 @@ export async function addReport({
   publicID,
 }: NewReportProps) {
   try {
-    if (parseInt(roomID) > 999) {
-      throw new Error("Invalid Input");
+    const roomList = await getRoomList();
+
+    if (!roomList.includes(roomID)) {
+        throw new Error("No Such Room Exists");
     }
 
     const newReportData: Report = {
@@ -92,4 +91,19 @@ export async function addReport({
     alert((error as Error).message);
     console.error();
   }
+}
+
+export async function detectUser(handleEIC: ((item: string) => void)) {
+    // const session = await getServerSession(authOptions);
+    // handleEIC(session.name);
+}
+
+async function getRoomList() {
+    const getresponse = await fetch(`/api/roomManager`);
+    const refRoom: Room[] = await getresponse.json()
+    const roomList = refRoom.map(item => {
+        return item.room_name
+    })
+
+    return (roomList)
 }

@@ -26,7 +26,7 @@ const LabelInput = ({ label, disabled, bg, value, checkValue }: Props) => {
         value={value}
         onChange={(event) => {
             setValue(event.target.value);
-            checkValue(inputValue);
+            checkValue(event.target.value);
           }}
       />
     </Flex>
