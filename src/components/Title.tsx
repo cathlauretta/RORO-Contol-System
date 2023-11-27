@@ -12,30 +12,29 @@ const Title = ({ titleItem, repTypeItem }: Props) => {
   const [repTypeValue, setType] = useState<string>("Inspect");
 
   return (
-    
-      <Flex
-        w="85vw"
-        justifyContent="space-between"
-        alignItems="end"
-        borderBottom="1px solid #87C4FF"
-        paddingBottom="15px"
-        gap="40px"
-      >
-        <Input
-          fontSize="36px"
-          placeholder="Judul Laporan"
-          fontWeight="700"
-          variant="unstyled"
-          onChange={(event) => {
-            setValue(event.target.value);
-            titleItem(inputValue);
-          }}
-        />
-        <Flex w="96px" justifyContent="end" gap="12px" paddingBottom="1.5">
-          <Text fontSize="14px" fontWeight="600">
-            {repTypeValue}
-          </Text>
-          <Providers>
+    <Flex
+      w="85vw"
+      justifyContent="space-between"
+      alignItems="end"
+      borderBottom="1px solid #87C4FF"
+      paddingBottom="15px"
+      gap="40px"
+    >
+      <Input
+        fontSize="36px"
+        placeholder="Judul Laporan"
+        fontWeight="700"
+        variant="unstyled"
+        onChange={(event) => {
+          setValue(event.target.value);
+          titleItem(event.target.value);
+        }}
+      />
+      <Flex w="96px" justifyContent="end" gap="12px" paddingBottom="1.5">
+        <Text fontSize="14px" fontWeight="600">
+          {repTypeValue}
+        </Text>
+        <Providers>
           <Switch
             onChange={() => {
               repTypeValue == "Inspect"
@@ -44,10 +43,9 @@ const Title = ({ titleItem, repTypeItem }: Props) => {
               repTypeItem(repTypeValue);
             }}
           />
-          </Providers>
-        </Flex>
+        </Providers>
       </Flex>
-    
+    </Flex>
   );
 };
 

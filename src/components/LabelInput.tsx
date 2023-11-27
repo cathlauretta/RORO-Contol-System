@@ -5,12 +5,12 @@ interface Props {
   label: string;
   disabled: boolean;
   bg: string;
-  value: string;
+  value?: string;
   checkValue: (item: string) => void;
 }
 
 const LabelInput = ({ label, disabled, bg, value, checkValue }: Props) => {
-    const [inputValue, setValue] = useState<string>(value)
+    const [inputValue, setValue] = useState<string>("")
   
     return (
     <Flex w="auto" flexDir="column" gap="12px">
@@ -23,6 +23,7 @@ const LabelInput = ({ label, disabled, bg, value, checkValue }: Props) => {
         bg={bg}
         border="2px solid #247EC5"
         borderRadius="8px"
+        value={value}
         onChange={(event) => {
             setValue(event.target.value);
             checkValue(inputValue);

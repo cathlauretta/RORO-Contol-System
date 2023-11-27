@@ -8,24 +8,25 @@ import { Navbar } from "@/components/Navbar";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import type { Report } from "@prisma/client";
+import { fetchData, addReport } from "./AddReport";
 
 const ReportAdd = () => {
   const [title, setTitle] = useState<string>("");
   const handleTitle = (item: string) => {
     setTitle(item);
-    console.log(item);
+    // console.log(item);
   };
 
-  const [repType, setRepType] = useState<string>("");
+  const [repType, setRepType] = useState<string>("Inspect");
   const handleType = (item: string) => {
-    setRepType(item);
-    console.log(item);
+    item == "Inspect" ? setRepType("Repair") : setRepType(item);
+    // console.log("Changed: " + repType);
   };
 
   const [publicID, setPublicID] = useState<string>("btjmca610xceizaubtzo");
   const handlePID = (item: string) => {
     setPublicID(item);
-    console.log(item);
+    // console.log(item);
   };
 
   const [repID, setRepID] = useState<string>("");
@@ -38,80 +39,26 @@ const ReportAdd = () => {
     setRoomID(item);
   };
 
-  const [eic, setEIC] = useState<string>("");
+  const [eic, setEIC] = useState<string>("Ivan Aldy");
   const handleEIC = (item: string) => {
     setEIC(item);
   };
 
-  const [desc, setDesc] = useState<string>("Ivan Aldy");
+  const [desc, setDesc] = useState<string>("LMAO");
   const handleDesc = (item: string) => {
-    setEIC(item);
+    setDesc(item);
   };
 
   const [data, setData] = useState<Report>();
   const handleData = (item: Report) => {
     setData(item);
-  }
-
-  const fetchData = async () => {
-    try {
-      const queryParams = new URLSearchParams({
-        other: "latest id",
-      }).toString();
-      const getresponse = await fetch(`/api/reportManager?${queryParams}`);
-      if (!getresponse.ok) {
-        throw new Error("Data fetching failed");
-      }
-      const refReport: Report = await getresponse.json();
-
-      if (!refReport) {
-        setRepID("REPORT000");
-      } else {
-        setData(refReport);
-        setRepID("REPORT" + `${parseInt(refReport.report_id.slice(6, 8)) + 1}`);
-      }
-    } catch (error) {
-      alert((error as Error).message);
-    }
   };
 
   useEffect(() => {
     if (repID == "") {
-      fetchData();
+      fetchData({ handleData, handleRepID });
     }
   }, [repID]);
-
-  const handleSave = async () => {
-    try {
-      if (parseInt(roomID) > 999) { throw new Error ("Invalid Input"); }
-      
-      const newReportData: Report = {
-        report_id: repID,
-        date: new Date(),
-        room_repaired: roomID,
-        eic: eic,
-        repair_description: desc,
-        report_title: title,
-        type: repType,
-        images: publicID
-      };
-
-      const response = await fetch(`/api/reportManager`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newReportData),
-      });
-      if (!response.ok) {
-        throw new Error("Data update failed");
-      }
-      alert("Data Saved");
-      window.location.href = `/report`;
-    } catch (error) {
-      alert((error as Error).message);
-    }
-  };
 
   return (
     /* I. Whole Page */
@@ -141,7 +88,7 @@ const ReportAdd = () => {
                   label="Room"
                   disabled={false}
                   bg="#FFFFFF"
-                  value=""
+                  value={undefined}
                   checkValue={handleRoomID}
                 />
                 <LabelInput
@@ -165,7 +112,10 @@ const ReportAdd = () => {
                   border="2px solid #247EC5"
                   borderRadius="8px"
                   placeholder="Describe the condition of the room"
-                  onChange={(event) => {handleDesc}}
+                  onChange={(event) => {
+                    handleDesc(event.target.value);
+                    // console.log(desc);
+                  }}
                 />
               </Flex>
             </Flex>
@@ -185,7 +135,11 @@ const ReportAdd = () => {
                 alt="Save Button"
               />
             }
-            onClick={(event) => handleSave}
+            onClick={(event) => {
+              // handleSave();
+              addReport({ repID, roomID, eic, desc, title, repType, publicID });
+              console.log("Passed Save");
+            }}
           >
             Save
           </Button>
