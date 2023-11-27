@@ -82,8 +82,8 @@
 
 ## Project Structure
     .
-    ├─ doc                          # Contains database schema and screenshots of application
     ├─ __test__                   # Contains unit and/or component testing(s)
+    ├─ doc                          # Contains database schema and screenshots of application
     ├─ prisma                    # Contains prisma library to CRUD database
     ├─ public                      # Contains icon used in the application
         └─ icons
@@ -99,6 +99,10 @@
         ├─ pages                # Consists of API interface(s)
             └─ api
         └─ types                 # Consists of interfaces needed to fulfill one aspect of the authentication provided by Next.js
+
+## Testing Results
+<img src="doc/TestingResult.png">
+<div style="text-align: justify">&ensp;&thinsp;&ensp;&thinsp; We did some testing for the InputField component and the Room's FrontEnd page, and everything is a success. <i>However, there's a slight issue when testing for Report and Employee is conducted because it can't seem to detect <code>"msw/node"</code> </i> </code>.</div>
 
 ## Authors
 | Student ID | Name |
