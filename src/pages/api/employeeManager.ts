@@ -14,8 +14,11 @@ export default async function(
             if (other == "latest id") {
                 const employees = await prisma.employee.findFirst({where: queryOptions, orderBy: {employee_id: 'desc'}});
                 res.status(200).json(employees);
-            }
-            else if (username && password) {
+            } else if (employee_id && other == "edit employee") {
+                const employees = await prisma.employee.findFirst({where: queryOptions});
+                res.status(200).json(employees);
+                console.log("Passed");
+            } else if (username && password) {
                 queryOptions = {
                     where : {
                         AND : [
@@ -28,7 +31,7 @@ export default async function(
                 res.status(200).json(employees);
             } else {
                 if (employee_id) {
-                    queryOptions.employee_id = {contains: employee_id as string};
+                    queryOptions.employee_id = {contains: employee_id as string, mode: 'insensitive'};
                 }
                 if (name) {
                     queryOptions.name = {contains: name as string, mode: 'insensitive'};

@@ -167,7 +167,7 @@ const EmployeeTemp = () => {
             {/* <Flex width='225px'>{(new Date (Employee.hire_date)).toDateString()}</Flex>
             <Flex width='225px'>{(new Date (Employee.last_edit)).toDateString()}</Flex> */}
 
-            <a href={`/Employee/edit/${Employee.employee_id.toLowerCase()}`}>
+            <a href={`/employee/edit/${Employee.employee_id.toLowerCase()}`}>
                 <Image
                 src='icons/edit.svg'
                 alt='Edit'
