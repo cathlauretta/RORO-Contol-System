@@ -8,6 +8,8 @@ import { ArrowBackIcon } from '@chakra-ui/icons'
 
 const TYPE_LIST = ['Single', 'Double', 'Luxury', 'Suite']
 const FLOOR_LIST = ['1', '2', '3', '4', '5']
+const DEFAULT_BORDER_RADIUS = '6px'
+const DEFAULT_TEXT_COLOR = '#082E4C'
 
 export default function RoomAddTemp() {
   const [image, setImage] = useState<string>("xeoowxcwq261nrpxgm4g");
@@ -120,8 +122,9 @@ export default function RoomAddTemp() {
     <ChakraProvider>
     <Flex
       width={"100vw"}
+      paddingTop={"40px"}
       height={"auto"}
-      color={"#082E4C"}
+      color={DEFAULT_TEXT_COLOR}
       flexDir={"column"}
       justifyContent={"start"}
       alignItems={"center"}
@@ -139,7 +142,7 @@ export default function RoomAddTemp() {
           width={"85vw"}
           justifyContent={"space-between"}
           alignItems={"space-between"}
-          borderBottom={"2px #87C4FF solid"}
+          borderBottom={"1px #87C4FF solid"}
           paddingBottom={"20px"}
         >
           {/* Title */}
@@ -227,7 +230,7 @@ export default function RoomAddTemp() {
                 justifyContent={"center"}
                 alignItems={"center"}
                 gap={"12px"}
-                borderRadius={"8px"}
+                borderRadius={DEFAULT_BORDER_RADIUS}
                 border={"1px solid var(--Light-Grey, #C8C8C8)"}
               >
                 <CldImage
@@ -261,13 +264,20 @@ export default function RoomAddTemp() {
                       <Image
                         src="/icons/Paperclip.svg"
                         boxSize={"24px"}
-                        alt="Save"
+                        alt="Upload"
                       />
                     }
                     bg={"#39A7FF"}
                     color={"#FFFFFF"}
                     onClick={() => open()}
                     fontSize={"14px"}
+                    _hover={
+                      {
+                          bgColor:'#2877b7',
+                          transitionDuration: '0.2s',
+                          transitionTimingFunction: 'ease-in-out',
+                      }
+                    }
                   >
                     Upload New Photo
                   </Button>
@@ -302,7 +312,7 @@ export default function RoomAddTemp() {
 
               {/* Type */}
               <Flex
-                textColor={'#082E4C'}
+                textColor={DEFAULT_TEXT_COLOR}
                 flexDir={"column"}
                 height={"72px"}
                 width={"15vw"}
@@ -312,10 +322,10 @@ export default function RoomAddTemp() {
                 >Room Type</Text>
                 <Spacer />
                 <Flex
-                  textColor={'#082E4C'}
+                  textColor={DEFAULT_TEXT_COLOR}
                   bgColor={'white'}
-                  borderRadius={"8px"}
-                  border={"2px solid #247EC5"}
+                  borderRadius={DEFAULT_BORDER_RADIUS}
+                  border={"1px solid #247EC5"}
                 >
                   <Select
                     
@@ -323,7 +333,7 @@ export default function RoomAddTemp() {
                     size={'md'}
                     height={"36px"}
                     bg={'white'}
-                    textColor={'#082E4C'}
+                    textColor={DEFAULT_TEXT_COLOR}
                     fontSize={'14px'}
                     fontWeight={'400'}
                     // padding={12}
@@ -339,7 +349,7 @@ export default function RoomAddTemp() {
                   
               {/* Floor */}
               <Flex
-                textColor={'#082E4C'}
+                textColor={DEFAULT_TEXT_COLOR}
                 flexDir={"column"}
                 height={"72px"}
                 width={"15vw"}
@@ -349,10 +359,10 @@ export default function RoomAddTemp() {
                 >Floor</Text>
                 <Spacer />
                 <Flex
-                  textColor={'#082E4C'}
+                  textColor={DEFAULT_TEXT_COLOR}
                   bgColor={'white'}
-                  borderRadius={"8px"}
-                  border={"2px solid #247EC5"}
+                  borderRadius={DEFAULT_BORDER_RADIUS}
+                  border={"1px solid #247EC5"}
                 >
                   <Select
                     
@@ -360,7 +370,7 @@ export default function RoomAddTemp() {
                     size={'md'}
                     height={"36px"}
                     bg={'white'}
-                    textColor={'#082E4C'}
+                    textColor={DEFAULT_TEXT_COLOR}
                     fontSize={'14px'}
                     fontWeight={'400'}
                     // padding={12}
@@ -387,8 +397,8 @@ export default function RoomAddTemp() {
                 fontWeight={"400"}
                 lineHeight={"normal"}
                 padding={"12px"}
-                borderRadius={"8px"}
-                border={"2px solid #247EC5"}
+                borderRadius={DEFAULT_BORDER_RADIUS}
+                border={"1px solid #247EC5"}
                 placeholder={"Describe the room condition"}
                 onChange={(e) => setCondition(e.target.value)}
               />
@@ -413,7 +423,6 @@ export default function RoomAddTemp() {
           <Button
             alignSelf={"center"}
             width={"12vw"}
-            height={"42px"}
             leftIcon={
               <Icon as={ArrowBackIcon}
                 boxSize={"18px"}
@@ -422,14 +431,20 @@ export default function RoomAddTemp() {
             bg={"#bbbbbb"}
             color={"#000000"}
             onClick={() => window.location.href = `/room`}
-            fontSize={"16px"}
+            fontSize={"14px"}
+            _hover={
+              {
+                  bgColor:'#a0a0a0',
+                  transitionDuration: '0.2s',
+                  transitionTimingFunction: 'ease-in-out',
+              }
+            }
           >
             Cancel
           </Button>
         {/* Save Button */}
           <Button
             width={"12vw"}
-            height={"42px"}
             leftIcon={
               <Image
                 src="/icons/Save.svg"
@@ -440,7 +455,14 @@ export default function RoomAddTemp() {
             bg={"#39A7FF"}
             color={"#FFFFFF"}
             onClick={handleSave}
-            fontSize={"16px"}
+            fontSize={"14px"}
+            _hover={
+              {
+                  bgColor:'#2877b7',
+                  transitionDuration: '0.2s',
+                  transitionTimingFunction: 'ease-in-out',
+              }
+            }
           >
             Save
           </Button>

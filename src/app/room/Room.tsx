@@ -1,22 +1,18 @@
 "use client"
 import React, {useState, useEffect} from 'react'
 import {
-  Flex,
-  Image,
-  Select,
-  Input,
-  Spacer, Text, Switch, Textarea, Button, ChakraProvider, Icon
+  Flex, Image, Select, Input,
+  Spacer, Text, Switch, Textarea, Button, ChakraProvider,
 } from '@chakra-ui/react'
-import { SearchIcon } from '@chakra-ui/icons'
-//import Image from "next/image" ;
-import { Navbar } from "@/components/Navbar";
+import { AddButton } from '@/components/AddButton';
 import { InputField } from "@/components/InputField";
-import type { Room, Report } from "@prisma/client";
+import type { Room } from "@prisma/client";
 import { CldUploadWidget, CldImage } from "next-cloudinary";
 
 const TYPE_LIST = ['Single', 'Double', 'Luxury', 'Suite']
 const FLOOR_LIST = ['1', '2', '3', '4', '5']
 const DEFAULT_BORDER_RADIUS = '6px'
+const DEFAULT_TEXT_COLOR = '#082E4C'
 
 export default function RoomPageTemp() {
   const [roomData, setRoomData] = useState<Room[]>([]);
@@ -60,16 +56,13 @@ export default function RoomPageTemp() {
 
   const handleType = (e : React.ChangeEvent<HTMLSelectElement>) => {
     setType(e.target.value);
-    console.log(type)
   }
 
   const handleFloor = (e : React.ChangeEvent<HTMLSelectElement>) => {
     setFloor(e.target.value)
-    console.log(floor)
   } 
 
   const handleAvailable = (set: string) => {
-    console.log(set)
     if (set == "Available") {
       setAvailability(!availability);
       setUndercons(false);
@@ -80,212 +73,201 @@ export default function RoomPageTemp() {
   }
 
   return (
+    <ChakraProvider>
     <Flex
-        //paddingX={'40px'}
-        paddingBottom={'40px'}
-        width={'100%'}
-        overflowX={'auto'}
-        flexDir={'column'}
+      padding={'40px'}
+      width={'100%'}
+      overflowX={'auto'}
+      flexDir={'column'}
+      gap={'40px'}
     >
-        {/* Search and Filtering */}
-        <Flex
-        py={30}
+      {/* Search and Filtering */}
+      <Flex
         width={'1304px'}
         mx={'auto'}
         flexDir={'row'}
-        gap={30}
-        >
+        gap={'30px'}
+        alignItems={'center'}
+      >
         {/* Searchbar */}
         <Input
-            onChange={(e) => handleSearch(e)}
-            placeholder={'Room Name'}
-            color={'#082E4C'}
-            bgColor={'white'}
-            padding={12}
-            borderRadius={'6px'}
-            border={'1px solid #247EC5'}
-            fontSize={'14px'}
-            fontWeight={'400'}
-            autoFocus={false}
+          onChange={(e) => handleSearch(e)}
+          placeholder={'Room Name'}
+          color={DEFAULT_TEXT_COLOR}
+          bgColor={'white'}
+          borderRadius={DEFAULT_BORDER_RADIUS}
+          border={'1px solid #247EC5'}
+          width={'210px'}
+          fontSize={'14px'}
+          fontWeight={'400'}
+          autoFocus={false}
         />
 
         {/* Dropdown Type */}
-        <Flex
-            textColor={'#082E4C'}
-            bgColor={'white'}
-            padding={10}
-            borderRadius={'6px'}
-            border={'1px solid #247EC5'}
-        >
-            <Select
+        {/* <Flex
+          textColor={DEFAULT_TEXT_COLOR}
+          bgColor={'white'}
+          padding={10}
+          borderRadius={DEFAULT_BORDER_RADIUS}
+          border={'1px solid #247EC5'}
+        > */}
+          <Select
             placeholder='Room Type'
             onChange={(e) => handleType(e)}
-            size={'lg'}
+            size={'md'}
             bg={'white'}
-            textColor={'#082E4C'}
+            width={'200px'}
+            textColor={DEFAULT_TEXT_COLOR}
             fontSize={'14px'}
             fontWeight={'400'}
-            // padding={12}
             borderColor={'white'}
-            >
-            {TYPE_LIST.map((type) => (
-                <option value={type}>{type}</option>
-            ))}
-            </Select>
-        </Flex>
-            
-        {/* Dropdown Floor */}
-        <Flex
-            textColor={'#082E4C'}
-            bgColor={'white'}
-            padding={10}
-            borderRadius={'6px'}
+            borderRadius={DEFAULT_BORDER_RADIUS}
             border={'1px solid #247EC5'}
-        >
-            <Select
+          >
+            {TYPE_LIST.map((type) => (
+              <option value={type}>{type}</option>
+            ))}
+          </Select>
+        {/* </Flex> */}
+          
+        {/* Dropdown Floor */}
+        {/* <Flex
+          textColor={DEFAULT_TEXT_COLOR}
+          bgColor={'white'}
+          padding={10}
+          borderRadius={DEFAULT_BORDER_RADIUS}
+          border={'1px solid #247EC5'}
+        > */}
+          <Select
             placeholder='Floor'
             onChange={(e) => handleFloor(e)}
             bg={'white'}
-            textColor={'#082E4C'}
+            width={'100px'}
+            textColor={DEFAULT_TEXT_COLOR}
             fontSize={'14px'}
             fontWeight={'400'}
             borderColor={'white'}
-            >
+            borderRadius={DEFAULT_BORDER_RADIUS}
+            border={'1px solid #247EC5'}
+          >
             {FLOOR_LIST.map((floor) => (
                 <option value={floor}>{floor}</option>
             ))}
-            </Select>
-        </Flex>
+          </Select>
+        {/* </Flex> */}
 
         {/* Availability Button */}
         <Flex
-            flexDir={'row'}
-            border={'1px solid #247EC5'}
-            borderRadius={'6px'}
-            alignItems={'center'}
+          flexDir={'row'}
+          border={'1px solid #247EC5'}
+          borderRadius={DEFAULT_BORDER_RADIUS}
         >
-            {/* Availability */}
-            <Flex
+          {/* Availability */}
+          <Flex
             onClick={() => handleAvailable("Available")}
-            px={16}
-            py={12}
-            color={'#082E4C'}
+            px={'16px'}
+            height={'40px'}
+            color={DEFAULT_TEXT_COLOR}
             fontSize={'14px'}
             fontWeight={'400'}
             cursor={'pointer'}
-            borderTopLeftRadius={'6px'}
-            borderBottomLeftRadius={'6px'}
+            alignItems={'center'}
+            justifyContent={'center'}
+            borderTopLeftRadius={DEFAULT_BORDER_RADIUS}
+            borderBottomLeftRadius={DEFAULT_BORDER_RADIUS}
             bgColor={availability? '#E4FFF5' : 'transparent'	}
             _hover={
-                {
-                bgColor:'#E4FFF5',
-                transitionDuration: '0.2s',
-                transitionTimingFunction: 'ease-in-out',
-                borderTopLeftRadius: '6px',
-                borderBottomLeftRadius: '6px',
-                }
+              {
+              bgColor:'#E4FFF5',
+              transitionDuration: '0.2s',
+              transitionTimingFunction: 'ease-in-out',
+              borderTopLeftRadius: DEFAULT_BORDER_RADIUS,
+              borderBottomLeftRadius: DEFAULT_BORDER_RADIUS,
+              }
             }
-            >
+          >
             Available
-            </Flex>
-            
-            {/* Under Cons */}
-            <Flex
+          </Flex>
+          
+          {/* Under Cons */}
+          <Flex
             onClick={() => handleAvailable("Under Construction")}
-            px={16}
-            py={12}
-            color={'#082E4C'}
+            px={'16px'}
+            height={'40px'}
+            color={DEFAULT_TEXT_COLOR}
             fontSize={'14px'}
             fontWeight={'400'}
             cursor={'pointer'}
+            alignItems={'center'}
+            justifyContent={'center'}
             borderLeft={'1px solid #247EC5'}
-            borderTopRightRadius={'6px'}
-            borderBottomRightRadius={'6px'}
+            borderTopRightRadius={DEFAULT_BORDER_RADIUS}
+            borderBottomRightRadius={DEFAULT_BORDER_RADIUS}
             bgColor={undercons? '#FFEBEB' : 'transparent'	}
             _hover={
-                {
-                bgColor:'#FFEBEB',
-                transitionDuration: '0.2s',
-                transitionTimingFunction: 'ease-in-out',
-                borderTopRightRadius: '6px',
-                borderBottomRightRadius: '6px',
-                }
+              {
+              bgColor:'#FFEBEB',
+              transitionDuration: '0.2s',
+              transitionTimingFunction: 'ease-in-out',
+              borderTopRightRadius: DEFAULT_BORDER_RADIUS,
+              borderBottomRightRadius: DEFAULT_BORDER_RADIUS,
+              }
             }
-            >
+          >
             Under Construction
-            </Flex>
+          </Flex>
         </Flex>
+        
         <Spacer/>
-        <Flex
-            flexDir={'row'}
-            onClick={() => window.location.href = '/room/add-room'}
-            px={36}
-            py={12}
-            textColor={'#FFFFFF'}
-            // border={'1px solid #247EC5'}
-            borderRadius={'6px'}
-            bgColor={'#39A7FF'}
-            fontSize={'14px'}
-            fontWeight={'400'}
-            cursor={'pointer'}
-            _hover={
-            {
-                bgColor:'#2877b7',
-                transitionDuration: '0.2s',
-                transitionTimingFunction: 'ease-in-out',
-            }
-            }
-        >
-            Add Room
-        </Flex>
-        </Flex>
+        
+        <AddButton url={'/room/add-room'} text={'Add New Room'}/>
+      </Flex>
 
-        {/* Tabel */}
-        <Flex
+      {/* Tabel */}
+      <Flex
         width={'1304px'}
         flexDir={'column'}
         alignItems={'left'}
         justifyContent={'center'}
         mx={'auto'}
-        border={'1px solid #247EC5;'}
-        >
-        {/* Tabel Header */}
+        border={'1px solid #247EC5'}
+      >
+      {/* Tabel Header */}
         <Flex
-            width={'100%'}
-            py={12}
-            pl={48}
-            pr={96}
-            gap={64}
-            bgColor={'#E0F4FF'}
-            fontSize={'14px'}
-            fontWeight={'500'}
-            color={'#082E4C'}
-            overflowX={'auto'}
+          width={'100%'}
+          py={'12px'}
+          pl={'48px'}
+          pr={'96px'}
+          gap={'64px'}
+          bgColor={'#E0F4FF'}
+          fontSize={'14px'}
+          fontWeight={'500'}
+          color={DEFAULT_TEXT_COLOR}
         >
-            <Flex width='90px'>Room ID</Flex>
-            <Flex width='200px'>Room Name</Flex>
-            <Flex width='240px'>Room Type</Flex>
-            <Flex width='150px'>Floor Level</Flex>
-            <Flex width='224px'>Status</Flex>
+          <Flex width='90px'>Room ID</Flex>
+          <Flex width='200px'>Room Name</Flex>
+          <Flex width='240px'>Room Type</Flex>
+          <Flex width='150px'>Floor Level</Flex>
+          <Flex width='224px'>Status</Flex>
         </Flex>
 
-        {/* Tabel Body */}
+      {/* Tabel Body */}
         {roomData && roomData.map((room) => 
         (
-            <Flex
+          <Flex
             key={room.room_id}
             width={'100%'}
             alignItems={'center'}
-            py={12}
-            pl={48}
-            pr={36}
-            gap={36}
+            py={'12px'}
+            pl={'48px'}
+            pr={'36px'}
+            gap={'36px'}
             fontSize={'14px'}
             fontWeight={'400'}
-            color={'#082E4C'}
+            color={DEFAULT_TEXT_COLOR}
             bgColor={'white'}
-            borderTop={'1px solid #247EC5;'}
-            >
+            borderTop={'1px solid #247EC5'}
+          >
             <Flex width='118px'>{room.room_id}</Flex>
             <Flex width='228px'>{room.room_name}</Flex>
             <Flex width='268px'>{room.type}</Flex>
@@ -294,26 +276,27 @@ export default function RoomPageTemp() {
                 width='224px'
                 bgColor={room.flag? '#FFEBEB' : '#E4FFF5'}
                 border={room.flag? '2px solid #D53333' : '2px solid #38D79B'}
-                borderRadius={'6px'}
+                borderRadius={DEFAULT_BORDER_RADIUS}
                 justifyContent={'center'}
                 alignItems={'center'}
-                padding={12}
-                
+                padding={'8px'}     
             >
-                {room.flag? 'Under Construction' : 'Available'}</Flex>
+              {room.flag? 'Under Construction' : 'Available'}
+            </Flex>
             <a href={`/room/edit/${room.room_id.toLowerCase()}`}>
-                <Image
+              <Image
                 src='icons/edit.svg'
                 alt='Edit'
-                width={24}
-                height={24}
+                width={'24px'}
+                height={'24px'}
                 cursor='pointer'
-                />
+              />
             </a>
-            </Flex>
+          </Flex>
         ))}
-        </Flex>
+      </Flex>
     </Flex>
+    </ChakraProvider>
   )
 }
 
@@ -610,7 +593,7 @@ export function RoomAddTemp() {
 
               {/* Type */}
               <Flex
-                textColor={'#082E4C'}
+                textColor={DEFAULT_TEXT_COLOR}
                 flexDir={"column"}
                 height={"72px"}
                 width={"15vw"}
@@ -620,7 +603,7 @@ export function RoomAddTemp() {
                 >Room Type</Text>
                 <Spacer />
                 <Flex
-                  textColor={'#082E4C'}
+                  textColor={DEFAULT_TEXT_COLOR}
                   bgColor={'white'}
                   borderRadius={"8px"}
                   border={"2px solid #247EC5"}
@@ -631,7 +614,7 @@ export function RoomAddTemp() {
                     size={'md'}
                     height={"36px"}
                     bg={'white'}
-                    textColor={'#082E4C'}
+                    textColor={DEFAULT_TEXT_COLOR}
                     fontSize={'14px'}
                     fontWeight={'400'}
                     // padding={12}
@@ -647,7 +630,7 @@ export function RoomAddTemp() {
                   
               {/* Floor */}
               <Flex
-                textColor={'#082E4C'}
+                textColor={DEFAULT_TEXT_COLOR}
                 flexDir={"column"}
                 height={"72px"}
                 width={"15vw"}
@@ -657,7 +640,7 @@ export function RoomAddTemp() {
                 >Floor</Text>
                 <Spacer />
                 <Flex
-                  textColor={'#082E4C'}
+                  textColor={DEFAULT_TEXT_COLOR}
                   bgColor={'white'}
                   borderRadius={"8px"}
                   border={"2px solid #247EC5"}
@@ -668,7 +651,7 @@ export function RoomAddTemp() {
                     size={'md'}
                     height={"36px"}
                     bg={'white'}
-                    textColor={'#082E4C'}
+                    textColor={DEFAULT_TEXT_COLOR}
                     fontSize={'14px'}
                     fontWeight={'400'}
                     // padding={12}
