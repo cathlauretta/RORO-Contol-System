@@ -38,19 +38,20 @@ const ButtonRef = ({ currDir }: { currDir: string }) => {
 
     return (
         <a href={desiredDirectory}>
-        <Flex
-            textColor={'#FFFFFF'}
-            fontSize={'16'}
-            fontWeight={'600'}
-            fontStyle={'normal'}
-            cursor={'pointer'}
-            minH={'55px'}
-            textAlign={'center'}
-            justifyContent={'center'}
-            alignItems={'center'}
-        >
-            {text}
-        </Flex>
+            <Flex
+                textColor={'#FFFFFF'}
+                fontSize={'14px'}
+                fontWeight={'600'}
+                fontStyle={'normal'}
+                cursor={'pointer'}
+                // minH={'55px'}
+                height={'40px'}
+                textAlign={'center'}
+                justifyContent={'center'}
+                alignItems={'center'}
+            >
+                {text}
+            </Flex>
         </a>
     );
 };
