@@ -36,7 +36,7 @@ const UploadImage = ({ label, PID }: Props) => {
           console.log(results.info);
           let obj = JSON.parse(JSON.stringify(results.info));
           setPID(obj.public_id);
-          PID(valuePID);
+          PID(obj.public_id);
         }}
       >
         {({ open }) => {

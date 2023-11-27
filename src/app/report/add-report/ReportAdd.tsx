@@ -6,7 +6,7 @@ import UploadImage from "@/components/UploadImage";
 import LabelInput from "@/components/LabelInput";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { fetchData, addReport } from "./aFun";
+import { fetchData, addReport } from "./repFun";
 import { redirect } from "next/navigation";
 
 const ReportAddTemp = ({ params }: { params: { id: string } }) => {
