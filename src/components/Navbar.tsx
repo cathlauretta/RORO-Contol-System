@@ -13,37 +13,6 @@ import { authOptions } from '../app/auth';
 import { signOut } from "next-auth/react";
 import Logout from "./Logout"
 
-const NavbarMenuItem = ({url, text, textColor, onClick} : {url : string, text: string, textColor: string, onClick?: () => void}) => {
-  return (
-    <MenuItem
-      border='none'
-      bgColor={'transparent'}
-      borderRadius={'4px'}
-      transitionTimingFunction={'ease-in-out'}
-      transitionDuration={'0.2s'}
-      _hover={
-        {
-          bgColor:'#E0F4FF',
-          transitionDuration: '0.2s',
-          transitionTimingFunction: 'ease-in-out'
-        }
-      }
-    > 
-      <a href={url} onClick={onClick}>
-        <Flex
-          width={'144px'}
-          textColor={textColor}
-          justifyContent={'left'}
-          cursor='pointer'
-          fontSize={'14px'}
-        >
-          {text}
-        </Flex>
-      </a>
-    </MenuItem>
-  )
-}
-
 export const Navbar = async () => { 
   const session = await getServerSession(authOptions);
 
@@ -78,7 +47,6 @@ export const Navbar = async () => {
           <MenuList
             bg={'#F1FAFF'}
           >
-            <NavbarMenuItem text='Change Password' url='/profile' textColor='#082E4C'/>
             <Logout/>
           </MenuList>
         </Menu>
