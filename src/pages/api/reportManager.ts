@@ -8,7 +8,7 @@ export default async function(
     ) {
     if (req.method === 'GET') {
         try {
-        const { report_title ,room_repaired, date, type } = req.query;
+        const { report_title ,room_repaired, eic, date, type } = req.query;
         let queryOptions: Record<string,any> = {};
         
         if (report_title) {
@@ -16,6 +16,9 @@ export default async function(
         }
         if (room_repaired) {
             queryOptions.room_repaired = {contains: room_repaired as string};
+        }
+        if (eic) {
+            queryOptions.eic = {contains: eic as string, mode: 'insensitive'};
         }
         if (date) {
             queryOptions.date = new Date(date as string);
