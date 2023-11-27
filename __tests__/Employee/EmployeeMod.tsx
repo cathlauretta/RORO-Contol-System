@@ -18,7 +18,7 @@ const FLOOR_LIST = ['1', '2', '3', '4', '5']
 const DEFAULT_BORDER_RADIUS = '6px'
 const DEFAULT_TEXT_COLOR = '#082E4C'
 
-const EmployeeTemp = () => {
+const EmployeeTempMod = () => {
   const [EmployeeData, setEmployeeData] = useState<Employee[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [floor, setFloor] = useState<string>('');
@@ -185,4 +185,4 @@ const EmployeeTemp = () => {
   )
 }
 
-export default EmployeeTemp;
+export default EmployeeTempMod;
