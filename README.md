@@ -11,7 +11,13 @@
 - [Authors](#authors)
 
 ## Program Description
-Room Repair and Occupancy Control System (RORO Control System) is a web-based software to manage room and hotel facilities repairment. 
+<div style="text-align: justify">&ensp;&thinsp;&ensp;&thinsp;Once upon a time, Mr. Gagas, as a hotel owner, feels deeply overwhelmed by the amount of complaints he received from his customers. Most were arguing about the damages that each room has suffered, up to the fact that not just one, but <b>more than one</b> discovered that the room they're getting assigned to is actually on a very bad state and/or not used for such a long time.<br>
+&ensp;&thinsp;&ensp;&thinsp;Looking at this, Mr. Gagas has assembled our team of members Aldy, Cathleen, Ferdinand and Hans to come up with a solution to fix this. He feels that the longer this problem gets fixed, the more loss he's going to acquire instead of profit.<br>
+&ensp;&thinsp;&ensp;&thinsp;After careful considerations and plannings, we finally came with the concept of <b><i>Room Repair and Occupancy Control System</b></i>, or abbreviated as <b><i>RORO Control System</b></i>. RORO Control System is a web-based software used to manage room and hotel facilities repairment. Three important aspects that are being covered in this software are:</div>
+<li> Room → Contains all the informations about rooms, including the type, price, and the availability.
+<li> Report → Contains all the informations essential to report created when handling a room that needs repair.
+<li> Employee → Containts all the informations needed regarding a staff (including admin), such as hired date, address, and full name.
+<div style="text-align: justify">&ensp;&thinsp;&ensp;&thinsp;<i>Hopes are high that this system will be able to fix Mr. Gagas' problems and hopefully bring more profit for his hotel ~</i><br></div>
 
 ## Requirements
 - [NodeJS](https://nodejs.org/en/download)
@@ -41,6 +47,7 @@ Room Repair and Occupancy Control System (RORO Control System) is a web-based so
 
 ## Database Schema
 <img src="doc/SchemaDatabase.png">
+<div style="text-align: justify">&ensp;&thinsp;&ensp;&thinsp; For our database schema, we used three tables, namely, Room, Report, and Employee. As you can probably see, they all have different informations to store, and what probably connects them is the fact that Room and Report are linked by <code> room_repaired, room_name </code> attribute, while Report and Employee are linked by  <code> eic, name </code>.</div>
 
 ## Use Case Implementation
 | Use Case | Description |
@@ -57,7 +64,7 @@ Room Repair and Occupancy Control System (RORO Control System) is a web-based so
 | Use Case 10 | Add New Employee |
 | Use Case 11 | Change Employee Data |
 
-| | 18221045 | 18221157 | 18221169 | 18221171 | Unit Testing |
+| | 18221045 | 18221157 | 18221169 | 18221171 | |
 |---|---|---|---|---|---|
 || Ivan Aldy Ganesen | Cathleen Lauretta | Ferdinand Refrandt | Hans Stephano Edbert N |
 | UC 1 | &check; | | | |
@@ -75,22 +82,23 @@ Room Repair and Occupancy Control System (RORO Control System) is a web-based so
 
 ## Project Structure
     .
-    ├─ doc                  # Contains database schema and screenshots of application
-    ├─ prisma               # Contains prisma library to CRUD database
-    ├─ public               # Contains icon used in the application
+    ├─ doc                          # Contains database schema and screenshots of application
+    ├─ __test__                   # Contains unit and/or component testing(s)
+    ├─ prisma                    # Contains prisma library to CRUD database
+    ├─ public                      # Contains icon used in the application
         └─ icons
-    └─ src                  # Contains source code of the application
-        ├─ app              # Consist of the routing in the app and pages
+    └─ src                          # Contains source code of the application
+        ├─ app                     # Consists of the routings used in the app and pages
             ├─ api
             ├─ employee     
             ├─ login
             ├─ profile
             ├─ report
             └─ room
-        ├─ components       # Consist of reusable components in the program
-        ├─ pages            # Consist of API interface
+        ├─ components      # Consists of reusable components in the program
+        ├─ pages                # Consists of API interface(s)
             └─ api
-        └─ types            # Consist of authentication library from Next JS
+        └─ types                 # Consists of interfaces needed to fulfill one aspect of the authentication provided by Next.js
 
 ## Authors
 | Student ID | Name |
