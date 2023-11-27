@@ -1,6 +1,4 @@
 import { Report, Room } from "@prisma/client";
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/auth';
 
 interface NewReportProps {
   repID: string;
@@ -12,7 +10,7 @@ interface NewReportProps {
   publicID: string;
 }
 
-export async function fetchData(handleRepID: ((item: string) => void)) {
+export async function fetchData(handleRepID: (item: string) => void) {
   try {
     const queryParams = new URLSearchParams({
       other: "latest id",
@@ -22,7 +20,7 @@ export async function fetchData(handleRepID: ((item: string) => void)) {
       throw new Error("Data fetching failed");
     }
     const refReport: Report = await getresponse.json();
-    console.log(refReport)
+    console.log(refReport);
 
     if (!refReport) {
       handleRepID("REPORT000");
@@ -56,7 +54,7 @@ export async function addReport({
     const roomList = await getRoomList();
 
     if (!roomList.includes(roomID)) {
-        throw new Error("No Such Room Exists");
+      throw new Error("No Such Room Exists");
     }
 
     const newReportData: Report = {
@@ -94,11 +92,11 @@ export async function addReport({
 }
 
 async function getRoomList() {
-    const getresponse = await fetch(`/api/roomManager`);
-    const refRoom: Room[] = await getresponse.json()
-    const roomList = refRoom.map(item => {
-        return item.room_name
-    })
+  const getresponse = await fetch(`/api/roomManager`);
+  const refRoom: Room[] = await getresponse.json();
+  const roomList = refRoom.map((item) => {
+    return item.room_name;
+  });
 
-    return (roomList)
+  return roomList;
 }

@@ -3,15 +3,15 @@ import React, { useState } from "react";
 
 interface Props {
   label: string;
-  disabled: boolean;
-  bg: string;
+  disabled?: boolean;
+  bg?: string;
+  placeholder?: string;
   value?: string;
   checkValue: (item: string) => void;
 }
 
-const LabelInput = ({ label, disabled, bg, value, checkValue }: Props) => {
-  
-    return (
+const LabelInput = ({ label, disabled = false, bg = "#FFFFFF", placeholder = "", value, checkValue }: Props) => {
+  return (
     <Flex w="auto" flexDir="column" gap="12px">
       <Text fontWeight="600"> {label} </Text>
       <Input
@@ -22,10 +22,11 @@ const LabelInput = ({ label, disabled, bg, value, checkValue }: Props) => {
         bg={bg}
         border="2px solid #247EC5"
         borderRadius="8px"
+        placeholder={placeholder}
         value={value}
         onChange={(event) => {
-            checkValue(event.target.value);
-          }}
+          checkValue(event.target.value);
+        }}
       />
     </Flex>
   );

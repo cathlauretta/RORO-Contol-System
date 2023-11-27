@@ -33,7 +33,7 @@ export default async function(
             if (flag){
                 queryOptions.flag = flag === 'true' ? true : false;
             }
-            const rooms = await prisma.room.findMany({where: queryOptions});
+            const rooms = await prisma.room.findMany({where: queryOptions, orderBy: {room_id: 'asc'}});
             res.status(200).json(rooms);
         }
         } catch (error) {

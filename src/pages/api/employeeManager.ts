@@ -9,18 +9,9 @@ export default async function(
     ) {
     if (req.method === 'GET'){
         try{
-            const { employee_id, name, username, password } = req.query;
-            let queryOptions = {};
-            if (employee_id || name) {
-                queryOptions = {
-                    where : {
-                        AND : [
-                            {employee_id: {contains: employee_id}},
-                            {name:{contains: name, mode: 'insensitive'}}
-                        ]
-                    }
-                }
-            } else if (username && password) {
+            const { employee_id, name, username, password, floor_assigned } = req.query;
+            let queryOptions:Record<string,any> = {};
+            if (username && password) {
                 queryOptions = {
                     where : {
                         AND : [
@@ -29,8 +20,18 @@ export default async function(
                         ]
                     }
                 }
+            } else {
+                if (employee_id) {
+                    queryOptions.employee_id = {contains: employee_id as string};
+                }
+                if (name) {
+                    queryOptions.name = {contains: name as string, mode: 'insensitive'};
+                }
+                if (floor_assigned) {
+                    queryOptions.floor_assigned = parseInt(floor_assigned as string);
+                }
             }
-            const employees = await prisma.employee.findMany(queryOptions);
+            const employees = await prisma.employee.findMany({where: queryOptions, orderBy: {employee_id: 'asc'}});
             res.status(200).json(employees);
         } catch (error) {
             res.status(500).json({ error: (error as Error).message });

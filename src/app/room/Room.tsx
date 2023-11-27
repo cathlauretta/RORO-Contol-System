@@ -14,7 +14,7 @@ const FLOOR_LIST = ['1', '2', '3', '4', '5']
 const DEFAULT_BORDER_RADIUS = '6px'
 const DEFAULT_TEXT_COLOR = '#082E4C'
 
-export default function RoomPageTemp() {
+export default function RoomPageTemp({isAdmin} : {isAdmin: boolean}) {
   const [roomData, setRoomData] = useState<Room[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [type, setType] = useState<string>('');
@@ -32,14 +32,11 @@ export default function RoomPageTemp() {
           flag : undercons ? 'true' : availability? 'false' : '',
         }).toString();
 
-
         const response = await fetch(`/api/roomManager?${queryParams}`);
         if (!response.ok) {
           throw new Error('Data fetching failed');
         }
         const rooms: Room[] = await response.json();
-        rooms.sort((a, b) => a.room_id.localeCompare(b.room_id));
-        // console.log(rooms);
         setRoomData(rooms);
 
       } catch (error) {
@@ -217,10 +214,14 @@ export default function RoomPageTemp() {
             Under Construction
           </Flex>
         </Flex>
-        
         <Spacer/>
         
-        <AddButton url={'/room/add-room'} text={'Add New Room'}/>
+        {
+          isAdmin && (
+            <AddButton url={'/room/add-room'} text={'Add New Room'}/>
+          )
+        }
+        
       </Flex>
 
       {/* Tabel */}

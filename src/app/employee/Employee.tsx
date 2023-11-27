@@ -45,7 +45,7 @@ const EmployeeTemp = () => {
       }
     };
     fetchData();
-  },[searchQuery]);
+  },[searchQuery, floor]);
 
 
   const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {

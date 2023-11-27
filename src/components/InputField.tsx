@@ -9,7 +9,12 @@ interface IFProps {
 }
 
 export const InputField = (props: IFProps) => {
-  const { label, disabled, placeholder = "Enter here..", bgColor = "#DFDFDF" } = props;
+  const {
+    label,
+    disabled,
+    placeholder = "Enter here..",
+    bgColor = "#DFDFDF",
+  } = props;
 
   return (
     <Flex flexDir={"column"} align-items={"start"} gap={"12px"}>

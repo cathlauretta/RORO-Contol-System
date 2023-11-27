@@ -16,9 +16,7 @@ const RoomPage = async({params}: {params: {id: string}}) => {
     return (
         // Flex satu screen
         <Flex width={"100vw"} flexDir={'column'} bg = {"white"}>
-          <Navbar/>
-
-          
+          <Navbar/>          
           <RoomEditTemp params={{id:params.id}}/>
         </Flex>
     )

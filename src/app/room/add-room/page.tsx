@@ -12,13 +12,13 @@ const RoomPage = async() => {
 
   if (session == null) {
     return redirect('/login')
+  } else if (session?.user.role !== "admin") {
+    return redirect('/room')
   } else {
     return (
         // Flex satu screen
         <Flex width={"100vw"} flexDir={'column'} bg = {"white"}>
           <Navbar/>
-
-          
           <RoomAddTemp/>
         </Flex>
     )
