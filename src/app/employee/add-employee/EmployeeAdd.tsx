@@ -5,7 +5,8 @@ import Title from "@/components/Title";
 import UploadImage from "@/components/UploadImage";
 import { Flex, Button } from "@chakra-ui/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { addEmployee, fetchData } from "./empFun";
 
 const EmployeeAdd = () => {
   const [title, setTitle] = useState<string>("New Employee");
@@ -14,19 +15,19 @@ const EmployeeAdd = () => {
     // console.log(item);
   };
 
-  const [type, setType] = useState<string>("Staff");
+  const [role, setRole] = useState<string>("Staff");
   const handleType = (item: string) => {
-    item == "Staff" ? setType("Admin") : setType(item);
+    item == "Staff" ? setRole("Admin") : setRole(item);
     // console.log(item);
   };
 
-  const [publicID, setPublicID] = useState<string>("");
+  const [image, setPublicID] = useState<string>("");
   const handlePID = (item: string) => {
     setPublicID(item);
     // console.log(item);
   };
 
-  const [empID, setEmpID] = useState<string>("");
+  const [empID, setEmpID] = useState<string>("Failed to Fetch Data");
   const handleEmpID = (item: string) => {
     setEmpID(item);
   };
@@ -41,7 +42,7 @@ const EmployeeAdd = () => {
     setName(item);
   };
 
-  const [dob, setDoB] = useState<string>("");
+  const [date_of_birth, setDoB] = useState<string>("");
   const handleDoB = (item: string) => {
     setDoB(item);
   };
@@ -61,15 +62,21 @@ const EmployeeAdd = () => {
     setPass(item);
   };
 
-  const [phone, setPhone] = useState<string>("");
+  const [contact, setPhone] = useState<string>("");
   const handlePhone = (item: string) => {
     setPhone(item);
   };
 
-  const [floor, setFloor] = useState<string>("");
+  const [floor_assigned, setFloor] = useState<string>("");
   const handleFloor = (item: string) => {
     setFloor(item);
   };
+
+  useEffect(() => {
+    if (empID == "Failed to Fetch Data") {
+      fetchData(handleEmpID);
+    }
+  }, [empID]);
 
   return (
     /* I. Whole Page */
@@ -119,7 +126,7 @@ const EmployeeAdd = () => {
               />
               <LabelInput
                 label="Birthdate"
-                value={dob}
+                value={date_of_birth}
                 placeholder="Contoh: 2023-12-01"
                 checkValue={handleDoB}
               />
@@ -140,13 +147,13 @@ const EmployeeAdd = () => {
               />
               <LabelInput
                 label="Phone Number"
-                value={phone}
+                value={contact}
                 placeholder={"Contoh: 0812345678"}
                 checkValue={handlePhone}
               />
               <LabelInput
                 label="Assign Floor"
-                value={floor}
+                value={floor_assigned}
                 placeholder={"Range: 1-5"}
                 checkValue={handleFloor}
               />
@@ -169,19 +176,22 @@ const EmployeeAdd = () => {
                 alt="Save Button"
               />
             }
-            // onClick={(event) => {
-            //   // handleSave();
-            //   addReport({
-            //     repID,
-            //     roomID,
-            //     eic,
-            //     desc,
-            //     title,
-            //     repType,
-            //     publicID,
-            //   });
-            //   console.log("Passed Save");
-            // }}
+            onClick={() => {
+              addEmployee({
+                empID,
+                name,
+                gender,
+                date_of_birth,
+                address,
+                role,
+                username,
+                password,
+                contact,
+                floor_assigned,
+                image,
+              });
+              console.log("Passed Save");
+            }}
           >
             Save
           </Button>

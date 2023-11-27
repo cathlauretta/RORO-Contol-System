@@ -71,7 +71,7 @@ export async function addEmployee({
       gender: gender,
       date_of_birth: new Date(date_of_birth),
       address: address,
-      role: role,
+      role: role.toLowerCase(),
       username: username,
       password: password,
       hire_date: new Date(),
