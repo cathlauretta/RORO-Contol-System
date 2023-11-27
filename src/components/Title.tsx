@@ -3,7 +3,7 @@ import { Flex, Input, Switch, Text } from "@chakra-ui/react";
 import { Providers } from "@/app/providers";
 
 interface Props {
-  titleItem: (item: string) => void;
+  titleItem?: (item: string) => void;
   repTypeItem: (item: string) => void;
   placeholder?: string;
   disabled?: boolean;
@@ -30,7 +30,9 @@ const Title = ({ titleItem, repTypeItem, placeholder = "Judul Laporan", disabled
         variant="unstyled"
         disabled={disabled}
         onChange={(event) => {
-          titleItem(event.target.value);
+          if (titleItem) {
+            titleItem(event.target.value);
+          }
         }}
       />
       <Flex w="96px" justifyContent="end" gap="12px" paddingBottom="1.5">

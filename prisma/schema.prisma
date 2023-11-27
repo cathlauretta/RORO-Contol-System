@@ -23,6 +23,7 @@ model Employee {
   contact        String   @default("+62 812-3456-7890")
   last_edit      DateTime @default(dbgenerated("'2023-11-19'::date")) @db.Date
   floor_assigned Int      @default(0)
+  image          String?
   Report         Report[]
 }
 

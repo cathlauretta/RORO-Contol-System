@@ -81,11 +81,9 @@ const EmployeeAdd = () => {
         h="140vh"
         mt="40px"
         mx="auto"
-        alignItems="end"
-        >
+        alignItems="end">
         {/* I.1.1. Title & Inspect */}
         <Title
-          titleItem={handleTitle}
           repTypeItem={handleType}
           placeholder="New Employee"
           defTogVal="Staff"
