@@ -14,7 +14,7 @@ const page = async () => {
     return redirect("/room")
   } else {
     return (
-      <Flex w="100vw" h="180vh" flexDir="column" bg="white">
+      <Flex w="100vw" h="172vh" flexDir="column" bg="white">
         <Navbar />
         <EmployeeAdd />
       </Flex>

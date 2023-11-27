@@ -64,7 +64,7 @@ const ReportAddTemp = ({ params }: { params: { id: string } }) => {
       <Flex
         flexDir="column"
         w="85vw"
-        h="120vh"
+        h="108vh"
         mt="40px"
         mx="auto"
         alignItems="end">
@@ -101,11 +101,11 @@ const ReportAddTemp = ({ params }: { params: { id: string } }) => {
               />
             </Flex>
             {/* I.1.2.2.2. Textarea */}
-            <Flex flexDir="column" gap="12px">
+            <Flex h="56vh" flexDir="column" gap="12px">
               <Text fontWeight="600"> Report Description </Text>
               <Textarea
                 w="full"
-                h="56vh"
+                h="full"
                 resize="none"
                 fontSize="14px"
                 fontWeight="400"
@@ -119,59 +119,60 @@ const ReportAddTemp = ({ params }: { params: { id: string } }) => {
                 }}
               />
             </Flex>
+
+            {/* I.1.3. Save */}
+            <Flex w="full" paddingTop="20px" flexDir="row-reverse">
+              <Button
+                w="10vw"
+                h="40px"
+                bg="#39A7FF"
+                fontSize="16px"
+                color="#FFFFFF"
+                _hover={{
+                  bgColor: "#2877b7",
+                  transitionDuration: "0.2s",
+                  transitionTimingFunction: "ease-in-out",
+                }}
+                leftIcon={
+                  <Image
+                    src="/icons/Save.svg"
+                    width={18}
+                    height={20}
+                    alt="Save Button"
+                  />
+                }
+                onClick={() => {
+                  // handleSave();
+                  addReport({
+                    repID,
+                    roomID,
+                    eic,
+                    desc,
+                    title,
+                    repType,
+                    publicID,
+                  });
+                  console.log("Passed Save");
+                }}>
+                Save
+              </Button>
+              <Button
+                w="10vw"
+                h="40px"
+                borderColor="#39A7FF"
+                fontSize="16px"
+                variant="unstyled"
+                color="#39A7FF"
+                _hover={{
+                  bgColor: "#F0F0F0",
+                  transitionDuration: "0.2s",
+                  transitionTimingFunction: "ease-in-out",
+                }}
+                onClick={(event) => (window.location.href = `/report`)}>
+                Cancel
+              </Button>
+            </Flex>
           </Flex>
-        </Flex>
-        {/* I.1.3. Save */}
-        <Flex w="85vw" flexDir="row-reverse">
-          <Button
-            w="10vw"
-            h="40px"
-            bg="#39A7FF"
-            fontSize="16px"
-            color="#FFFFFF"
-            _hover={{
-              bgColor: "#2877b7",
-              transitionDuration: "0.2s",
-              transitionTimingFunction: "ease-in-out",
-            }}
-            leftIcon={
-              <Image
-                src="/icons/Save.svg"
-                width={18}
-                height={20}
-                alt="Save Button"
-              />
-            }
-            onClick={() => {
-              // handleSave();
-              addReport({
-                repID,
-                roomID,
-                eic,
-                desc,
-                title,
-                repType,
-                publicID,
-              });
-              console.log("Passed Save");
-            }}>
-            Save
-          </Button>
-          <Button
-            w="10vw"
-            h="40px"
-            borderColor="#39A7FF"
-            fontSize="16px"
-            variant="unstyled"
-            color="#39A7FF"
-            _hover={{
-              bgColor: "#F0F0F0",
-              transitionDuration: "0.2s",
-              transitionTimingFunction: "ease-in-out",
-            }}
-            onClick={(event) => (window.location.href = `/report`)}>
-            Cancel
-          </Button>
         </Flex>
       </Flex>
     </Providers>
