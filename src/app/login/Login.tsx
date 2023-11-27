@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Box, InputGroup, InputRightElement, Heading, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { Flex, Box, InputGroup, InputRightElement, Heading, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { ButtonCust } from "../../components/ButtonCust";
 // import type { Employee } from '@prisma/client'
 import { signIn } from "next-auth/react"
@@ -65,61 +65,76 @@ const Login = () => {
     console.log(currDir);
 
     return (
-        <Box
-            display="flex"
+        <Flex
             justifyContent="center"
             alignItems="center"
             height="100vh"
         >
-            <Box maxW="md" mx="auto" p={4}>
-                <Box bg="#E0F4FF" p={4} borderRadius="md" boxShadow="md" textAlign="center">
-                    <Heading mb={4} textAlign="center" size="lg" width="300px">
-                        Room Repair and Occupancy (RORO) Control System
-                    </Heading>
-                    <FormControl mt={5}>
+            <Flex
+                bg="#E0F4FF"
+                p={12}
+                borderRadius="20px"
+                boxShadow="md"
+                textAlign="center"
+                flexDir={'column'}
+            >
+                <Heading
+                    paddingTop={4}
+                    textAlign="left"
+                    size="lg"
+                    width="300px"
+                    fontSize={'32px'}
+                    fontWeight={'700'}
+                    color={'#28293D'}
+                >
+                    Room Repair and Occupancy Control System
+                </Heading>
+                <FormControl mt={5}>
+                    <Input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        bgColor={'#F1FAFF'}
+                        color="#082E4C"
+                        borderRadius={'6px'}
+                        border={'1px solid #247EC5'}
+                        fontSize={'14px'}
+                        fontWeight={'400'}
+                        _placeholder={{
+                            fontSize: "14px",
+                            color: "#082E4C",  // Placeholder text color
+                        }}
+                    />
+                </FormControl>
+                <FormControl mt={4}>
+                    <InputGroup>
                         <Input
-                            type="text"
-                            placeholder="Username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            color="082E4C"
-                            borderColor="#247EC5"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            bgColor={'#F1FAFF'}
+                            color="#082E4C"
+                            borderRadius={'6px'}
+                            border={'1px solid #247EC5'}
+                            fontSize={'14px'}
+                            fontWeight={'400'}
                             _placeholder={{
-                                fontSize: "12px",
+                                fontSize: "14px",
                                 color: "#082E4C",  // Placeholder text color
                             }}
                         />
-                    </FormControl>
-                    <FormControl mt={4}>
-                        <InputGroup>
-                            <Input
-                                type={showPassword ? "text" : "password"}
-                                placeholder="Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                color="082E4C"
-                                borderColor="#247EC5"
-                                _placeholder={{
-                                    fontSize: "12px",
-                                    color: "#082E4C",  // Placeholder text color
-                                }}
-                            />
-                            <InputRightElement width="4.5rem">
-                                <Button h="1.75rem" size="xs" onClick={toggleShowPassword} variant="outline">
-                                    {showPassword ? "Hide" : "Show"}
-                                </Button>
-                            </InputRightElement>
-                        </InputGroup>
-                    </FormControl>
-                <ButtonCust currDir={currDir}/>
-                {/* <Box width="100%">
-                        <Button bg="#39A7FF" color="#FFFFFF" mt={4} onClick={handleLogin} width="100%">
-                                Login
-                        </Button>
-                </Box> */}
-                </Box>
-            </Box>
-        </Box>
+                        <InputRightElement width="4.5rem">
+                            <Button h="1.75rem" size="xs" onClick={toggleShowPassword} variant="outline">
+                                {showPassword ? "Hide" : "Show"}
+                            </Button>
+                        </InputRightElement>
+                    </InputGroup>
+                </FormControl>
+            <ButtonCust currDir={currDir}/>
+            </Flex>
+        </Flex>
     );
 };
 
